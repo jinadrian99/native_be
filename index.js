@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 
 // Khai báo module
 const sliderRouter = require('./api/Slider/slider.router');
+const adminRouter = require('./api/Admin/admin.router');
 
 app.use(cors());
 app.use(express.json());
@@ -16,6 +17,7 @@ app.use(bodyParser.json());
 
 //code API
 app.use('/api/slider', sliderRouter);
+app.use('/api/admin', adminRouter);
 
 app.listen(process.env.APP_PORT, () => {
     console.log("Server running on 127.0.0.1:"+ process.env.APP_PORT +"...");
