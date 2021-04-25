@@ -19,6 +19,6 @@ app.use(bodyParser.json());
 app.use('/api/slider', sliderRouter);
 app.use('/api/admin', adminRouter);
 
-app.listen(process.env.APP_PORT, () => {
-    console.log("Server running on 127.0.0.1:"+ process.env.APP_PORT +"...");
+app.listen(process.env.PORT||process.env.APP_PORT, () => {
+    console.log("Server running on 127.0.0.1:"+ process.env.APP_PORT||process.env.APP_PORT +"...");
 });
