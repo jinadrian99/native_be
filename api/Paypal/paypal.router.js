@@ -50,27 +50,19 @@ router.post('/', (req, res) => {
 });
 
 router.get('/success', (req, res) => {
-    const payerId = req.query.PayerID;
-    const paymentId = req.query.paymentId;
-
-    const execute_payment_json = {
-    "payer_id": payerId,
-    "transactions": [{
-        "amount": {
-            "currency": "USD",
-            "total": "5.00"
-        }
-    }]
-    };
-
-    paypal.payment.execute(paymentId, execute_payment_json, function (error, payment) {
-        if (error) {
-            console.log(error.response);
-            throw error;
+    var paymentId = req.query.paymentId;
+    var payerId = { payer_id: req.query.PayerID };
+    
+    paypal.payment.execute(paymentId, payerId, function(error, payment){
+      if(error){
+        console.error(JSON.stringify(error));
+      } else {
+        if (payment.state == 'approved'){
+          return res.json('payment completed successfully');
         } else {
-            console.log(JSON.stringify(payment));
-            res.json('Success');
+          return res.json('payment not successful');
         }
+      }
     });
 });
 
