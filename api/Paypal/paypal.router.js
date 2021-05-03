@@ -15,18 +15,20 @@ router.post('/', (req, res) => {
             "payment_method": "paypal"
         },
         "redirect_urls": {
-            "return_url": "http://127.0.0.1:3001/api/pay/success",
-            "cancel_url": "http://127.0.0.1:3001/api/pay/cancel"
+            "return_url": "https://nativecity.herokuapp.com/api/pay/success",
+            "cancel_url": "https://nativecity.herokuapp.com/api/pay/cancel"
         },
         "transactions": [{
             "item_list": {
-                "items": [{
-                    "name": "Red Sox Hat",
-                    "sku": "001",
-                    "price": "5.00",
-                    "currency": "USD",
-                    "quantity": 1
-                }]
+                "items": [
+                    {
+                        "name": "Red Sox Hat",
+                        "sku": "001",
+                        "price": "5.00",
+                        "currency": "USD",
+                        "quantity": 1
+                    }
+                ]
             },
             "amount": {
                 "currency": "USD",
