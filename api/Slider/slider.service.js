@@ -3,7 +3,7 @@ const pool = require('../../config/database');
 module.exports = {
     createData: (data, callBack) => {
         pool.query(
-            `insert into slide(hinhAnh) VALUES(?)`,
+            `insert into SLIDEQUANGCAO(hinhAnh) VALUES(?)`,
             [
                 data.hinhAnh
             ],
@@ -17,7 +17,7 @@ module.exports = {
     },
     getAll: callBack => {
         pool.query(
-            `select idSlide, hinhAnh from slide`,
+            `select idSlide, hinhAnh from SLIDEQUANGCAO`,
             [],
             (error, results, fields) => {
                 if(error){
@@ -29,7 +29,7 @@ module.exports = {
     },
     getDataByID: (id, callBack) => {
         pool.query(
-            `select idSlide, hinhAnh from slide where idSlide = ?`,
+            `select idSlide, hinhAnh from SLIDEQUANGCAO where idSlide = ?`,
             [id],
             (error, results, fields) => {
                 if(error){
@@ -41,7 +41,7 @@ module.exports = {
     },
     updateData: (id, data, callBack) => {
         pool.query(
-            `update slide set hinhAnh=? where idSlide = ?`,
+            `update SLIDEQUANGCAO set hinhAnh=? where idSlide = ?`,
             [
                 data.hinhAnh, 
                 id
@@ -57,7 +57,7 @@ module.exports = {
     },
     deleteData: (id, callBack) => {
         pool.query(
-            `delete from slide where idSlide = ?`,
+            `delete from SLIDEQUANGCAO where idSlide = ?`,
             [id],
             (error, results, fields) => {
                 if(error){

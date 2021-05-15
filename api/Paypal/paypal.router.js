@@ -22,7 +22,7 @@ router.post('/', (req, res) => {
             "item_list": {
                 "items": [
                     {
-                        "name": "Red Sox Hat",
+                        "name": "Room Rose",
                         "sku": "001",
                         "price": "5.00",
                         "currency": "USD",
@@ -34,7 +34,7 @@ router.post('/', (req, res) => {
                 "currency": "USD",
                 "total": "5.00"
             },
-            "description": "Hat for the best team ever"
+            "description": "Hat for the best team ever" 
         }]
     };
     
