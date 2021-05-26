@@ -9,6 +9,8 @@ const bodyParser = require('body-parser');
 const sliderRouter = require('./api/Slider/slider.router');
 const roomTypeRouter = require('./api/RoomType/roomType.router');
 const imageRoomTypeRouter = require('./api/ImageRoomType/imageRoomType.router');
+const serviceRouter = require('./api/Service/service.router');
+const imageServiceRouter = require('./api/ImageService/imageService.router');
 const adminRouter = require('./api/Admin/admin.router');
 const paypalRouter = require('./api/Paypal/paypal.router');
 
@@ -24,6 +26,9 @@ app.get('/', (req, res) => res.sendFile(__dirname + "/index.html"));
 app.use('/api/slider', sliderRouter);
 app.use('/api/roomtype', roomTypeRouter);
 app.use('/api/imageroomtype', imageRoomTypeRouter);
+app.use('/api/service', serviceRouter);
+app.use('/api/imageservice', imageServiceRouter);
+
 app.use('/api/admin', adminRouter);
 app.use('/api/pay', paypalRouter);
 
