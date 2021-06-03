@@ -25,9 +25,9 @@ app.get('/', (req, res) => res.sendFile(__dirname + "/index.html"));
 //code API
 app.use('/api/slider', sliderRouter);
 app.use('/api/roomtype', roomTypeRouter);
-app.use('/api/imageroomtype', imageRoomTypeRouter);
+app.use('/api/roomtype-image', imageRoomTypeRouter);
 app.use('/api/service', serviceRouter);
-app.use('/api/imageservice', imageServiceRouter);
+app.use('/api/service-image', imageServiceRouter);
 
 app.use('/api/admin', adminRouter);
 app.use('/api/pay', paypalRouter);
