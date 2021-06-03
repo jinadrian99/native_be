@@ -14,7 +14,7 @@ module.exports = {
         createData(data, (err, results) => {
             if(err) {
                 console.log(err);
-                return res.status(500).json('DB conn Error');
+                return res.status(500).json(err);
             }
             return res.status(200).json(results);
         });
@@ -23,7 +23,7 @@ module.exports = {
         getAll((err, results) => {
             if(err) {
                 console.log(err);
-                return res.status(500).json('DB conn Error');
+                return res.status(500).json(err);
             }
             return res.status(200).json(results);
         });
@@ -33,7 +33,7 @@ module.exports = {
         getDataByID(id, (err, results) => {
             if(err) {
                 console.log(err);
-                return res.status(500).json('DB conn Error');
+                return res.status(500).json(err);
             }
             if(results == null) {
                 return res.status(404).json('Record not found');
@@ -47,7 +47,7 @@ module.exports = {
         updateData(id, data, (err, results) => {
             if(err) {
                 console.log(err);
-                return res.status(500).json('DB conn Error');
+                return res.status(500).json(err);
             }
             if(results == null) {
                 return res.status(404).json('Record not found');
@@ -60,7 +60,7 @@ module.exports = {
         deleteData(id, (err, results) => {
             if(err) {
                 console.log(err);
-                return res.status(500).json('DB conn Error');
+                return res.status(500).json(err);
             }
             if(results == 0) {
                 return res.status(404).json('Record not found');
@@ -74,7 +74,7 @@ module.exports = {
         getDataByIDLP(idLP, (err, result) => {
             if(err) {                
                 console.log(err);
-                return res.status(500).json('DB conn Error');
+                return res.status(500).json(err);
             }
             if(result == null) {
                 return res.status(404).json('Record not found');
