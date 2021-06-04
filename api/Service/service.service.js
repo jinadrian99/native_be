@@ -51,7 +51,7 @@ module.exports = {
                 hinhThuc = ?,
                 donGia = ?,
                 moTaTD = ?,
-                moTaCT = ?,
+                moTaCT = ?
             where idDV = ?`,
             [
                 data.tenDV,
