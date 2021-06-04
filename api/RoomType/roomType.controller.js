@@ -6,7 +6,7 @@ const {
     deleteData
 } = require('./roomType.service');
 
-const roomTypeImage = require('../ImageRoomType/imageRoomType.service');
+var roomTypeImage = require('../ImageRoomType/imageRoomType.service');
 
 module.exports = {
     createRoomType: (req, res) => {
@@ -57,30 +57,27 @@ module.exports = {
     },
     deleteRoomType: (req, res) => {
         const id = req.params.id;
-        const constrain = [];
         roomTypeImage.getDataByIDLP(id, (err, results)=>{
-            if(err) {
-                console.log(err);
+            if(err){
                 return res.status(500).json(err);
             }
             if(results == null) {
                 return res.status(404).json('Record not found');
             }
-            constrain = results;
-        })
-        if(constrain.length > 0)
-            return res.status(400).json('Exist Hình ảnh');
-        else
-            return res.status(200).json('Có thể xóa');
-        // deleteData(id, (err, results) => {
-        //     if(err) {
-        //         console.log(err);
-        //         return res.status(500).json(err);
-        //     }
-        //     if(results == 0) {
-        //         return res.status(404).json('Record not found');
-        //     }
-        //     return res.status(200).json('Deleted successfully');
-        // });
+            if(results.length > 0)
+                return res.status(400).json('Exists room type image!');
+            else {
+                deleteData(id, (err, results) => {
+                    if(err) {
+                        console.log(err);
+                        return res.status(500).json(err);
+                    }
+                    if(results == 0) {
+                        return res.status(404).json('Record not found');
+                    }
+                    return res.status(200).json('Deleted successfully');
+                });
+            }
+        });
     }
 }
