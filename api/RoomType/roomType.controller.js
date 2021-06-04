@@ -65,7 +65,7 @@ module.exports = {
                 return res.status(404).json('Record not found');
             }
             if(results.length > 0)
-                return res.status(200).json('Exists room type image!');
+                return res.status(400).json('Exists room type image!');
             else {
                 deleteData(id, (err, results) => {
                     if(err) {
