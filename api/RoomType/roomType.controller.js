@@ -7,6 +7,7 @@ const {
 } = require('./roomType.service');
 
 var roomTypeImage = require('../ImageRoomType/imageRoomType.service');
+var dailyRate = require('../DailyRate/dailyRate.service');
 
 module.exports = {
     createRoomType: (req, res) => {
@@ -79,5 +80,35 @@ module.exports = {
                 });
             }
         });
-    } 
+    },
+    getRateByIDLP : (req, res) => {
+        const idLP = req.params.idLP;
+
+        dailyRate.getDataByIDLP(idLP, (err, result) => {
+            if(err) { return res.status(500).json(err); }
+            if(result.length <= 0) { return res.status(200).json(null); } // chưa có bảng giá  
+            if (result.length > 0) {
+                // lấy ngày gần nhất trong quá khứ kể cả ngày hiện tại, không lấy ngày tương lai
+                var today = new Date();
+                var arrRate = result;
+                var recordRate = null;
+                var diffDayMin = null;
+                arrRate.forEach(item => {
+                    var day = new Date(item.ngayBatDau);
+                    var diffDay = (today.getTime() - day.getTime())/(1000*60*60*24);
+
+                    if(diffDay >= 0 && diffDayMin == null){
+                        recordRate = item;
+                        diffDayMin = diffDay;
+                    }
+                    if(diffDay >= 0 && diffDayMin >= diffDay){
+                        console.log(item);
+                        recordRate = item;
+                        diffDayMin = diffDay;
+                    }
+                });
+                return res.status(200).json(recordRate);
+            }
+        })
+    }
 }

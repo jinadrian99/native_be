@@ -11,6 +11,7 @@ const roomTypeRouter = require('./api/RoomType/roomType.router');
 const imageRoomTypeRouter = require('./api/ImageRoomType/imageRoomType.router');
 const serviceRouter = require('./api/Service/service.router');
 const imageServiceRouter = require('./api/ImageService/imageService.router');
+const dailyRateRouter = require('./api/DailyRate/dailyRate.router');
 const adminRouter = require('./api/Admin/admin.router');
 const paypalRouter = require('./api/Paypal/paypal.router');
 
@@ -28,6 +29,7 @@ app.use('/api/roomtype', roomTypeRouter);
 app.use('/api/roomtype-image', imageRoomTypeRouter);
 app.use('/api/service', serviceRouter);
 app.use('/api/service-image', imageServiceRouter);
+app.use('/api/daily-rate', dailyRateRouter);
 
 app.use('/api/admin', adminRouter);
 app.use('/api/pay', paypalRouter);
