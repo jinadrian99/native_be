@@ -41,6 +41,8 @@ module.exports = {
     update: (req, res) => {
         const id = req.params.id;
         const data = req.body;
+        var constraint = check(data);
+        if(constraint !== true) return res.status(400).json(constraint);
         dailyRate.getDataByID(id, (err, result) => {
             if(err) { return res.status(500).json(err); }
             if(result.length <= 0) { return res.status(400).json('Record not exists to update!'); }
