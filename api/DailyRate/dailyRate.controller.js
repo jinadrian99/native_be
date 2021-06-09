@@ -10,13 +10,6 @@ const schema = {
             number: "Giá phải là số!",
             numberMin: "Giá Phải lớn hơn 10$!"
         }
-    },
-    ngayBatDau: { 
-        type: 'date',
-        messages: {
-            required: "Phải nhập ngày bắt đầu!",
-            date: "Ngày bắt đầu phải là ngày",
-        }
     }
 }
 const check = valid.compile(schema);
