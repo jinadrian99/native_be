@@ -93,6 +93,7 @@ module.exports = {
                 var arrRate = result;
                 var recordRate = null;
                 var diffDayMin = null;
+                var isSpecial = false;
                 arrRate.forEach(item => {
                     var day = new Date(item.ngayBatDau);
                     var diffDay = (today.getTime() - day.getTime())/(1000*60*60*24);
@@ -107,7 +108,8 @@ module.exports = {
                         diffDayMin = diffDay;
                     }
                 });
-                return res.status(200).json(recordRate);
+                var giaLP = !isSpecial ? recordRate.giaMoiTuan : recordRate.giaTheoThu;
+                return res.status(200).json(giaLP);
             }
         })
     }
