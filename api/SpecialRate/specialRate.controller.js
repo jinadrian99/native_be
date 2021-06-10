@@ -37,7 +37,7 @@ module.exports = {
 
         specialRate.getDataByThuNIDGTN(data.thu, data.idGTN,(err, result) => {
             if(err) { return res.status(500).json(err); }
-            if(result.length > 0) { return res.status(400).json('This Rate for Special Day is Exists!'); }
+            if(result.length > 0) { return res.status(400).json('This Rate for Special Rate is Exists!'); }
 
             specialRate.createData(data, (err, result) => {
                 if(err) { return res.status(500).json(err); }
@@ -57,7 +57,7 @@ module.exports = {
             if(result.length <= 0) { return res.status(400).json('Record not exists to update!'); }
             specialRate.getDataByThuNIDGTNPreventIdGTT(data.thu, data.idGTN, id, (err, result) => {
                 if(err) { return res.status(500).json(err); }
-                if(result.length > 0) { return res.status(400).json('This Rate for Special Day is Exists!'); }
+                if(result.length > 0) { return res.status(400).json('This Rate for Special Rate is Exists!'); }
 
                 specialRate.updateData(id, data, (err, result) => {
                     if(err) { return res.status(500).json(err); }

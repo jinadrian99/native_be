@@ -8,7 +8,7 @@ const schema = {
         messages: {
             required: "Phải nhập giá!",
             number: "Giá phải là số!",
-            numberMin: "Giá Phải lớn hơn bằng 10$!"
+            numberMin: "Giá Phải lớn hơn bằng 300$!"
         }
     }
 }
@@ -33,10 +33,16 @@ module.exports = {
         const data = req.body;
         var constraint = check(data);
         if(constraint !== true) return res.status(400).json(constraint);
-        dailyRate.createData(data, (err, result) => {
+        dailyRate.getDataByNgayBatDauNIdLP(data.ngayBatDau, data.idLP,(err, result) => {
             if(err) { return res.status(500).json(err); }
-            return res.status(200).json(result);
-        });
+            if(result.length > 0) { return res.status(400).json('This Rate for Daily Rate is Exists!'); }
+
+            dailyRate.createData(data, (err, result) => {
+                if(err) { return res.status(500).json(err); }
+                return res.status(200).json(result);
+            });
+        })
+        
     },
     update: (req, res) => {
         const id = req.params.id;

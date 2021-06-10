@@ -54,6 +54,37 @@ module.exports = {
             }
         )
     },
+    getDataByNgayBatDauNIdLP: (ngayBatDau, idLP, cb) => {
+        pool.query(
+            `SELECT * FROM GIATHEONGAY WHERE ngayBatDau = ? and idLP = ?`,
+            [
+                ngayBatDau,
+                idLP
+            ],
+            (error, result) => {
+                if(error) {
+                    return cb(error);
+                }
+                return cb(null, result)
+            }
+        )
+    },
+    getDataByNgayBatDauNIdLPPreventIdGTN: (ngayBatDau, idLP, idGTN, cb) => {
+        pool.query(
+            `SELECT * FROM GIATHEONGAY WHERE ngayBatDau = ? and idLP = ? and idGTN != ?`,
+            [
+                ngayBatDau,
+                idLP,
+                idGTN
+            ],
+            (error, result) => {
+                if(error) {
+                    return cb(error);
+                }
+                return cb(null, result)
+            }
+        )
+    },
     updateData: (id, data, cb) => {
         pool.query(
             `update GIATHEONGAY set
