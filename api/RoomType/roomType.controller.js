@@ -8,6 +8,7 @@ const {
 
 var roomTypeImage = require('../ImageRoomType/imageRoomType.service');
 var dailyRate = require('../DailyRate/dailyRate.service');
+var specialRate = require('../SpecialRate/specialRate.service');
 
 module.exports = {
     createRoomType: (req, res) => {
@@ -93,7 +94,7 @@ module.exports = {
                 var arrRate = result;
                 var recordRate = null;
                 var diffDayMin = null;
-                var isSpecial = false;
+
                 arrRate.forEach(item => {
                     var day = new Date(item.ngayBatDau);
                     var diffDay = (today.getTime() - day.getTime())/(1000*60*60*24);
@@ -108,8 +109,18 @@ module.exports = {
                         diffDayMin = diffDay;
                     }
                 });
-                var giaLP = !isSpecial ? recordRate.giaMoiTuan : recordRate.giaTheoThu;
-                return res.status(200).json(giaLP);
+
+                //có đc recordRate ta sẽ len lõi vào tận trong Special Rate để xem có ngày nào là hn ko?
+                var thu = today.getDay();
+                var idGTN = recordRate.idGTN;
+
+                specialRate.getDataByThuNIDGTN(thu, idGTN, (err, result) => {
+                    if(err) { return res.status(500).json(err); }
+                    if(result.length > 0) { 
+                        return res.status(200).json(result[0].giaTheoThu);
+                    }
+                    return res.status(200).json(recordRate.giaMoiTuan);
+                })
             }
         })
     }

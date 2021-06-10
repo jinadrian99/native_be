@@ -1,14 +1,14 @@
-var dailyRate = require('./dailyRate.service');
-
+var specialRate = require('./specialRate.service');
 const Validator = require('fastest-validator');
+
 const valid = new Validator();
 const schema = {
-    giaMoiTuan: { 
-        type: 'number', min: 300, 
+    giaTheoThu: {
+        type: 'number', min: 600,
         messages: {
             required: "Phải nhập giá!",
             number: "Giá phải là số!",
-            numberMin: "Giá Phải lớn hơn bằng 10$!"
+            numberMin: "Giá Phải lớn hơn bằng 30$!"
         }
     }
 }
@@ -16,14 +16,14 @@ const check = valid.compile(schema);
 
 module.exports = {
     index: (req, res) => {
-        dailyRate.getAll((err, result) => {
+        specialRate.getAll((err, result) => {
             if(err) { return res.status(500).json(err); }
             return res.status(200).json(result);
         })
     },
     show: (req, res) => {
         id = req.params.id;
-        dailyRate.getDataByID(id, (err, result) => {
+        specialRate.getDataByID(id, (err, result) => {
             if(err) { return res.status(500).json(err); }
             if(result.length <= 0) { return res.status(400).json('Record not exists!'); }
             return res.status(200).json(result);
@@ -31,37 +31,52 @@ module.exports = {
     },
     store: (req, res) => {
         const data = req.body;
+
         var constraint = check(data);
         if(constraint !== true) return res.status(400).json(constraint);
-        dailyRate.createData(data, (err, result) => {
+
+        specialRate.getDataByThuNIDGTN(data.thu, data.idGTN,(err, result) => {
             if(err) { return res.status(500).json(err); }
-            return res.status(200).json(result);
-        });
+            if(result.length > 0) { return res.status(400).json('This Rate for Special Day is Exists!'); }
+
+            specialRate.createData(data, (err, result) => {
+                if(err) { return res.status(500).json(err); }
+                return res.status(200).json(result);
+            });
+        })
     },
     update: (req, res) => {
         const id = req.params.id;
         const data = req.body;
+
         var constraint = check(data);
         if(constraint !== true) return res.status(400).json(constraint);
-        dailyRate.getDataByID(id, (err, result) => {
+        
+        specialRate.getDataByID(id, (err, result) => {
             if(err) { return res.status(500).json(err); }
             if(result.length <= 0) { return res.status(400).json('Record not exists to update!'); }
-            dailyRate.updateData(id, data, (err, result) => {
+            specialRate.getDataByThuNIDGTNPreventIdGTT(data.thu, data.idGTN, id, (err, result) => {
                 if(err) { return res.status(500).json(err); }
-                return res.status(200).json("Updated successfully");
-            })            
+                if(result.length > 0) { return res.status(400).json('This Rate for Special Day is Exists!'); }
+
+                specialRate.updateData(id, data, (err, result) => {
+                    if(err) { return res.status(500).json(err); }
+                    return res.status(200).json("Updated successfully");
+                })       
+            })     
         })
+      
     },
     destroy: (req, res) => {
         const id = req.params.id;
-
-        dailyRate.getDataByID(id, (err, result) => {
+        specialRate.getDataByID(id, (err, result) => {
             if(err) { return res.status(500).json(err); }
             if(result.length <= 0) { return res.status(400).json('Record not exists to delete!'); }
-            dailyRate.deleteData(id, (err, result) => {
+            specialRate.deleteData(id, (err, result) => {
                 if(err) { return res.status(500).json(err); }
                 return res.status(200).json("Delete successfully");
             })            
         })
+        
     }
-};
+}
