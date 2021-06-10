@@ -38,7 +38,7 @@ module.exports = {
                 if(error) {
                     return cb(error);
                 }
-                return cb(null, result);
+                return cb(null, result[0]);
             }
         )
     },
