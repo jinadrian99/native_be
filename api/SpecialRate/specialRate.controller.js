@@ -8,7 +8,7 @@ const schema = {
         messages: {
             required: "Phải nhập giá!",
             number: "Giá phải là số!",
-            numberMin: "Giá Phải lớn hơn bằng 30$!"
+            numberMin: "Giá Phải lớn hơn bằng 600$!"
         }
     }
 }
