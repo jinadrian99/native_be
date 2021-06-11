@@ -54,6 +54,20 @@ module.exports = {
             }
         )
     },
+    getDataByIdGTN: (idGTN, cb) => {
+        pool.query(
+            `SELECT * FROM GIATHEOTHU WHERE idGTN = ?`,
+            [
+                idGTN
+            ],
+            (error, result) => {
+                if(error) {
+                    return cb(error);
+                }
+                return cb(null, result)
+            }
+        )
+    },
     getDataByThuNIDGTN: (thu, idGTN, cb) => {
         pool.query(
             `SELECT * FROM GIATHEOTHU WHERE idGTN = ? and thu = ?`,

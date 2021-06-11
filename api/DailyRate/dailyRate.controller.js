@@ -1,4 +1,5 @@
 var dailyRate = require('./dailyRate.service');
+var specialRate = require('../SpecialRate/specialRate.service');
 
 const Validator = require('fastest-validator');
 const valid = new Validator();
@@ -71,10 +72,16 @@ module.exports = {
         dailyRate.getDataByID(id, (err, result) => {
             if(err) { return res.status(500).json(err); }
             if(result.length <= 0) { return res.status(400).json('Record not exists to delete!'); }
-            dailyRate.deleteData(id, (err, result) => {
+
+            specialRate.getDataByIdGTN(id, (err, result) => {
                 if(err) { return res.status(500).json(err); }
-                return res.status(200).json("Delete successfully");
-            })            
+                if(result.length > 0) { return res.status(400).json('This Rate is exists for Special Rate!')}
+
+                dailyRate.deleteData(id, (err, result) => {
+                    if(err) { return res.status(500).json(err); }
+                    return res.status(200).json("Delete successfully");
+                })          
+            })
         })
     }
 };
