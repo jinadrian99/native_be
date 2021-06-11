@@ -13,6 +13,7 @@ find . -depth -name '.DS_Store' -exec git rm --cached '{}' \; -print
 - git push -u origin tenBranch
 
 ### main branch:     
+-  [git remote set-url origin uri]
 -  git pull
 -  git branch -a
 -  git diff origin/tenBranch
