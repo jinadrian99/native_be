@@ -1,5 +1,30 @@
 find . -depth -name '.DS_Store' -exec git rm --cached '{}' \; -print
-<h3>Công dụng</h3>
+
+#MERGE GIT
+### remote origin branch:<br /><br />
+- git clone uri [git pull]
+- [code]
+- git branch -a
+- git branch tenBranch
+- git checkout tenBranch
+- git add .
+- find . -depth -name '.DS_Store' -exec git rm --cached '{}' \; -print
+- git commit -m "commit"
+- git push -u origin tenBranch
+
+### main branch:     
+-  git pull
+-  git branch -a
+-  git diff origin/tenBranch
+-  git merge origin/tenBranch
+-  [sync file async]
+-  [code]
+-  git add .
+-  find . -depth -name '.DS_Store' -exec git rm --cached '{}' \; -print
+-  git commit -m "commit"
+-  git push
+
+# Công dụng
 "bcrypt": Mã hoá,<br/>
 "body-parser": Send Data: Client <=> Server,<br/>
 "cors": Không cần phân biệt http vs https,<br/>

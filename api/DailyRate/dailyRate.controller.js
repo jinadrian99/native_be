@@ -54,7 +54,7 @@ module.exports = {
             if(err) { return res.status(500).json(err); }
             if(result.length <= 0) { return res.status(400).json('Record not exists to update!'); }
 
-            specialRate.getDataByThuNIDGTNPreventIdGTT(data.ngayBatDau, data.idLP, id, (err, result) => {
+            dailyRate.getDataByNgayBatDauNIdLPPreventIdGTN(data.ngayBatDau, data.idLP, id, (err, result) => {
                 if(err) { return res.status(500).json(err); }
                 if(result.length > 0) { return res.status(400).json('This Rate for Special Rate is Exists!'); }
             
