@@ -1,7 +1,8 @@
 find . -depth -name '.DS_Store' -exec git rm --cached '{}' \; -print
 
 #MERGE GIT
-### remote origin branch:<br /><br />
+### remote origin branch:
+-  [git remote set-url origin uri]
 - git clone uri [git pull]
 - [code]
 - git branch -a
