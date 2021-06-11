@@ -12,6 +12,8 @@ const imageRoomTypeRouter = require('./api/ImageRoomType/imageRoomType.router');
 const serviceRouter = require('./api/Service/service.router');
 const imageServiceRouter = require('./api/ImageService/imageService.router');
 const dailyRateRouter = require('./api/DailyRate/dailyRate.router');
+const userRouter = require('./api/User/user.router');
+const khdRouter = require('./api/KhachHangDat/khd.router');
 const adminRouter = require('./api/Admin/admin.router');
 const paypalRouter = require('./api/Paypal/paypal.router');
 const specialRateRouter = require('./api/SpecialRate/specialRate.router');
@@ -32,6 +34,9 @@ app.use('/api/service', serviceRouter);
 app.use('/api/service-image', imageServiceRouter);
 app.use('/api/daily-rate', dailyRateRouter);
 app.use('/api/special-rate', specialRateRouter);
+app.use('/api/user', userRouter);
+app.use('/api/khd', khdRouter);
+
 
 app.use('/api/admin', adminRouter);
 app.use('/api/pay', paypalRouter);
