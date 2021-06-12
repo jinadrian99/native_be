@@ -2,18 +2,18 @@ find . -depth -name '.DS_Store' -exec git rm --cached '{}' \; -print
 
 #MERGE GIT
 ### remote origin branch:
-[git remote set-url origin uri]
-git clone uri [git pull]
-[code] 
-git branch -a 
-git checkout main 
-git pull (pull ko dc thi  git reset --hard xong r git pull -> mat kho du lieu)
-git checkout PhuTrieu
-git merge main (keo nhung cai moi vao trong bai cua minh)
-git status
-git add .
-git commit -m "PhuTrieu Upl code sync P2"
-git push -u origin PhuTrieu
+- [git remote set-url origin uri]
+- git clone uri [git pull]
+- [code] 
+- git branch -a 
+- git checkout main 
+- git pull (pull ko dc thi  git reset --hard xong r git pull -> mat kho du lieu)
+- git checkout PhuTrieu
+- git merge main (keo nhung cai moi vao trong bai cua minh)
+- git status
+- git add .
+- git commit -m "PhuTrieu Upl code sync P2"
+- git push -u origin PhuTrieu
 
 ### main branch:     
 -  [git remote set-url origin uri]
