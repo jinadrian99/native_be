@@ -25,7 +25,7 @@ module.exports = {
         id = req.params.id;
         specialRate.getDataByID(id, (err, result) => {
             if(err) { return res.status(500).json(err); }
-            if(result.length <= 0) { return res.status(400).json('Record not exists!'); }
+            if(result == null) { return res.status(400).json('Record not exists!'); }
             return res.status(200).json(result);
         })
     },
@@ -54,7 +54,7 @@ module.exports = {
         
         specialRate.getDataByID(id, (err, result) => {
             if(err) { return res.status(500).json(err); }
-            if(result.length <= 0) { return res.status(400).json('Record not exists to update!'); }
+            if(result == null) { return res.status(400).json('Record not exists to update!'); }
             specialRate.getDataByThuNIDGTNPreventIdGTT(data.thu, data.idGTN, id, (err, result) => {
                 if(err) { return res.status(500).json(err); }
                 if(result.length > 0) { return res.status(400).json('This Rate for Special Rate is Exists!'); }
@@ -71,7 +71,7 @@ module.exports = {
         const id = req.params.id;
         specialRate.getDataByID(id, (err, result) => {
             if(err) { return res.status(500).json(err); }
-            if(result.length <= 0) { return res.status(400).json('Record not exists to delete!'); }
+            if(result == null) { return res.status(400).json('Record not exists to delete!'); }
             specialRate.deleteData(id, (err, result) => {
                 if(err) { return res.status(500).json(err); }
                 return res.status(200).json("Delete successfully");

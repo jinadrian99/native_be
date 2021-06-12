@@ -20,7 +20,7 @@ git push -u origin PhuTrieu
 -  git pull
 -  git branch -a
 -  git diff origin/tenBranch
--  git merge origin/tenBranch
+-  git merge origin/tenBranch,
 -  [sync file async]
 -  [code]
 -  git add .
