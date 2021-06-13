@@ -17,6 +17,7 @@ const khdRouter = require('./api/KhachHangDat/khd.router');
 const adminRouter = require('./api/Admin/admin.router');
 const paypalRouter = require('./api/Paypal/paypal.router');
 const specialRateRouter = require('./api/SpecialRate/specialRate.router');
+const roomRouter = require('./api/Room/room.router');
 
 app.use(cors());
 app.use(express.json());
@@ -36,6 +37,7 @@ app.use('/api/daily-rate', dailyRateRouter);
 app.use('/api/special-rate', specialRateRouter);
 app.use('/api/user', userRouter);
 app.use('/api/khd', khdRouter);
+app.use('/api/room', roomRouter);
 
 
 app.use('/api/admin', adminRouter);

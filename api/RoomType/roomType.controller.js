@@ -9,6 +9,7 @@ const {
 var roomTypeImage = require('../ImageRoomType/imageRoomType.service');
 var dailyRate = require('../DailyRate/dailyRate.service');
 var specialRate = require('../SpecialRate/specialRate.service');
+var room = require('../Room/room.service');
 
 module.exports = {
     createRoomType: (req, res) => {
@@ -123,5 +124,13 @@ module.exports = {
                 })
             }
         })
-    }
+    },
+    getRoomsByIDLP: (req, res) => {
+        const idLP = req.params.idLP;
+        room.getDataByIDLP(idLP, (err, result) => {
+            if(err) { return res.status(500).json(err); }
+            if(result.length <= 0) { return res.status(200).json(null) }
+            return res.status(200).json(result);
+        })
+    },
 }

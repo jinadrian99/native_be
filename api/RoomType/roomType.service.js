@@ -17,7 +17,7 @@ module.exports = {
                 data.soLuong,
                 data.slHienTai
             ],
-            (error, results, fields) => {
+            (error, results) => {
                 if(error){
                     return callBack(error);
                 }
@@ -29,7 +29,7 @@ module.exports = {
         pool.query(
             `select * from LOAIPHONG`,
             [],
-            (error, results, fields) => {
+            (error, results) => {
                 if(error){
                     return callBack(error);
                 }
@@ -41,7 +41,7 @@ module.exports = {
         pool.query(
             `select * from LOAIPHONG where idLP = ?`,
             [id],
-            (error, results, fields) => {
+            (error, results) => {
                 if(error){
                     return callBack(error);
                 }
@@ -76,25 +76,65 @@ module.exports = {
                 data.slHienTai,
                 id
             ],
-            (error, results, fields) => {
+            (error, results) => {
                 if(error){
                     return callBack(error);
                 }
-                // results[1]: affectedRows: hàng bị ảnh hưởng
-                return callBack(null, results.affectedRows); 
+                return callBack(null, results); 
             }
         )
+    },
+    updateSoLuong: (id, increase, callBack) => {
+        if(increase){ 
+            pool.query(
+                `UPDATE LOAIPHONG SET soLuong = soLuong + 1 WHERE idLP = ?`,
+                [id],
+                (error, results) => {
+                    if(error){ return callBack(error) }
+                    return callBack(null, results);
+                }
+            )
+        } else {
+            pool.query(
+                `UPDATE LOAIPHONG SET soLuong = soLuong - 1 WHERE idLP = ?`,
+                [id],
+                (error, results) => {
+                    if(error){ return callBack(error) }
+                    return callBack(null, results);
+                }
+            )
+        }
+    },
+    updateSLHienTai: (id, increase, callBack) => {
+        if(increase){ 
+            pool.query(
+                `UPDATE LOAIPHONG SET slHienTai = slHienTai + 1 WHERE idLP = ?`,
+                [id],
+                (error, results) => {
+                    if(error){ return callBack(error) }
+                    return callBack(null, results);
+                }
+            )
+        } else {
+            pool.query(
+                `UPDATE LOAIPHONG SET slHienTai = slHienTai - 1 WHERE idLP = ?`,
+                [id],
+                (error, results) => {
+                    if(error){ return callBack(error) }
+                    return callBack(null, results);
+                }
+            )
+        }
     },
     deleteData: (id, callBack) => {
         pool.query(
             `delete from LOAIPHONG where idLP = ?`,
             [id],
-            (error, results, fields) => {
+            (error, results) => {
                 if(error){
                     return callBack(error);
                 }
-                // results[1]: affectedRows: hàng bị ảnh hưởng
-                return callBack(null, results.affectedRows); 
+                return callBack(null, results); 
             }
         )
     }

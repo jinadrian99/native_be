@@ -41,7 +41,7 @@ module.exports = {
 
             specialRate.createData(data, (err, result) => {
                 if(err) { return res.status(500).json(err); }
-                return res.status(200).json(result);
+                return res.status(200).json("Created successfully");
             });
         })
     },

@@ -6,7 +6,8 @@ const {
     getRoomTypeByID,
     updateRoomType,
     deleteRoomType,
-    getRateByIDLP
+    getRateByIDLP,
+    getRoomsByIDLP
 } = require("./roomType.controller");
 
 router.get('/', getRoomTypes);
@@ -16,5 +17,6 @@ router.put('/:id', updateRoomType);
 router.delete('/:id', deleteRoomType);
 
 router.get('/get-rate-by-idLP/:idLP', getRateByIDLP);
+router.get('/get-room-by-idLP/:idLP', getRoomsByIDLP);
 
 module.exports = router;
