@@ -18,6 +18,9 @@ const adminRouter = require('./api/Admin/admin.router');
 const paypalRouter = require('./api/Paypal/paypal.router');
 const specialRateRouter = require('./api/SpecialRate/specialRate.router');
 const roomRouter = require('./api/Room/room.router');
+const detailBookServiceRouter = require('./api/DetailBookService/DBS.router');
+const detailBookingRouter = require('./api/DetailBooking/DBooking.router');
+const detailBillRouter = require('./api/DetailBill/DBill.router');
 
 app.use(cors());
 app.use(express.json());
@@ -38,6 +41,9 @@ app.use('/api/special-rate', specialRateRouter);
 app.use('/api/user', userRouter);
 app.use('/api/khd', khdRouter);
 app.use('/api/room', roomRouter);
+app.use('/api/detail-book-service', detailBookServiceRouter);
+app.use('/api/detail-booking', detailBookingRouter);
+app.use('/api/detail-bill', detailBillRouter);
 
 
 app.use('/api/admin', adminRouter);
