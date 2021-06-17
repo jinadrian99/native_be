@@ -1,7 +1,7 @@
 module.exports = { 
     optSend: (to, subject, html) => { 
         const options = { 
-            from: 'nativecityhotel@outlook.com.vn',
+            from: process.env.MAIL_USER,
             to,
             subject,
             html,

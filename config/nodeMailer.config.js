@@ -1,18 +1,11 @@
 const nodemailer = require('nodemailer');
 
 const transport = nodemailer.createTransport({
-    service: 'hotmail',
+    service: process.env.MAIL_SERVICE,
     auth: {
-        user: "nativecityhotel@outlook.com.vn",
-        pass: "123456789!@#"
+        user: process.env.MAIL_USER,
+        pass: process.env.MAIL_PASS
     }
-    
-    // host: "smtp.mailtrap.io",
-    // port: 2525,
-    // auth: {
-    //   user: "d938ea764be572",
-    //   pass: "ab83feb3e1679f"
-    // }
 });
 
 module.exports = { transport };
