@@ -2,13 +2,13 @@ const nodemailer = require('nodemailer');
 
 const transport = nodemailer.createTransport({
     pool: true,
-    host: process.env.MAIL_HOST,
-    port: process.env.MAIL_PORT,
-    service: process.env.MAIL_SERVICE,
+    host: "smtp.gmail.com",
+    port: 587,
+    service: 'gmail',
     secure: false,
     auth: {
-        user: process.env.MAIL_USER,
-        pass: process.env.MAIL_PASS
+        user: "nativehotelct@gmail.com",
+        pass: "Nh@123456"
     }
 });
 
