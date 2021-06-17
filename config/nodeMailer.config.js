@@ -9,12 +9,12 @@ const transport = nodemailer.createTransport({
     //     user: "nativehotelct@gmail.com",
     //     pass: "Nh@123456"
     // }
-
-    host: process.env.MAIL_HOST,
-    port: process.env.MAIL_PORT,
+    
+    host: "smtp.mailtrap.io",
+    port: 2525,
     auth: {
-      user: process.env.MAIL_USER,
-      pass: process.env.MAIL_PASS
+      user: "d938ea764be572",
+      pass: "ab83feb3e1679f"
     }
 });
 
