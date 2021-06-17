@@ -6,7 +6,7 @@ const transport = nodemailer.createTransport({
     secure: false,
     auth: {
         user: "nativehotelct@gmail.com",
-        pass: "Nh@123456"
+        pass: "Tran@1461967"
     }
     
     // host: "smtp.mailtrap.io",
