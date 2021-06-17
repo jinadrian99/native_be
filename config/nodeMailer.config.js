@@ -1,12 +1,10 @@
 const nodemailer = require('nodemailer');
 
 const transport = nodemailer.createTransport({
-    host: "smtp.gmail.com",
-    port: 587,
-    secure: false,
+    service: 'hotmail',
     auth: {
-        user: "nativehotelct@gmail.com",
-        pass: "Tran@1461967"
+        user: "nativecityhotel@outlook.com.vn",
+        pass: "123456789!@#"
     }
     
     // host: "smtp.mailtrap.io",
