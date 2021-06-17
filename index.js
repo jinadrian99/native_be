@@ -22,6 +22,8 @@ const detailBookServiceRouter = require('./api/DetailBookService/DBS.router');
 const detailBookingRouter = require('./api/DetailBooking/DBooking.router');
 const detailBillRouter = require('./api/DetailBill/DBill.router');
 
+const sendmailRouter = require('./api/Mail/mail.router');
+
 app.use(cors());
 app.use(express.json());
 // Send Data: Client <=> Server
@@ -48,6 +50,7 @@ app.use('/api/detail-bill', detailBillRouter);
 
 app.use('/api/admin', adminRouter);
 app.use('/api/pay', paypalRouter);
+app.use('/api/mail', sendmailRouter);
 
 
 app.listen(process.env.PORT||process.env.APP_PORT, () => {
