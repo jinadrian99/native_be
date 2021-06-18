@@ -10,6 +10,8 @@ var roomTypeImage = require('../ImageRoomType/imageRoomType.service');
 var dailyRate = require('../DailyRate/dailyRate.service');
 var specialRate = require('../SpecialRate/specialRate.service');
 var room = require('../Room/room.service');
+var bill = require('../Bill/bill.service');
+var DBill = require('../DetailBill/DBill.service');
 
 module.exports = {
     createRoomType: (req, res) => {
@@ -131,4 +133,59 @@ module.exports = {
             return res.status(200).json(result);
         })
     },
-}
+    searchRoomTypeByDays: (req, res) => {
+        const dateA = req.body.dateA;
+        const dateB = req.body.dateB;
+
+        var arrLP = [];
+        getAll((err, lstLP) => {
+            if(err) { return res.status(500).json(err) }
+            if(lstLP.length <= 0){ return res.status(200).json("Chưa có LP"); }
+            lstLP.forEach(item => {
+                var obj = {
+                    idLP: item.idLP, 
+                    tenLP: item.tenLP,
+                    soLuong: item.soLuong
+                };
+                arrLP.push(obj);
+            });
+            console.log(arrLP);
+
+            //SELECT `idPTT` FROM `PHIEUTHANHTOANPHONG` WHERE ngayDen <= "2021-06-19" and ngayDi >= "2021-06-15"
+            bill.findIDbyDays(dateA, dateB, 2, (err, lstPTT) => {
+                if(err) { return res.status(500).json(err) }
+                if(lstPTT.length <= 0) { return res.status(200).json("Bảng PTTT ko có PTTT tồn tại mã 2 trong dateA - dateB"); }
+                lstPTT.forEach(item => {
+                    // console.log("PTT: ", item.idPTT);
+                    DBill.getDataByIDPTT(item.idPTT, (err, lstCTPTT) => {
+                        if(err) { return res.status(500).json(err) }
+                        if(lstCTPTT.length > 0) { 
+                            var count = lstCTPTT.length;
+                            lstCTPTT.forEach(item => {
+                                console.log("CTPTT_maPhong: ", item.maPhong);
+                                room.getDataByID(item.maPhong, (err, PHONG) => {
+                                    count --;
+                                    if(err) { return res.status(500).json(err) }
+                                    if(PHONG != null){ 
+                                        console.log("PHONG_idLP", PHONG.idLP);
+                                        var index = arrLP.findIndex(item => item.idLP == PHONG.idLP);
+                                        arrLP[index]={
+                                            idLP: arrLP[index].idLP,
+                                            tenLP: arrLP[index].tenLP,
+                                            soLuong: arrLP[index].soLuong - 1
+                                        }
+                                    }
+                                    // console.log(arrLP, count);
+                                    if(count == 0){ 
+                                        res.status(200).json(arrLP);
+                                    }
+                                })
+                            });
+                        }
+                    });
+                }); 
+            });  
+        })
+        
+    },
+};

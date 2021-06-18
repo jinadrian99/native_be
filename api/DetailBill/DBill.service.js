@@ -42,9 +42,23 @@ module.exports = {
             }
         )
     },
+    getDataByIDPTT: (idPTT, cb) => {
+        pool.query(
+            `select * FROM CHITIETPHIEUTHANHTOAN where idPTT = ?`,
+            [
+                idPTT
+            ],
+            (error, result) => {
+                if(error) {
+                    return cb(error);
+                }
+                return cb(null, result);
+            }
+        )
+    },
     getDataByMaPhongNIDPTT: (maPhong, idPTT, cb) => {
         pool.query(
-            `select CHITIETPHIEUTHANHTOAN where maPhong = ? and idPTT = ?`,
+            `select * CHITIETPHIEUTHANHTOAN where maPhong = ? and idPTT = ?`,
             [
                 maPhong,
                 idPTT

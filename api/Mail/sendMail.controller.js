@@ -6,7 +6,6 @@ module.exports = {
     checkExistEmail: (req, res) => {
         const data = req.body;
         const email = data.email;
-
         emailExistence.check(email, (err, exists) => {
             if(err)   { console.log(err); return res.status(500).json(err); }
             return res.status(200).json(exists); 
