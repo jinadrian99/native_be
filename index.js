@@ -18,9 +18,9 @@ const adminRouter = require('./api/Admin/admin.router');
 const paypalRouter = require('./api/Paypal/paypal.router');
 const specialRateRouter = require('./api/SpecialRate/specialRate.router');
 const roomRouter = require('./api/Room/room.router');
-const detailBookServiceRouter = require('./api/DetailBookService/DBS.router');
-const detailBookingRouter = require('./api/DetailBooking/DBooking.router');
-const detailBillRouter = require('./api/DetailBill/DBill.router');
+const detailBookServiceRouter = require('./api/BookServiceDetail/BSD.router');
+const detailBookingRouter = require('./api/BookingDetail/BookingD.router');
+const detailBillRouter = require('./api/BillDetail/BillD.router');
 
 const sendmailRouter = require('./api/Mail/mail.router');
 

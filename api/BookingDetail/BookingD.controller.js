@@ -1,4 +1,4 @@
-var DBS = require('./DBill.service');
+var DBS = require('./BookingD.service');
 
 module.exports = {
     index: (req, res) => {
@@ -17,7 +17,7 @@ module.exports = {
     },
     store: (req, res) => {
         var data = req.body;
-        DBS.getDataByMaPhongNIDPTT(data.maPhong, data.idPTT, (err, result) => {
+        DBS.getDataByMaPhongNIDDDP(data.maPhong, data.idDDP, (err, result) => {
             if(err) { return res.status(500).json(err); }
             if(result != null) { return res.status(400).json("Record is exists!")}
 

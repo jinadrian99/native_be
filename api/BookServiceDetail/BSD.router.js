@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const DBSController = require('./DBS.controller');
+const DBSController = require('./BSD.controller');
 
 router.get('/', DBSController.index);
 router.get('/:id', DBSController.show);

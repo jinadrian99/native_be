@@ -3,12 +3,15 @@ const pool = require("../../config/database");
 module.exports = {
     createData: (data, cb) => {
         pool.query(
-            `insert into CHITIETPHIEUTHANHTOAN VALUES(?,?,?,?)`,
+            `insert into PHIEUTHUEPHONG VALUES(?,?,?,?,?,?,?)`,
             [
-                null,
-                data.donGia,
+                data.idPTP,
+                data.ngayDen,
+                data.NgayDi,
+                data.trangThai,
                 data.maPhong,
-                data.idPTT
+                data.idDDP,
+                data.idKHO
             ],
             (error, result) => {
                 if(error) {
@@ -20,7 +23,7 @@ module.exports = {
     },
     getAll: (cb) => {
         pool.query(
-            `select * from CHITIETPHIEUTHANHTOAN`,
+            `select * from PHIEUTHUEPHONG`,
             [],
             (error, result) => {
                 if(error) {
@@ -32,7 +35,7 @@ module.exports = {
     },
     getDataByID: (id, cb) => {
         pool.query(
-            `select * from CHITIETPHIEUTHANHTOAN where idCTPTT = ?`,
+            `select * from PHIEUTHUEPHONG where idPTP = ?`,
             [id],
             (error, result) => {
                 if(error) {
@@ -42,47 +45,38 @@ module.exports = {
             }
         )
     },
-    getDataByIDPTT: (idPTT, cb) => {
+    findIDRoombyDays: (dateA, dateB, trangThai, cb) => {
         pool.query(
-            `select * FROM CHITIETPHIEUTHANHTOAN where idPTT = ?`,
+            `SELECT maPhong FROM PHIEUTHUEPHONG WHERE ngayDi >= ? and ngayDen <= ? and trangThai = ?`,
             [
-                idPTT
+                dateA,
+                dateB,
+                trangThai
             ],
             (error, result) => {
-                if(error) {
-                    return cb(error);
-                }
+                if(error) { return cb(error); }
                 return cb(null, result);
-            }
-        )
-    },
-    getDataByMaPhongNIDPTT: (maPhong, idPTT, cb) => {
-        pool.query(
-            `select * CHITIETPHIEUTHANHTOAN where maPhong = ? and idPTT = ?`,
-            [
-                maPhong,
-                idPTT
-            ],
-            (error, result) => {
-                if(error) {
-                    return cb(error);
-                }
-                return cb(null, result[0]);
             }
         )
     },
     updateData: (id, data, cb) => {
         pool.query(
-            `update CHITIETPHIEUTHANHTOAN set
-                donGia = ?,
+            `update PHIEUTHUEPHONG set
+                ngayDen = ?,
+                NgayDi = ?,
+                trangThai = ?,
                 maPhong = ?,
-                idPTT = ?
-            where idCTPTT = ?`,
+                idDDP = ?,
+                idKHO = ?
+            where idPTP = ?`,
             [
-                data.donGia,
+                data.ngayDen,
+                data.NgayDi,
+                data.trangThai,
                 data.maPhong,
-                data.idPTT,
-                data.idCTPTT
+                data.idDDP,
+                data.idKHO,
+                id
             ],
             (error, result) => {
                 if(error) {
@@ -94,7 +88,7 @@ module.exports = {
     },
     deleteData: (id, callBack) => {
         pool.query(
-            `delete from CHITIETPHIEUTHANHTOAN where idCTPTT = ?`,
+            `delete from PHIEUTHUEPHONG where idPTP = ?`,
             [id],
             (error, result) => {
                 if(error){
