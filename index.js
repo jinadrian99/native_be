@@ -17,6 +17,13 @@ const khdRouter = require('./api/KhachHangDat/khd.router');
 const adminRouter = require('./api/Admin/admin.router');
 const paypalRouter = require('./api/Paypal/paypal.router');
 const specialRateRouter = require('./api/SpecialRate/specialRate.router');
+const roomRouter = require('./api/Room/room.router');
+const detailBookServiceRouter = require('./api/BookServiceDetail/BSD.router');
+const detailBookingRouter = require('./api/BookingDetail/BookingD.router');
+const detailBillRouter = require('./api/BillDetail/BillD.router');
+
+const sendmailRouter = require('./api/Mail/mail.router');
+const chartRouter = require('./api/Chart/chart.router');
 
 app.use(cors());
 app.use(express.json());
@@ -36,10 +43,16 @@ app.use('/api/daily-rate', dailyRateRouter);
 app.use('/api/special-rate', specialRateRouter);
 app.use('/api/user', userRouter);
 app.use('/api/khd', khdRouter);
+app.use('/api/room', roomRouter);
+app.use('/api/detail-book-service', detailBookServiceRouter);
+app.use('/api/detail-booking', detailBookingRouter);
+app.use('/api/detail-bill', detailBillRouter);
 
 
 app.use('/api/admin', adminRouter);
 app.use('/api/pay', paypalRouter);
+app.use('/api/mail', sendmailRouter);
+app.use('/api/chart', chartRouter);
 
 
 app.listen(process.env.PORT||process.env.APP_PORT, () => {
