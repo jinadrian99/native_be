@@ -46,6 +46,18 @@ module.exports = {
             }
         )
     },
+    getDataByIDAdmin: (idAdmin, cb) => {
+        pool.query(
+            `select * from TAIKHOAN where idAdmin = ?`,
+            [idAdmin],
+            (error, result) => {
+                if(error) {
+                    return cb(error);
+                }
+                return cb(null, result);
+            }
+        )
+    },
     getDataByID: (id, cb) => {
         pool.query(
             `select * from TAIKHOAN where idTK = ?`,
@@ -89,7 +101,7 @@ module.exports = {
     },
     deleteData: (id, callBack) => {
         pool.query(
-            `delete from TAIKHOAN where idTK = ?`,
+            `delete from TAIKHOAN where idAdmin = ?`,
             [id],
             (error, result) => {
                 if(error){
