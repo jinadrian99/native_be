@@ -23,6 +23,7 @@ const detailBookingRouter = require('./api/BookingDetail/BookingD.router');
 const detailBillRouter = require('./api/BillDetail/BillD.router');
 
 const sendmailRouter = require('./api/Mail/mail.router');
+const chartRouter = require('./api/Chart/chart.router');
 
 app.use(cors());
 app.use(express.json());
@@ -51,6 +52,7 @@ app.use('/api/detail-bill', detailBillRouter);
 app.use('/api/admin', adminRouter);
 app.use('/api/pay', paypalRouter);
 app.use('/api/mail', sendmailRouter);
+app.use('/api/chart', chartRouter);
 
 
 app.listen(process.env.PORT||process.env.APP_PORT, () => {

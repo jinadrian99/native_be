@@ -3,7 +3,7 @@ const pool = require("../../config/database");
 module.exports = {
     createData: (data, cb) => {
         pool.query(
-            `insert into PHIEUTHANHTOANPHONG VALUES()`,
+            `insert into PHIEUTHANHTOANPHONG VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
             [
                 null,
                 data.ngayThanhToan,
