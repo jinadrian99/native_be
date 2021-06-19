@@ -12,8 +12,7 @@ var specialRate = require('../SpecialRate/specialRate.service');
 var room = require('../Room/room.service');
 var bill = require('../Bill/bill.service');
 var DBill = require('../BillDetail/BillD.service');
-var RRC = require('../RoomRentalContract/RRC.service')
-
+var RRC = require('../RoomRentalContract/RRC.service');
 
 module.exports = {
     createRoomType: (req, res) => {
@@ -147,6 +146,7 @@ module.exports = {
                 var obj = {
                     idLP: item.idLP, 
                     tenLP: item.tenLP,
+                    hangPhong: item.hangPhong,
                     soLuong: item.soLuong
                 };
                 arrLP.push(obj);
@@ -174,6 +174,7 @@ module.exports = {
                                         arrLP[index]={
                                             idLP: arrLP[index].idLP,
                                             tenLP: arrLP[index].tenLP,
+                                            hangPhong: arrLP[index].hangPhong,
                                             soLuong: arrLP[index].soLuong - 1
                                         }
                                     }
@@ -193,6 +194,7 @@ module.exports = {
                                                             arrLP[index]={
                                                                 idLP: arrLP[index].idLP,
                                                                 tenLP: arrLP[index].tenLP,
+                                                                hangPhong: arrLP[index].hangPhong,
                                                                 soLuong: arrLP[index].soLuong - 1
                                                             }
                                                         }
