@@ -1,13 +1,14 @@
-const pool = require('../../config/database');
+const pool = require("../../config/database");
 
 module.exports = {
     createData: (data, cb) => {
         pool.query(
-            `insert into ADMIN VALUES(?,?,?)`,
+            `insert into PHONG VALUES(?,?,?,?)`,
             [
-                null,
-                data.phanQuyen,
-                data.tenAdmin
+                data.maPhong,
+                data.soNguoi,
+                data.trangThai,
+                data.idLP
             ],
             (error, result) => {
                 if(error) {
@@ -19,7 +20,7 @@ module.exports = {
     },
     getAll: (cb) => {
         pool.query(
-            `select * from ADMIN`,
+            `select * from PHONG`,
             [],
             (error, result) => {
                 if(error) {
@@ -31,8 +32,20 @@ module.exports = {
     },
     getDataByID: (id, cb) => {
         pool.query(
-            `select * from ADMIN where idAdmin = ?`,
+            `select * from PHONG where maPhong = ?`,
             [id],
+            (error, result) => {
+                if(error) {
+                    return cb(error);
+                }
+                return cb(null, result[0]);
+            }
+        )
+    },
+    getDataByIDLP: (idLP, cb) => {
+        pool.query(
+            `SELECT * FROM PHONG WHERE idLP = ?`,
+            [idLP],
             (error, result) => {
                 if(error) {
                     return cb(error);
@@ -43,13 +56,15 @@ module.exports = {
     },
     updateData: (id, data, cb) => {
         pool.query(
-            `update ADMIN set
-                phanQuyen = ?,
-                tenAdmin = ?
-            where idAdmin = ?`,
+            `update PHONG set
+                soNguoi = ?,
+                trangThai = ?,
+                idLP = ?
+            where maPhong = ?`,
             [
-                data.phanQuyen,
-                data.tenAdmin,
+                data.soNguoi,
+                data.trangThai,
+                data.idLP,
                 id
             ],
             (error, result) => {
@@ -62,7 +77,7 @@ module.exports = {
     },
     deleteData: (id, callBack) => {
         pool.query(
-            `delete from ADMIN where idAdmin = ?`,
+            `delete from PHONG where maPhong = ?`,
             [id],
             (error, result) => {
                 if(error){

@@ -3,16 +3,12 @@ const pool = require("../../config/database");
 module.exports = {
     createData: (data, cb) => {
         pool.query(
-            `insert into TAIKHOAN VALUES(?,?,?,?,?,?,?,?)`,
+            `insert into CHITIETPHIEUTHANHTOAN VALUES(?,?,?,?)`,
             [
                 null,
-                data.email,
-                data.password,
-                data.displayName,
-                data.title,
-                data.loaiTaiKhoan,
-                data.idAdmin,
-                data.idKHD
+                data.donGia,
+                data.maPhong,
+                data.idPTT
             ],
             (error, result) => {
                 if(error) {
@@ -24,44 +20,8 @@ module.exports = {
     },
     getAll: (cb) => {
         pool.query(
-            `select * from TAIKHOAN`,
+            `select * from CHITIETPHIEUTHANHTOAN`,
             [],
-            (error, result) => {
-                if(error) {
-                    return cb(error);
-                }
-                return cb(null, result);
-            }
-        )
-    },    
-    getUserByEmail: (email, cb) => {
-        pool.query(
-            `select * from TAIKHOAN where email = ?`,
-            [email],
-            (error, result) => {
-                if(error) {
-                    return cb(error);
-                }
-                return cb(null, result);
-            }
-        )
-    },
-    getDataByIDAdmin: (idAdmin, cb) => {
-        pool.query(
-            `select * from TAIKHOAN where idAdmin = ?`,
-            [idAdmin],
-            (error, result) => {
-                if(error) {
-                    return cb(error);
-                }
-                return cb(null, result);
-            }
-        )
-    },
-    getUserByEmail: (email, cb) => {
-        pool.query(
-            `select * from TAIKHOAN where email = ?`,
-            [email],
             (error, result) => {
                 if(error) {
                     return cb(error);
@@ -72,8 +32,22 @@ module.exports = {
     },
     getDataByID: (id, cb) => {
         pool.query(
-            `select * from TAIKHOAN where idTK = ?`,
+            `select * from CHITIETPHIEUTHANHTOAN where idCTPTT = ?`,
             [id],
+            (error, result) => {
+                if(error) {
+                    return cb(error);
+                }
+                return cb(null, result[0]);
+            }
+        )
+    },
+    getDataByIDPTT: (idPTT, cb) => {
+        pool.query(
+            `select * FROM CHITIETPHIEUTHANHTOAN where idPTT = ?`,
+            [
+                idPTT
+            ],
             (error, result) => {
                 if(error) {
                     return cb(error);
@@ -82,38 +56,45 @@ module.exports = {
             }
         )
     },
+    getDataByMaPhongNIDPTT: (maPhong, idPTT, cb) => {
+        pool.query(
+            `select * CHITIETPHIEUTHANHTOAN where maPhong = ? and idPTT = ?`,
+            [
+                maPhong,
+                idPTT
+            ],
+            (error, result) => {
+                if(error) {
+                    return cb(error);
+                }
+                return cb(null, result[0]);
+            }
+        )
+    },
     updateData: (id, data, cb) => {
         pool.query(
-            `update TAIKHOAN set
-                email = ?,
-                password = ?,
-                displayName = ?,
-                title = ?,
-                loaiTaiKhoan = ?,
-                idAdmin = ?,
-                idKHD = ?
-            where idTK = ?`,
+            `update CHITIETPHIEUTHANHTOAN set
+                donGia = ?,
+                maPhong = ?,
+                idPTT = ?
+            where idCTPTT = ?`,
             [
-                data.email,
-                data.password,
-                data.displayName,
-                data.title,
-                data.loaiTaiKhoan,
-                data.idAdmin,
-                data.idKHD,
+                data.donGia,
+                data.maPhong,
+                data.idPTT,
                 id
             ],
             (error, result) => {
                 if(error) {
                     return cb(error);
                 }
-                return cb(null, result.insertId);
+                return cb(null, result);
             }
         )
     },
     deleteData: (id, callBack) => {
         pool.query(
-            `delete from TAIKHOAN where idAdmin = ?`,
+            `delete from CHITIETPHIEUTHANHTOAN where idCTPTT = ?`,
             [id],
             (error, result) => {
                 if(error){

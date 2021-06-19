@@ -1,13 +1,14 @@
-const pool = require('../../config/database');
+const pool = require("../../config/database");
 
 module.exports = {
     createData: (data, cb) => {
         pool.query(
-            `insert into ADMIN VALUES(?,?,?)`,
+            `insert into CHITIETDONDATPHONG VALUES(?,?,?,?)`,
             [
                 null,
-                data.phanQuyen,
-                data.tenAdmin
+                data.donGia,
+                data.maPhong,
+                data.idDDP
             ],
             (error, result) => {
                 if(error) {
@@ -19,7 +20,7 @@ module.exports = {
     },
     getAll: (cb) => {
         pool.query(
-            `select * from ADMIN`,
+            `select * from CHITIETDONDATPHONG`,
             [],
             (error, result) => {
                 if(error) {
@@ -31,8 +32,44 @@ module.exports = {
     },
     getDataByID: (id, cb) => {
         pool.query(
-            `select * from ADMIN where idAdmin = ?`,
+            `select * from CHITIETDONDATPHONG where idCTDDP = ?`,
             [id],
+            (error, result) => {
+                if(error) {
+                    return cb(error);
+                }
+                return cb(null, result[0]);
+            }
+        )
+    },
+    getDataByMaPhongNIDDDP: (maPhong, idDDP, cb) => {
+        pool.query(
+            `select CHITIETDONDATPHONG where maPhong = ? and idDDP = ?`,
+            [
+                maPhong,
+                idDDP
+            ],
+            (error, result) => {
+                if(error) {
+                    return cb(error);
+                }
+                return cb(null, result[0]);
+            }
+        )
+    },
+    updateData: (id, data, cb) => {
+        pool.query(
+            `update CHITIETDONDATPHONG set
+                donGia = ?,
+                maPhong = ?,
+                idDDP = ?
+            where idCTDDP = ?`,
+            [
+                data.donGia,
+                data.maPhong,
+                data.idDDP,
+                data.idCTDDP
+            ],
             (error, result) => {
                 if(error) {
                     return cb(error);
@@ -41,28 +78,9 @@ module.exports = {
             }
         )
     },
-    updateData: (id, data, cb) => {
-        pool.query(
-            `update ADMIN set
-                phanQuyen = ?,
-                tenAdmin = ?
-            where idAdmin = ?`,
-            [
-                data.phanQuyen,
-                data.tenAdmin,
-                id
-            ],
-            (error, result) => {
-                if(error) {
-                    return cb(error);
-                }
-                return cb(null, result.insertId);
-            }
-        )
-    },
     deleteData: (id, callBack) => {
         pool.query(
-            `delete from ADMIN where idAdmin = ?`,
+            `delete from CHITIETDONDATPHONG where idCTDDP = ?`,
             [id],
             (error, result) => {
                 if(error){

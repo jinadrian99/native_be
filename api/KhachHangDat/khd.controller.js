@@ -1,10 +1,52 @@
 const khd = require('./khd.service');
 
 // var user = require('../User/user.service');
+const Validator = require('fastest-validator');
+const valid = new Validator();
+const schema = {
+    email: { 
+        type: 'email',
+        messages: {
+            required: "Fill out email field!",
+            email: "Email wrong!"
+        }
+    },
+    password: { 
+        type: 'string', min: 6,
+        messages: {
+            required: "Fill out password field!",
+            stringMin: "Password at least 6 characters!"
+        }
+    },
+    displayName: { 
+        type: 'string', min: 6,
+        messages: {
+            required: "Fill out username field!",
+            stringMin: "Username at least 6 characters!"
+        }
+    },
+    tenKH: { 
+        type: 'string', min: 6,
+        messages: {
+            required: "Fill out full name field!",
+            stringMin: "Full name at least 6 characters!"
+        }
+    },
+    sdt: { 
+        type: 'string', min: 10,
+        messages: {
+            required: "Fill out phone number field!",
+            stringMin: "Phone at least 10 numbers!"
+        }
+    }
+}
+const check = valid.compile(schema);
 
 module.exports = {
     createKHD: (req, res) => {
         const data = req.body;
+        var constraint = check(data);
+        if(constraint !== true) return res.status(400).json(constraint);
         khd.createData(data, (err, results) => {
             if(err) {
                 console.log(err);
