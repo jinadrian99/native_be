@@ -156,7 +156,34 @@ module.exports = {
             //SELECT `idPTT` FROM `PHIEUTHANHTOANPHONG` WHERE ngayDen <= "2021-06-19" and ngayDi >= "2021-06-15"
             bill.findIDbyDays(dateA, dateB, 2, (err, lstPTT) => {
                 if(err) { return res.status(500).json(err) }
-                if(lstPTT.length <= 0) { return res.status(200).json("Bảng PTTT ko có PTTT tồn tại mã 2 trong dateA - dateB"); }
+                if(lstPTT.length <= 0) { 
+                    RRC.findIDRoombyDays(dateA, dateB, 1, (err, lstPTP) => {
+                        if(err) { return res.status(500).json(err) }
+                        if(lstPTP.length <= 0) { return res.status(200).json(arrLP) }
+                        if(lstPTP.length > 0) { 
+                            var count2 = lstPTP.length;
+                            lstPTP.forEach(item => {
+                                room.getDataByID(item.maPhong, (err, PHONG) => {
+                                    count2 --;
+                                    if(err) { return res.status(500).json(err) }
+                                    if(PHONG != null){ 
+                                        // console.log("PHONG_idLP", PHONG.idLP);
+                                        var index = arrLP.findIndex(item => item.idLP == PHONG.idLP);
+                                        arrLP[index]={
+                                            idLP: arrLP[index].idLP,
+                                            tenLP: arrLP[index].tenLP,
+                                            hangPhong: arrLP[index].hangPhong,
+                                            soLuong: arrLP[index].soLuong - 1
+                                        }
+                                    }
+                                    if(count2 == 0){ 
+                                        return res.status(200).json(arrLP);
+                                    }
+                                })
+                            })
+                        }
+                    })
+                }
                 lstPTT.forEach(item => {
                     // console.log("PTT: ", item.idPTT);
                     DBill.getDataByIDPTT(item.idPTT, (err, lstCTPTT) => {
