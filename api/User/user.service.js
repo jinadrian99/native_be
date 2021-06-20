@@ -58,6 +58,21 @@ module.exports = {
             }
         )
     },
+<<<<<<< HEAD
+=======
+    getUserByEmail: (email, cb) => {
+        pool.query(
+            `select * from TAIKHOAN where email = ?`,
+            [email],
+            (error, result) => {
+                if(error) {
+                    return cb(error);
+                }
+                return cb(null, result);
+            }
+        )
+    },
+>>>>>>> db7a37515a0db321cfec7d87c4471bb930ef8aad
     getDataByID: (id, cb) => {
         pool.query(
             `select * from TAIKHOAN where idTK = ?`,
