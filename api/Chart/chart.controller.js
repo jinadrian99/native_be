@@ -12,7 +12,7 @@ module.exports = {
         var today = new Date();
         var year = today.getFullYear();
         var arrMoneyByQuarter = [];
-
+        
         BookingMBquantity(1, year, (money) => {
             arrMoneyByQuarter.push(money)
             BookingMBquantity(2, year, (money) => {
