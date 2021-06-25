@@ -82,6 +82,16 @@ module.exports = {
             }
         )
     },
+    getEmailByIdkhd: (idKHD, cb) => {
+        pool.query(
+            `select * from TAIKHOAN where idKHD = ?`,
+            [idKHD],
+            (error, result) => {
+                if(error) { return cb(error); }
+                return cb(null, result[0]);
+            }
+        )
+    },  
     updateData: (id, data, cb) => {
         pool.query(
             `update TAIKHOAN set

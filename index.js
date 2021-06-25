@@ -5,6 +5,9 @@ const cors = require('cors');
 require('dotenv').config();
 const bodyParser = require('body-parser');
 
+//
+require('./scheduler');
+
 // Khai báo module
 const sliderRouter = require('./api/Slider/slider.router');
 const roomTypeRouter = require('./api/RoomType/roomType.router');
