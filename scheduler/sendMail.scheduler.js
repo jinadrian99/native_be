@@ -29,13 +29,23 @@ scheduler.scheduleJob(crontab, () => {
                         // console.log('send this email: ', objUser.email);
                         if(objUser != null){ 
                             const toEmail = objUser.email;
-                            const subject = `NativeCity Hotel deposit 30% for a bill`;
+                            const subject = `NativeCity Hotel, deposit for a bill before you come in we hotel`;
                             const htmlText = `
-                                <div style="text-align: center">
-                                    <h1>NativeCity Hotel</h1>
-                                    <h3>✨ Hello ${ objUser.displayName } ✨</h3>
-                                    <p>You must create bill from booking have id: ${ booking.idDDP }
-                                    <p>And you must deposit 30% for this bill<a href="#">Click me</a></p>                                
+                                <div style="text-align: center; font-family: 'herventical'">
+                                    <h1 style="margin-bottom: 25px">NativeCity Hotel</h1>
+                                    <h3>✨ Dear customer, hello ${ objUser.displayName } ✨</h3>
+                                    <p>Good day, my name is Jin Adrian.</p>
+                                    <p style="margin-bottom: 25px">
+                                        In a few days you will arrive at the hotel, you must complete the deposit procedure.<br />
+                                        To complete the deposit procedure, you must create bill from booking have id: ${ booking.idDDP } and pay deposit 30% for this bill.
+                                    </p>
+                                    <p>
+                                        <a href="https://nativecity.tk/login">
+                                            <button style="width: 100px; height: 30px; background-color: white; color: crimson; border: 1px solid crimson">
+                                                GO NOW!
+                                            </button>  
+                                        </a>
+                                    </p>                            
                                 </div>
                             `;
                             const options = mailOptSend.optSend(toEmail, subject, htmlText);
@@ -55,13 +65,23 @@ scheduler.scheduleJob(crontab, () => {
                         // console.log('send this email: ', objUser.email);
                         if(objUser != null){ 
                             const toEmail = objUser.email;
-                            const subject = `NativeCity Hotel deposit 30% for a bill`;
+                            const subject = `NativeCity Hotel, deposit for a bill before you come in we hotel`;
                             const htmlText = `
-                                <div style="text-align: center">
-                                    <h1>NativeCity Hotel</h1>
-                                    <h3>✨ Hello ${ objUser.displayName } ✨</h3>
-                                    <p>You must create bill from booking have id: ${ booking.idDDP }
-                                    <p>And you must deposit 30% for this bill<a href="#">Click me</a></p>                                
+                                <div style="text-align: center; font-family: 'herventical'">
+                                    <h1 style="margin-bottom: 25px">NativeCity Hotel</h1>
+                                    <h3>✨ Dear customer, hello ${ objUser.displayName } ✨</h3>
+                                    <p>Good day, my name is Jin Adrian.</p>
+                                    <p style="margin-bottom: 25px">
+                                        In a few days you will arrive at the hotel, you must complete the deposit procedure.<br />
+                                        To complete the deposit procedure, you must pay deposit 30% for this bill have id: ${ objBill.idPTT }.
+                                    </p>
+                                    <p>
+                                        <a href="https://nativecity.tk/login">
+                                            <button style="width: 100px; height: 30px; background-color: white; color: crimson; border: 1px solid crimson">
+                                                GO NOW!
+                                            </button>  
+                                        </a>
+                                    </p>                            
                                 </div>
                             `;
                             const options = mailOptSend.optSend(toEmail, subject, htmlText);
@@ -73,7 +93,6 @@ scheduler.scheduleJob(crontab, () => {
                         }
                     })
                 }
-                
             })
         })
     });
