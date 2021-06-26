@@ -1,6 +1,9 @@
 var room = require('./room.service');
 var roomType = require('../RoomType/roomType.service');
 const Validator = require('fastest-validator');
+const bill = require('../Bill/bill.service');
+const BillD = require('../BillDetail/BillD.service');
+const RCC = require('../RoomRentalContract/RRC.service');
 
 const valid = new Validator();
 const schema = {
@@ -85,5 +88,99 @@ module.exports = {
                 })
             })            
         })
+    },
+    getRoomsByDatesIdlpNumber: (req, res) => {
+        const dateA = req.body.dateA;
+        const dateB = req.body.dateB;
+        const idRT_need = req.body.idLP;
+        const number = req.body.soLuong;
+
+        var arrRoom = [];
+        room.getDataByIDLP(idRT_need, (err, lstRoom) => {
+            // console.log(lstRoom);
+            if(err) { return res.status(500).json(err); }
+            if(lstRoom.length <= 0) { return res.status(404).json('Chưa có phòng'); }
+            lstRoom.forEach(room => {
+                arrRoom.push(room.maPhong);
+            });
+        })
+
+        bill.findIDbyDays(dateA, dateB, 2, (err, lstPTT) => {
+            // console.log(lstPTT);
+            if(err) { return res.status(500).json(err); }
+            if(lstPTT.length <= 0) { 
+                RCC.findIDRoombyDays(dateA, dateB, 1, (err, lstPTP) => {
+                    if(err) { return res.status(500).json(err); }
+                    if(lstPTP.length <= 0) { 
+                        arrRoom = arrRoom.filter(item => arrRoom.indexOf(item) < number);
+                        return res.status(200).json(arrRoom); 
+                    }
+                    var count2 = lstPTP.length;
+                    lstPTP.forEach(item => {
+                        room.getDataByID(item.maPhong, (err, PHONG) => {
+                            count2--;
+                            if(err) { return res.status(500).json(err); }
+                            if(PHONG != null) { 
+                                console.log(PHONG);
+                                if(PHONG.idLP == idRT_need){
+                                    arrRoom = arrRoom.filter(item => item != PHONG.maPhong);
+                                }
+                            }
+                            if(count2 == 0) { 
+                                arrRoom = arrRoom.filter(item => arrRoom.indexOf(item) < number);
+                                return res.status(200).json(arrRoom); 
+                            }
+                        })
+                    })
+                })
+            }
+            lstPTT.forEach(item => {
+                BillD.getDataByIDPTT(item.idPTT,(err, lstCTPTT) => {
+                    if(err) { return res.status(500).json(err); }
+                    if(lstCTPTT.length > 0) {
+                        var count1 = lstCTPTT.length;
+                        lstCTPTT.forEach(item => {
+                            room.getDataByID(item.maPhong, (err, PHONG) => {
+                                count1 --;
+                                if(err) { return res.status(500).json(err); }
+                                if(PHONG != null){ 
+                                    if(PHONG.idLP == idRT_need){
+                                        // console.log(PHONG);
+                                        // console.log(arrRoom);
+                                        arrRoom = arrRoom.filter(item => item != PHONG.maPhong);
+                                    }
+                                }
+                                if(count1 == 0){ 
+                                    RCC.findIDRoombyDays(dateA, dateB, 1, (err, lstPTP) => {
+                                        if(err) { return res.status(500).json(err); }
+                                        if(lstPTP.length <= 0) { 
+                                            arrRoom = arrRoom.filter(item => arrRoom.indexOf(item) < number);
+                                            return res.status(200).json(arrRoom); 
+                                        }
+                                        var count2 = lstPTP.length;
+                                        lstPTP.forEach(item => {
+                                            room.getDataByID(item.maPhong, (err, PHONG) => {
+                                                count2--;
+                                                if(err) { return res.status(500).json(err); }
+                                                if(PHONG != null) { 
+                                                    // console.log(PHONG);
+                                                    if(PHONG.idLP == idRT_need){
+                                                        arrRoom = arrRoom.filter(item => item != PHONG.maPhong);
+                                                    }
+                                                }
+                                                if(count2 == 0) { 
+                                                    arrRoom = arrRoom.filter(item => arrRoom.indexOf(item) < number);
+                                                    return res.status(200).json(arrRoom); 
+                                                }
+                                            })
+                                        })
+                                    })
+                                }
+                            })
+                        })
+                    }
+                });
+            });
+        });
     },
 };
