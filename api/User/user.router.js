@@ -3,10 +3,7 @@ const router = express.Router();
 const user = require("./user.controller");
 
 router.get('/', user.getUsers);
-<<<<<<< HEAD
-=======
 router.get('/get_by_idadmin/:id', user.getUserByIDAdmin);
->>>>>>> main
 router.get('/:id', user.getUserByID);
 router.post('/', user.createUser);
 router.put('/:id', user.updateUser);

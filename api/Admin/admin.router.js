@@ -8,5 +8,4 @@ router.post('/', admin.createAdmin);
 router.put('/:id', admin.updateAdmin);
 router.delete('/:id', admin.deleteAdmin);
 
-
 module.exports = router;

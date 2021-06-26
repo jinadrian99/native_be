@@ -149,26 +149,27 @@ module.exports = {
                     hangPhong: item.hangPhong,
                     soLuong: item.soLuong
                 };
-                arrLP.push(obj);
+                arrLP.push(obj); // lấy dsLP ra để trừ
             });
             // console.log(arrLP);
 
             //SELECT `idPTT` FROM `PHIEUTHANHTOANPHONG` WHERE ngayDen <= "2021-06-19" and ngayDi >= "2021-06-15"
             bill.findIDbyDays(dateA, dateB, 2, (err, lstPTT) => {
                 if(err) { return res.status(500).json(err) }
-                if(lstPTT.length <= 0) { 
-                    RRC.findIDRoombyDays(dateA, dateB, 1, (err, lstPTP) => {
+                //Kiểm tra xem đây có phải là nhánh KH đang ở hay ko?
+                if(lstPTT.length <= 0) { //Phiếu thanh toán phòng ko phải ở trạng thái (2)thanh toán tiền cọc
+                    RRC.findIDRoombyDays(dateA, dateB, 1, (err, lstPTP) => { //Nếu ko có trạng thái thanh toán tiền cọc thì chạy dòng này
                         if(err) { return res.status(500).json(err) }
                         if(lstPTP.length <= 0) { return res.status(200).json(arrLP) }
                         if(lstPTP.length > 0) { 
                             var count2 = lstPTP.length;
                             lstPTP.forEach(item => {
                                 room.getDataByID(item.maPhong, (err, PHONG) => {
-                                    count2 --;
+                                    count2 --; //bộ đếm dùng để xét khi nào ngừng dòng for (vì asynchronous)
                                     if(err) { return res.status(500).json(err) }
                                     if(PHONG != null){ 
                                         // console.log("PHONG_idLP", PHONG.idLP);
-                                        var index = arrLP.findIndex(item => item.idLP == PHONG.idLP);
+                                        var index = arrLP.findIndex(item => item.idLP == PHONG.idLP); // tìm index trong arrLP để trừ 
                                         arrLP[index]={
                                             idLP: arrLP[index].idLP,
                                             tenLP: arrLP[index].tenLP,
@@ -184,7 +185,8 @@ module.exports = {
                         }
                     })
                 }
-                lstPTT.forEach(item => {
+                //Nhánh KH thanh toán tiền cọc
+                lstPTT.forEach(item => { //Nếu có trạng thái (2)thanh toán tiền cọc thì chạy dòng này
                     // console.log("PTT: ", item.idPTT);
                     DBill.getDataByIDPTT(item.idPTT, (err, lstCTPTT) => {
                         if(err) { return res.status(500).json(err) }
@@ -238,6 +240,7 @@ module.exports = {
                         }
                     });
                 }); 
+                
             });  
         })
         

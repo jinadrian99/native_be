@@ -3,16 +3,15 @@ const pool = require("../../config/database");
 module.exports = {
     createData: (data, cb) => {
         pool.query(
-            `insert into DONDATPHONG VALUES(?,?,?,?,?,?,?,?)`,
+            `insert into DONDATDICHVU VALUES(?,?,?,?,?,?,?)`,
             [
                 null,
-                data.ngayDen,
-                data.ngayDi,
-                data.soDem,
-                data.ngayDatPhong,
+                data.ngayDat,
                 data.tongThanhTien,
-                data.trangThaiDat,
-                data.idKHD
+                data.trangThai,
+                data.idPTP,
+                data.idKHD,
+                data.idThe
             ],
             (error, result) => {
                 if(error) {
@@ -24,7 +23,7 @@ module.exports = {
     },
     getAll: (cb) => {
         pool.query(
-            `select * from DONDATPHONG`,
+            `select * from DONDATDICHVU`,
             [],
             (error, result) => {
                 if(error) {
@@ -36,7 +35,7 @@ module.exports = {
     },
     getDataByID: (id, cb) => {
         pool.query(
-            `select * from DONDATPHONG where idDDP = ?`,
+            `select * from DONDATDICHVU where idDDDV = ?`,
             [id],
             (error, result) => {
                 if(error) {
@@ -46,9 +45,9 @@ module.exports = {
             }
         )
     },
-    getTotalMoneyBookingByQuarterly: (quarter, year, cb) => {
+    getTotalMoneyBookingServiceByQuarterly: (quarter, year, cb) => {
         pool.query(
-            ` SELECT SUM(tongThanhTien) AS tongThanhTien FROM DONDATPHONG WHERE QUARTER(ngayDatPhong) = ? and YEAR(ngayDatPhong) = ?`,
+            ` SELECT SUM(tongThanhTien) AS tongThanhTien FROM DONDATDICHVU WHERE QUARTER(ngayDat) = ? and YEAR(ngayDat) = ?`,
             [
                 quarter,
                 year
@@ -63,23 +62,21 @@ module.exports = {
     },
     updateData: (id, data, cb) => {
         pool.query(
-            `update DONDATPHONG set
-                ngayDen = ?,
-                ngayDi = ?,
-                soDem = ?,
-                ngayDatPhong = ?,
+            `update DONDATDICHVU set
+                ngayDat = ?,
                 tongThanhTien = ?,
-                trangThaiDat = ?,
-                idKHD = ?
-            where idDDP = ?`,
+                trangThai = ?,
+                idPTP = ?,
+                idKHD = ?,
+                idThe = ?
+            where idDDDV = ?`,
             [
-                data.ngayDen,
-                data.ngayDi,
-                data.soDem,
-                data.ngayDatPhong,
+                data.ngayDat,
                 data.tongThanhTien,
-                data.trangThaiDat,
+                data.trangThai,
+                data.idPTP,
                 data.idKHD,
+                data.idThe,
                 id
             ],
             (error, result) => {
@@ -92,7 +89,7 @@ module.exports = {
     },
     deleteData: (id, callBack) => {
         pool.query(
-            `delete from DONDATPHONG where idDDP = ?`,
+            `delete from DONDATDICHVU where idDDDV = ?`,
             [id],
             (error, result) => {
                 if(error){

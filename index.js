@@ -43,14 +43,10 @@ app.use('/api/daily-rate', dailyRateRouter);
 app.use('/api/special-rate', specialRateRouter);
 app.use('/api/user', userRouter);
 app.use('/api/khd', khdRouter);
-<<<<<<< HEAD
-=======
 app.use('/api/room', roomRouter);
 app.use('/api/detail-book-service', detailBookServiceRouter);
 app.use('/api/detail-booking', detailBookingRouter);
 app.use('/api/detail-bill', detailBillRouter);
-
->>>>>>> main
 
 app.use('/api/admin', adminRouter);
 app.use('/api/pay', paypalRouter);
