@@ -1,6 +1,9 @@
 const khd = require('./khd.service');
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 87209d3f6688db0929dcedd8a36143b3bce66b77
 // var user = require('../User/user.service');
 const Validator = require('fastest-validator');
 const valid = new Validator();
@@ -11,6 +14,7 @@ const schema = {
             required: "Fill out email field!",
             email: "Email wrong!"
         }
+<<<<<<< HEAD
     },
     password: { 
         type: 'string', min: 6,
@@ -109,66 +113,114 @@ module.exports = {
             }
             return res.status(200).json(results);
         });
+=======
+>>>>>>> 87209d3f6688db0929dcedd8a36143b3bce66b77
     },
-    getKHD: (req, res) => {
-        khd.getAll((err, results) => {
-            if(err) {
-                console.log(err);
-                return res.status(500).json(err);
-            }
-            return res.status(200).json(results);
-        });
+    password: { 
+        type: 'string', min: 6,
+        messages: {
+            required: "Fill out password field!",
+            stringMin: "Password at least 6 characters!"
+        }
     },
-    getKHDByID: (req, res) => {
-        const id = req.params.id;
-        khd.getDataByID(id, (err, results) => {
-            if(err) {
-                console.log(err);
-                return res.status(500).json(err);
-            }
-            if(results == null) {
-                return res.status(404).json('Record not found');
-            }
-            return res.status(200).json(results);
-        });
+    displayName: { 
+        type: 'string', min: 6,
+        messages: {
+            required: "Fill out username field!",
+            stringMin: "Username at least 6 characters!"
+        }
     },
-    updateKHD: (req, res) => {
-        const id = req.params.id;
+    tenKH: { 
+        type: 'string', min: 6,
+        messages: {
+            required: "Fill out full name field!",
+            stringMin: "Full name at least 6 characters!"
+        }
+    },
+    sdt: { 
+        type: 'string', min: 10,
+        messages: {
+            required: "Fill out phone number field!",
+            stringMin: "Phone at least 10 numbers!"
+        }
+    }
+}
+const check = valid.compile(schema);
+
+module.exports = {
+    createKHD: (req, res) => {
         const data = req.body;
-        khd.updateData(id, data, (err, results) => {
+        if (data.loaiTaiKhoan !== 1) {
+        var constraint = check(data);
+        if(constraint !== true) return res.status(400).json(constraint);
+        }
+        khd.createData(data, (err, results) => {
             if(err) {
                 console.log(err);
-                return res.status(500).json(err);
-            }
-            if(results == null) {
-                return res.status(404).json('Record not found');
-            }
-            return res.status(200).json('Updated successfully');
-        });
-    },
-    // deleteKHD: (req, res) => {
-    //     const data = req.body;
-    //     user.getDataByIdKHD(data.idKHD, (err, results)=>{
-    //         if(err){
-    //             return res.status(500).json(err);
-    //         }
-    //         if(results == null) {
-    //             return res.status(404).json('Record not found');
-    //         }
-    //         if(results.length > 0)
-    //             return res.status(400).json({err: 'Exists KHD!'});
-    //         else {
-    //             deleteData(id, (err, results) => {
-    //                 if(err) {
-    //                     console.log(err);
-    //                     return res.status(500).json(err);
-    //                 }
-    //                 if(results == 0) {
-    //                     return res.status(404).json('Record not found');
-    //                 }
-    //                 return res.status(200).json('Deleted successfully');
-    //             });
-    //         }
-    //     });
-    // }
+            return res.status(500).json(err);
+        }
+        return res.status(200).json(results);
+    });
+},
+getKHD: (req, res) => {
+    khd.getAll((err, results) => {
+        if(err) {
+            console.log(err);
+            return res.status(500).json(err);
+        }
+        return res.status(200).json(results);
+    });
+},
+getKHDByID: (req, res) => {
+    const id = req.params.id;
+    khd.getDataByID(id, (err, results) => {
+        if(err) {
+            console.log(err);
+            return res.status(500).json(err);
+        }
+        if(results == null) {
+            return res.status(404).json('Record not found');
+        }
+        return res.status(200).json(results);
+    });
+},
+updateKHD: (req, res) => {
+    const id = req.params.id;
+    const data = req.body;
+    khd.updateData(id, data, (err, results) => {
+        if(err) {
+            console.log(err);
+            return res.status(500).json(err);
+        }
+        if(results == null) {
+            return res.status(404).json('Record not found');
+        }
+        return res.status(200).json('Updated successfully');
+    });
+},
+// deleteKHD: (req, res) => {
+//     const data = req.body;
+//     user.getDataByIdKHD(data.idKHD, (err, results)=>{
+//         if(err){
+//             return res.status(500).json(err);
+//         }
+//         if(results == null) {
+//             return res.status(404).json('Record not found');
+//         }
+//         if(results.length > 0)
+//             return res.status(400).json({err: 'Exists KHD!'});
+//         else {
+//             deleteData(id, (err, results) => {
+//                 if(err) {
+//                     console.log(err);
+//                     return res.status(500).json(err);
+//                 }
+//                 if(results == 0) {
+//                     return res.status(404).json('Record not found');
+//                 }
+//                 return res.status(200).json('Deleted successfully');
+//             });
+//         }
+//     });
+// }
 }

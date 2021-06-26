@@ -3,15 +3,15 @@ const pool = require("../../config/database");
 module.exports = {
     createData: (data, cb) => {
         pool.query(
-            `insert into PHIEUTHUEPHONG VALUES(?,?,?,?,?,?,?)`,
+            `insert into DONDATDICHVU VALUES(?,?,?,?,?,?,?)`,
             [
-                data.idPTP,
-                data.ngayDen,
-                data.NgayDi,
+                null,
+                data.ngayDat,
+                data.tongThanhTien,
                 data.trangThai,
-                data.maPhong,
-                data.idDDP,
-                data.idKHO
+                data.idPTP,
+                data.idKHD,
+                data.idThe
             ],
             (error, result) => {
                 if(error) {
@@ -23,7 +23,7 @@ module.exports = {
     },
     getAll: (cb) => {
         pool.query(
-            `select * from PHIEUTHUEPHONG`,
+            `select * from DONDATDICHVU`,
             [],
             (error, result) => {
                 if(error) {
@@ -35,7 +35,7 @@ module.exports = {
     },
     getDataByID: (id, cb) => {
         pool.query(
-            `select * from PHIEUTHUEPHONG where idPTP = ?`,
+            `select * from DONDATDICHVU where idDDDV = ?`,
             [id],
             (error, result) => {
                 if(error) {
@@ -45,62 +45,51 @@ module.exports = {
             }
         )
     },
-    getDataByIdKHO: (idKHO, cb) => {
+    getTotalMoneyBookingServiceByQuarterly: (quarter, year, cb) => {
         pool.query(
-            `select * from PHIEUTHUEPHONG where idKHO = ?`,
-            [idKHO],
-            (error, result) => {
+            ` SELECT SUM(tongThanhTien) AS tongThanhTien FROM DONDATDICHVU WHERE QUARTER(ngayDat) = ? and YEAR(ngayDat) = ?`,
+            [
+                quarter,
+                year
+            ],
+            (error, result)=>{
                 if(error) {
                     return cb(error);
                 }
-                return cb(null, result);
-            }
-        )
-    },
-    findIDRoombyDays: (dateA, dateB, trangThai, cb) => {
-        pool.query(
-            `SELECT maPhong FROM PHIEUTHUEPHONG WHERE ngayDi >= ? and ngayDen <= ? and trangThai = ?`,
-            [
-                dateA,
-                dateB,
-                trangThai
-            ],
-            (error, result) => {
-                if(error) { return cb(error); }
-                return cb(null, result);
+                return cb(null, result[0]);
             }
         )
     },
     updateData: (id, data, cb) => {
         pool.query(
-            `update PHIEUTHUEPHONG set
-                ngayDen = ?,
-                NgayDi = ?,
+            `update DONDATDICHVU set
+                ngayDat = ?,
+                tongThanhTien = ?,
                 trangThai = ?,
-                maPhong = ?,
-                idDDP = ?,
-                idKHO = ?
-            where idPTP = ?`,
+                idPTP = ?,
+                idKHD = ?,
+                idThe = ?
+            where idDDDV = ?`,
             [
-                data.ngayDen,
-                data.NgayDi,
+                data.ngayDat,
+                data.tongThanhTien,
                 data.trangThai,
-                data.maPhong,
-                data.idDDP,
-                data.idKHO,
+                data.idPTP,
+                data.idKHD,
+                data.idThe,
                 id
             ],
             (error, result) => {
                 if(error) {
                     return cb(error);
                 }
-                return cb(null, result);
+                return cb(null, result.insertId);
             }
         )
     },
     deleteData: (id, callBack) => {
         pool.query(
-            `delete from PHIEUTHUEPHONG where idPTP = ?`,
+            `delete from DONDATDICHVU where idDDDV = ?`,
             [id],
             (error, result) => {
                 if(error){
