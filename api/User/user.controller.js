@@ -280,7 +280,7 @@ module.exports = {
         //     return res.status(400).json(constraint);
         // }
         if (data.loaiTaiKhoan === 1) {
-            user.getUserByEmail(data.email, (err, results) => {
+            user.getUserByEmail(data.email, (err, recUser) => {
                 if (err) {
                     khd.deleteData(data.idKHD, (err, results) => {
                         if (err) {
@@ -290,22 +290,22 @@ module.exports = {
                         return res.status(200).json(results);
                     });
                 }
-                if (results.length > 0) {
+                if (recUser.length > 0) {
                     khd.deleteData(data.idKHD, (err, results) => {
                         if (err) {
                             console.log(err);
                             return res.status(500).json(err);
                         }
-                        return res.status(200).json(results);
+                        return res.status(200).json(recUser[0].idTK);
                     });
                 }
-                if (results.length == 0) {
-                    user.createData(data, (err, results) => {
+                if (recUser.length == 0) {
+                    user.createData(data, (err, idUser) => {
                         if (err) {
                             console.log(err);
                             return res.status(500).json(err);
                         }
-                        return res.status(200).json(results);
+                        return res.status(200).json(idUser);
                     });
                 }
             });

@@ -97,8 +97,10 @@ module.exports = {
  module.exports = {
      createKHD: (req, res) => {
          const data = req.body;
-         var constraint = check(data);
-         if(constraint !== true) return res.status(400).json(constraint);
+         if (data.loaiTaiKhoan !== 1) {
+            var constraint = check(data);
+            if(constraint !== true) return res.status(400).json(constraint);
+         }
          khd.createData(data, (err, results) => {
              if(err) {
                  console.log(err);

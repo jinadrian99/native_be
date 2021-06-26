@@ -1,5 +1,10 @@
 find . -depth -name '.DS_Store' -exec git rm --cached '{}' \; -print
 
+crontab: https://crontab.guru/examples.html
+
+template: 
+- https://www.bootdey.com/snippets/view/billing-email-template
+
 #MERGE GIT
 ### remote origin branch:
 - [git remote set-url origin uri]

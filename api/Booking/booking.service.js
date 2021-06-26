@@ -48,7 +48,7 @@ module.exports = {
     },
     getTotalMoneyBookingByQuarterly: (quarter, year, cb) => {
         pool.query(
-            ` SELECT SUM(tongThanhTien) AS tongThanhTien FROM DONDATPHONG WHERE QUARTER(ngayDatPhong) = ? and YEAR(ngayDatPhong) = ?`,
+            `SELECT SUM(tongThanhTien) AS tongThanhTien FROM DONDATPHONG WHERE QUARTER(ngayDatPhong) = ? and YEAR(ngayDatPhong) = ?`,
             [
                 quarter,
                 year
@@ -58,6 +58,26 @@ module.exports = {
                     return cb(error);
                 }
                 return cb(null, result[0]);
+            }
+        )
+    },
+    getDataDayNumNearToDay: (dayNum, today, cb) => {
+        pool.query(
+            `
+                SELECT * 
+                FROM DONDATPHONG 
+                WHERE YEAR(ngayDen) = YEAR(?) and MONTH(ngayDen) = MONTH(?) and DAY(?) - DAY(ngayDen) >= 0 and DAY(?) - DAY(ngayDen) <= ?
+            `,
+            [
+                today,
+                today,
+                today,
+                today,
+                dayNum
+            ],
+            (error, results)=>{
+                if(error){ return cb(error); }
+                return cb(null, results);
             }
         )
     },

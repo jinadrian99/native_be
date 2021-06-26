@@ -67,6 +67,18 @@ module.exports = {
             }
         )
     },
+    getIdkhdByIdddp: (idDDP, cb) => {
+        pool.query(
+            `SELECT * FROM PHIEUTHANHTOANPHONG WHERE idDDP = ?`,
+            [
+                idDDP
+            ],
+            (error, result) => {
+                if(error) { return cb(error); }
+                return cb(null, result[0]);
+            }
+        )
+    },
     updateData: (id, data, cb) => {
         pool.query(
             `update PHIEUTHANHTOANPHONG set
