@@ -46,6 +46,42 @@ module.exports = {
             }
         )
     },
+    getDataByCMND: (cmnd, cb) => {
+        pool.query(
+            `select * from KHACHHANGO where CMND = ?`,
+            [cmnd],
+            (error, result) => {
+                if(error) {
+                    return cb(error);
+                }
+                return cb(null, result[0]);
+            }
+        )
+    },
+    getDataByPassport: (passport, cb) => {
+        pool.query(
+            `select * from KHACHHANGO where Passport = ?`,
+            [passport],
+            (error, result) => {
+                if(error) {
+                    return cb(error);
+                }
+                return cb(null, result[0]);
+            }
+        )
+    },
+    getDataBySdt: (sdt, cb) => {
+        pool.query(
+            `select * from KHACHHANGO where sdt = ?`,
+            [sdt],
+            (error, result) => {
+                if(error) {
+                    return cb(error);
+                }
+                return cb(null, result[0]);
+            }
+        )
+    },
     updateData: (id, data, cb) => {
         pool.query(
             `update KHACHHANGO set
