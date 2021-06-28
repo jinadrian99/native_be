@@ -7,7 +7,6 @@ const BookingMBquantity = (quarter, year, cb) => {
         return cb(money.tongThanhTien == null ? 0 : money.tongThanhTien);        
     })
 }
-
 const BookingServiceMBquantity = (quarter, year, cb) => {
     bookingService.getTotalMoneyBookingServiceByQuarterly(quarter, year, (err, money) => {
         if(err) { return res.status(500).json(err) }

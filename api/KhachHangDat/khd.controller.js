@@ -11,13 +11,6 @@ const khd = require('./khd.service');
              email: "Email wrong!"
          }
      },
-     password: { 
-         type: 'string', min: 6,
-         messages: {
-             required: "Fill out password field!",
-             stringMin: "Password at least 6 characters!"
-         }
-     },
      displayName: { 
          type: 'string', min: 6,
          messages: {
@@ -42,11 +35,37 @@ const khd = require('./khd.service');
  }
  const check = valid.compile(schema);
 
+ const schemaPass = {
+    password: { 
+        type: 'string', min: 6,
+        messages: {
+            required: "Fill out password field!",
+            stringMin: "Password at least 6 characters!"
+        }
+    }
+}
+
+const checkPass = valid.compile(schemaPass);
+
+const schemaNewPass = {
+    newPassword: { 
+        type: 'string', min: 6,
+        messages: {
+            required: "Fill out password field!",
+            stringMin: "New password at least 6 characters!"
+        }
+    }
+}
+
+const checkNewPass = valid.compile(schemaNewPass);
+
  module.exports = {
      createKHD: (req, res) => {
          const data = req.body;
          if (data.loaiTaiKhoan !== 1) {
             var constraint = check(data);
+            if(constraint !== true) return res.status(400).json(constraint);
+            constraint = checkPass(data);
             if(constraint !== true) return res.status(400).json(constraint);
          }
          khd.createData(data, (err, results) => {
@@ -82,6 +101,12 @@ const khd = require('./khd.service');
     updateKHD: (req, res) => {
         const id = req.params.id;
         const data = req.body;
+        var constraint = check(data);
+        if(constraint !== true) return res.status(400).json(constraint);
+        constraint = checkPass(data);
+        if(constraint !== true && data.isChangePass) return res.status(400).json(constraint);
+        constraint = checkNewPass(data);
+        if(constraint !== true && data.isChangePass) return res.status(400).json(constraint);
         khd.updateData(id, data, (err, results) => {
             if(err) {
                 console.log(err);

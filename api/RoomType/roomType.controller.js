@@ -169,7 +169,7 @@ module.exports = {
                                     if(err) { return res.status(500).json(err) }
                                     if(PHONG != null){ 
                                         // console.log("PHONG_idLP", PHONG.idLP);
-                                        var index = arrLP.findIndex(item => item.idLP == PHONG.idLP); // tìm index trong arrLP để trừ 
+                                        var index = arrLP.findIndex(item => item.idLP == PHONG.idLP);// tìm index trong arrLP để trừ
                                         arrLP[index]={
                                             idLP: arrLP[index].idLP,
                                             tenLP: arrLP[index].tenLP,
@@ -243,6 +243,5 @@ module.exports = {
                 
             });  
         })
-        
     },
 };

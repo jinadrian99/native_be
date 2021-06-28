@@ -45,6 +45,18 @@ module.exports = {
             }
         )
     },
+    getDataByIdKHO: (idKHO, cb) => {
+        pool.query(
+            `select * from PHIEUTHUEPHONG where idKHO = ?`,
+            [idKHO],
+            (error, result) => {
+                if(error) {
+                    return cb(error);
+                }
+                return cb(null, result);
+            }
+        )
+    },
     findIDRoombyDays: (dateA, dateB, trangThai, cb) => {
         pool.query(
             `SELECT maPhong FROM PHIEUTHUEPHONG WHERE ngayDi >= ? and ngayDen <= ? and trangThai = ?`,
