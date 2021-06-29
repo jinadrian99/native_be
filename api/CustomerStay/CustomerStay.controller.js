@@ -101,6 +101,31 @@ module.exports = {
         var constraint = check(data);
         if(constraint !== true) return res.status(400).json(constraint);
         
+        customerStay.getDataByCMND(data.CMND, (err, result) => {
+            if(err) { return res.status(500).json(err); }
+            if(result != null) { 
+                if(result.idKHO != id) {
+                    return res.status(400).json("Exits this identity card!"); 
+                }
+            }
+        });
+        customerStay.getDataByPassport(data.Passport, (err, result) => {
+            if(err) { return res.status(500).json(err); }
+            if(result != null) { 
+                if(result.idKHO != id) {
+                    return res.status(400).json("Exits this Passport!"); 
+                }
+            }
+        });
+        customerStay.getDataBySdt(data.sdt, (err, result) => {
+            if(err) { return res.status(500).json(err); }
+            if(result != null) { 
+                if(result.idKHO != id) {
+                    return res.status(400).json("Exits this phone number!"); 
+                }
+            }
+        });
+
         customerStay.updateData(id, data, (err, result) => {
             if(err) { return res.status(500).json(err); }
             return res.status(200).json("Updated successfully");
@@ -121,6 +146,5 @@ module.exports = {
             })
                      
         })
-        
     }
 }

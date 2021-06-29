@@ -58,18 +58,16 @@ module.exports = {
             }
         )
     },
-    getUserByEmail: (email, cb) => {
+    getDataByIdKHD: (idKHD, cb) => {
         pool.query(
-            `select * from TAIKHOAN where email = ?`,
-            [email],
+            `select * from TAIKHOAN where idKHD = ?`,
+            [idKHD],
             (error, result) => {
-                if(error) {
-                    return cb(error);
-                }
+                if(error) { return cb(error); }
                 return cb(null, result);
             }
         )
-    },
+    }, 
     getDataByID: (id, cb) => {
         pool.query(
             `select * from TAIKHOAN where idTK = ?`,
