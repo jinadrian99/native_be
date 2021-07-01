@@ -115,6 +115,7 @@ const checkNewPass = valid.compile(schemaNewPass);
             if(results == null) {
                 return res.status(404).json('Record not found');
             }
+            console.log('update cmnd khd: ', results)
             return res.status(200).json('Updated successfully');
         });
     },
