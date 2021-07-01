@@ -122,8 +122,4 @@ module.exports = {
             return res.status(200).json('Deleted successfully');
         })
     }
-<<<<<<< HEAD
-}
-=======
 } 
->>>>>>> db7a37515a0db321cfec7d87c4471bb930ef8aad

@@ -99,7 +99,7 @@ module.exports = {
             return res.status(200).json(results);
         });
     },
-    updateUser: (req, res) => {
+    updateUserAdmin: (req, res) => {
         const id = req.params.id;
         const data = req.body;
         // var constraint = check(data);
@@ -186,6 +186,8 @@ module.exports = {
                     })
                 }
                 if (data.email !== results[0].email) {
+                    console.log('data.email: ', data.email);
+                    console.log('results.email: ', results[0].email);
                     user.getUserByEmail(data.email, (err, results) => {
                         if (err) {
                             console.log(err);
@@ -205,6 +207,7 @@ module.exports = {
                                 if(results == null) {
                                     return res.status(404).json('Record not found');
                                 }
+                                console.log('kq tra ve khi update displayName: ', results);
                                 return res.status(200).json('Updated successfully');
                             });
                         }
@@ -219,6 +222,135 @@ module.exports = {
                         if(results == null) {
                             return res.status(404).json('Record not found');
                         }
+                        console.log('kq tra ve khi update displayName: ', results);
+                        return res.status(200).json('Updated successfully');
+                    });
+                }
+            })
+        }
+    },
+    updateUserCus: (req, res) => {
+        const id = req.params.id;
+        const data = req.body;
+        if (data.isChangePass) {
+            console.log('data currentPass: ', data.currentPass);
+            user.getDataByIdKHD(data.idKHD, (err, results) => {
+                if (err) {
+                    console.log(err);
+                    return res.status(500).json(err);
+                }
+                if (results.length == 0) {
+                    return res.status(400).json({
+                        err:'Not found'
+                    })
+                }
+                console.log('data.email: ', data.email);
+                console.log('results.email: ', results[0].email);
+                console.log('data.password: ', data.password);
+                if (data.email !== results[0].email) {
+                    console.log('hello');
+                    user.getUserByEmail(data.email, (err, kq) => {
+                        if (err) {
+                            console.log(err);
+                            return res.status(500).json(err);
+                        }
+                        if (kq.length > 0) {
+                            return res.status(400).json({
+                                err:'Email existed!!!'
+                            })
+                        }
+                        const result = compareSync(data.oldPassword, results[0].password);
+                        console.log('kq tra ve: ', result);
+                        if (result) {
+                            var salt = genSaltSync(10);
+                            data.password = hashSync(data.password, salt);
+                            user.updateData(id, data, (err, results) => {
+                                if(err) {
+                                    console.log(err);
+                                    return res.status(500).json(err);
+                                }
+                                if(results == null) {
+                                    return res.status(404).json('Record not found');
+                                }
+                                return res.status(200).json('Updated successfully');
+                            });
+                        }
+                        else {
+                            return res.status(404).json('Old password does not match!');
+                        }
+                    })
+                }
+                else {
+                    const result = compareSync(data.oldPassword, results[0].password);
+                    if (result) {
+                        var salt = genSaltSync(10);
+                        data.password = hashSync(data.password, salt);
+                        user.updateData(id, data, (err, results) => {
+                            if(err) {
+                                console.log(err);
+                                return res.status(500).json(err);
+                            }
+                            if(results == null) {
+                                return res.status(404).json('Record not found');
+                            }
+                            return res.status(200).json('Updated successfully');
+                        });
+                    }
+                    else {
+                        return res.status(404).json('Old password does not match!');
+                    }
+                }
+            })
+        }
+        else {
+            user.getDataByIdKHD(data.idKHD, (err, results) => {
+                if (err) {
+                    console.log(err);
+                    return res.status(500).json(err);
+                }
+                if (results.length == 0) {
+                    return res.status(400).json({
+                        err:'Not found'
+                    })
+                }
+                if (data.email !== results[0].email) {
+                    console.log('data.email: ', data.email);
+                    console.log('results.email: ', results[0].email);
+                    user.getUserByEmail(data.email, (err, results) => {
+                        if (err) {
+                            console.log(err);
+                            return res.status(500).json(err);
+                        }
+                        if (results.length > 0) {
+                            return res.status(400).json({
+                                err:'Email existed!!!'
+                            })
+                        }
+                        if (results.length == 0) {
+                            user.updateData(id, data, (err, results) => {
+                                if(err) {
+                                    console.log(err);
+                                    return res.status(500).json(err);
+                                }
+                                if(results == null) {
+                                    return res.status(404).json('Record not found');
+                                }
+                                console.log('kq tra ve khi update displayName: ', results);
+                                return res.status(200).json('Updated successfully');
+                            });
+                        }
+                    })
+                }
+                else {
+                    user.updateData(id, data, (err, results) => {
+                        if(err) {
+                            console.log(err);
+                            return res.status(500).json(err);
+                        }
+                        if(results == null) {
+                            return res.status(404).json('Record not found');
+                        }
+                        console.log('kq tra ve khi update displayName: ', results);
                         return res.status(200).json('Updated successfully');
                     });
                 }
