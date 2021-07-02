@@ -25,6 +25,8 @@ const detailBookServiceRouter = require('./api/BookServiceDetail/BSD.router');
 const detailBookingRouter = require('./api/BookingDetail/BookingD.router');
 const detailBillRouter = require('./api/BillDetail/BillD.router');
 const customerStayRouter = require('./api/CustomerStay/CustomerStay.router');
+const billRouter = require('./api/Bill/Bill.router');
+const payerRouter = require('./api/Payer/Payer.router');
 
 const sendmailRouter = require('./api/Mail/mail.router');
 const chartRouter = require('./api/Chart/chart.router');
@@ -52,6 +54,8 @@ app.use('/api/detail-book-service', detailBookServiceRouter);
 app.use('/api/detail-booking', detailBookingRouter);
 app.use('/api/detail-bill', detailBillRouter);
 app.use('/api/customer-stay', customerStayRouter);
+app.use('/api/bill', billRouter);
+app.use('/api/payer', payerRouter);
 
 
 app.use('/api/admin', adminRouter);
