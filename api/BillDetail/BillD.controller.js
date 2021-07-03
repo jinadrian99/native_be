@@ -43,4 +43,11 @@ module.exports = {
             })
         })
     },
+    getBillDetailsByIDPTT: (req, res) => {
+        idPTT = req.params.idPTT;
+        DBS.getDataByIDPTT(idPTT, (err, data) => {
+            if(err) { return res.status(500).json(err); }
+            return res.status(200).json(data);
+        })
+    }
 }

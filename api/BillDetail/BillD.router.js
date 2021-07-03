@@ -3,6 +3,7 @@ const router = express.Router();
 
 const DBillController = require('./BillD.controller');
 
+router.get('/get-bill-detail-by-idPTT/:idPTT', DBillController.getBillDetailsByIDPTT);
 router.get('/', DBillController.index);
 router.get('/:id', DBillController.show);
 router.post('/', DBillController.store);

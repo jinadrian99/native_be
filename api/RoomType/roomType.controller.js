@@ -10,7 +10,7 @@ var roomTypeImage = require('../ImageRoomType/imageRoomType.service');
 var dailyRate = require('../DailyRate/dailyRate.service');
 var specialRate = require('../SpecialRate/specialRate.service');
 var room = require('../Room/room.service');
-var bill = require('../Bill/bill.service');
+var bill = require('../Bill/Bill.service');
 var DBill = require('../BillDetail/BillD.service');
 var RRC = require('../RoomRentalContract/RRC.service');
 

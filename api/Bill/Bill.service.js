@@ -53,6 +53,33 @@ module.exports = {
             }
         )
     },
+    getDataByIDKHD: (idKHD, cb) => {
+        pool.query(
+            `select * from PHIEUTHANHTOANPHONG where idKHD = ?`,
+            [idKHD],
+            (error, result) => {
+                if(error) {
+                    return cb(error);
+                }
+                return cb(null, result);
+            }
+        )
+    },
+    changeStatus: (idPTT, status, cb) => {
+        pool.query(
+            `update PHIEUTHANHTOANPHONG set tinhTrang = ? where idPTT = ?`,
+            [
+                status,
+                idPTT
+            ],
+            (error, result) => {
+                if(error) {
+                    return cb(error);
+                }
+                return cb(null, result.insertId);
+            }
+        )
+    },
     findIDbyDays: (dateA, dateB, tinhTrang, cb) => {
         pool.query(
             `SELECT idPTT FROM PHIEUTHANHTOANPHONG WHERE ngayDi >= ? and ngayDen <= ? and tinhTrang = ?`,
