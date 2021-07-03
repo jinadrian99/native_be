@@ -67,7 +67,7 @@ module.exports = {
                 return cb(null, result);
             }
         )
-    }, 
+    },
     getDataByID: (id, cb) => {
         pool.query(
             `select * from TAIKHOAN where idTK = ?`,

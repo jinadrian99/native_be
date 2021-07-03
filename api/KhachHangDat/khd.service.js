@@ -43,6 +43,30 @@ module.exports = {
             }
         )
     },
+    getDataByCMND: (CMND, cb) => {
+        pool.query(
+            `select * from KHACHHANGDAT where CMND = ?`,
+            [CMND],
+            (error, result) => {
+                if(error) {
+                    return cb(error);
+                }
+                return cb(null, result);
+            }
+        )
+    },
+    getDataByPassport: (Passport, cb) => {
+        pool.query(
+            `select * from KHACHHANGDAT where Passport = ?`,
+            [Passport],
+            (error, result) => {
+                if(error) {
+                    return cb(error);
+                }
+                return cb(null, result);
+            }
+        )
+    },
     updateData: (id, data, cb) => {
         pool.query(
             `update KHACHHANGDAT set
@@ -54,8 +78,8 @@ module.exports = {
             [
                 data.tenKH,
                 data.sdt,
-                data.cmnd,
-                data.passport,
+                data.CMND,
+                data.Passport,
                 id
             ],
             (error, result) => {

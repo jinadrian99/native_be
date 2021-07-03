@@ -3,12 +3,13 @@ const pool = require("../../config/database");
 module.exports = {
     createData: (data, cb) => {
         pool.query(
-            `insert into CHITIETDONDATPHONG VALUES(?,?,?,?)`,
+            `insert into CHITIETDONDATPHONG VALUES(?,?,?,?,?)`,
             [
                 null,
                 data.donGia,
-                data.maPhong,
-                data.idDDP
+                data.idDDP,
+                data.idLP,
+                data.soLuong,
             ],
             (error, result) => {
                 if(error) {
@@ -42,12 +43,12 @@ module.exports = {
             }
         )
     },
-    getDataByMaPhongNIDDDP: (maPhong, idDDP, cb) => {
+    getDataByIDLPnIDDDP: (idDDP, idLP, cb) => {
         pool.query(
-            `select CHITIETDONDATPHONG where maPhong = ? and idDDP = ?`,
+            `select * from CHITIETDONDATPHONG where  idDDP = ? and idLP = ?`,
             [
-                maPhong,
-                idDDP
+                idDDP,
+                idLP
             ],
             (error, result) => {
                 if(error) {
@@ -61,14 +62,15 @@ module.exports = {
         pool.query(
             `update CHITIETDONDATPHONG set
                 donGia = ?,
-                maPhong = ?,
-                idDDP = ?
+                idDDP = ?,
+                idLP = ?,
+                soLuong = ?
             where idCTDDP = ?`,
             [
                 data.donGia,
-                data.maPhong,
                 data.idDDP,
-                data.idCTDDP
+                data.idLP,
+                data.soLuong,
             ],
             (error, result) => {
                 if(error) {
