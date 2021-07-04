@@ -155,16 +155,19 @@ module.exports = {
 
             //SELECT `idPTT` FROM `PHIEUTHANHTOANPHONG` WHERE ngayDen <= "2021-06-19" and ngayDi >= "2021-06-15"
             bill.findIDbyDays(dateA, dateB, 2, (err, lstPTT) => {
+                console.log("Bill: ", err, lstPTT);
                 if(err) { return res.status(500).json(err) }
                 //Kiểm tra xem đây có phải là nhánh KH đang ở hay ko?
                 if(lstPTT.length <= 0) { //Phiếu thanh toán phòng ko phải ở trạng thái (2)thanh toán tiền cọc
                     RRC.findIDRoombyDays(dateA, dateB, 1, (err, lstPTP) => { //Nếu ko có trạng thái thanh toán tiền cọc thì chạy dòng này
+                        console.log("RRC: ", err, lstPTP);
                         if(err) { return res.status(500).json(err) }
                         if(lstPTP.length <= 0) { return res.status(200).json(arrLP) }
                         if(lstPTP.length > 0) { 
                             var count2 = lstPTP.length;
                             lstPTP.forEach(item => {
                                 room.getDataByID(item.maPhong, (err, PHONG) => {
+                                    console.log("room: ", err, PHONG);
                                     count2 --; //bộ đếm dùng để xét khi nào ngừng dòng for (vì asynchronous)
                                     if(err) { return res.status(500).json(err) }
                                     if(PHONG != null){ 
@@ -178,6 +181,7 @@ module.exports = {
                                         }
                                     }
                                     if(count2 == 0){ 
+                                        console.log("arrLP: ", arrLP);
                                         return res.status(200).json(arrLP);
                                     }
                                 })
@@ -189,12 +193,14 @@ module.exports = {
                 lstPTT.forEach(item => { //Nếu có trạng thái (2)thanh toán tiền cọc thì chạy dòng này
                     // console.log("PTT: ", item.idPTT);
                     DBill.getDataByIDPTT(item.idPTT, (err, lstCTPTT) => {
+                        console.log("DBill: ", err, lstCTPTT)
                         if(err) { return res.status(500).json(err) }
                         if(lstCTPTT.length > 0) { 
                             var count1 = lstCTPTT.length;
                             lstCTPTT.forEach(item => {
                                 // console.log("CTPTT_maPhong: ", item.maPhong);
                                 room.getDataByID(item.maPhong, (err, PHONG) => {
+                                    console.log("room: ", err, PHONG);
                                     count1 --;
                                     if(err) { return res.status(500).json(err) }
                                     if(PHONG != null){ 
@@ -210,11 +216,17 @@ module.exports = {
                                     // console.log(arrLP, count);
                                     if(count1 == 0){ 
                                         RRC.findIDRoombyDays(dateA, dateB, 1, (err, lstPTP) => {
-                                            if(err) { return res.status(500).json(err) }
+                                            console.log("RRC: ", err, lstPTP);
+                                            if(err) { return res.status(500).json(err); }
+                                            if(lstPTP.length <= 0){ 
+                                                console.log("arrLP: ", arrLP);
+                                                return res.status(200).json(arrLP);
+                                            }
                                             if(lstPTP.length > 0) { 
                                                 var count2 = lstPTP.length;
                                                 lstPTP.forEach(item => {
                                                     room.getDataByID(item.maPhong, (err, PHONG) => {
+                                                        console.log("room: ", err, PHONG);
                                                         count2 --;
                                                         if(err) { return res.status(500).json(err) }
                                                         if(PHONG != null){ 
@@ -228,6 +240,7 @@ module.exports = {
                                                             }
                                                         }
                                                         if(count2 == 0){ 
+                                                            console.log("arrLP: ", arrLP);
                                                             return res.status(200).json(arrLP);
                                                         }
                                                     })

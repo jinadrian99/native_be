@@ -15,6 +15,13 @@ module.exports = {
             return res.status(200).json('change status to deposit');
         })
     },
+    show: (req, res) => {
+        const id = req.params.id;
+        bill.getDataByID(id, (err, result) => {
+            if(err) { return res.status(500).json(err); }
+            return res.status(200).json(result);
+        })
+    },
     update: (req, res) => {
         const id = req.params.id;
         const data = req.body;
