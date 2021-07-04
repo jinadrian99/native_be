@@ -46,6 +46,18 @@ module.exports = {
             }
         )
     },
+    getDataByIdKHD: (idKHD, cb) => {
+        pool.query(
+            `select * from DONDATPHONG where idKHD = ?`,
+            [idKHD],
+            (error, result) => {
+                if(error) {
+                    return cb(error);
+                }
+                return cb(null, result);
+            }
+        )
+    },
     getTotalMoneyBookingByQuarterly: (quarter, year, cb) => {
         pool.query(
             `SELECT SUM(tongThanhTien) AS tongThanhTien FROM DONDATPHONG WHERE QUARTER(ngayDatPhong) = ? and YEAR(ngayDatPhong) = ?`,

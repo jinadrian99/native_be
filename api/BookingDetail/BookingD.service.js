@@ -46,6 +46,7 @@ module.exports = {
     getDataByIDLPnIDDDP: (idDDP, idLP, cb) => {
         pool.query(
             `select * from CHITIETDONDATPHONG where  idDDP = ? and idLP = ?`,
+
             [
                 idDDP,
                 idLP
@@ -55,6 +56,20 @@ module.exports = {
                     return cb(error);
                 }
                 return cb(null, result[0]);
+            }
+        )
+    },
+    getDataByIDDDP: (idDDP, cb) => {
+        pool.query(
+            `select * from CHITIETDONDATPHONG where idDDP = ?`,
+            [
+                idDDP
+            ],
+            (error, result) => {
+                if(error) {
+                    return cb(error);
+                }
+                return cb(null, result);
             }
         )
     },

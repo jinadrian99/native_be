@@ -1,7 +1,7 @@
 var room = require('./room.service');
 var roomType = require('../RoomType/roomType.service');
 const Validator = require('fastest-validator');
-const bill = require('../Bill/bill.service');
+const bill = require('../Bill/Bill.service');
 const BillD = require('../BillDetail/BillD.service');
 const RCC = require('../RoomRentalContract/RRC.service');
 

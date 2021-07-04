@@ -43,4 +43,11 @@ module.exports = {
             })
         })
     },
+    getBookingDetailsByIDDDP: (req, res) => {
+        var idDDP = req.params.idDDP;
+        DBS.getDataByIDDDP(idDDP, (err, data) => {
+            if(err) { return res.status(500).json(err); }
+            return res.status(200).json(data);
+        })
+    },
 }

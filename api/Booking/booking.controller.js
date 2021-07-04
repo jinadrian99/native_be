@@ -15,6 +15,14 @@ module.exports = {
             return res.status(200).json(result)
         })
     },
+    showByIdKHD: (req, res) => {
+        const id = req.params.id;
+        Booking.getDataByIdKHD(id, (err, result) => {
+            if(err) { return res.status(500).json(err); }
+            if(result == null) { return res.status(400).json("Record not exists!")}
+            return res.status(200).json(result)
+        })
+    },
     store: (req, res) => {
         var data = req.body;
         Booking.createData(data, (err, results) => {

@@ -5,7 +5,8 @@ const pool = createPool({
     host: process.env.DB_HOST||"127.0.0.1",
     user: process.env.DB_USER||"root",
     password: process.env.DB_PASS||"root",
-    database: process.env.MYSQL_DB||"nativecity"
+    database: process.env.MYSQL_DB||"nativecity",
+    connectionLimit: 100,
 });
 
 module.exports = pool;
