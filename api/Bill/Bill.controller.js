@@ -17,11 +17,7 @@ module.exports = {
     },
     show: (req, res) => {
         const id = req.params.id;
-<<<<<<< HEAD
-        bill.getDataByID(id, (err, result)=>{
-=======
         bill.getDataByID(id, (err, result) => {
->>>>>>> adrian23l8
             if(err) { return res.status(500).json(err); }
             return res.status(200).json(result);
         })
