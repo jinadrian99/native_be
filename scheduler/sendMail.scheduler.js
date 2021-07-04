@@ -10,8 +10,6 @@ var user = require('../api/User/user.service');
 
 const crontab = '0 9 * * *';
 
-
-
 scheduler.scheduleJob(crontab, () => { 
     var today = new Date();
     booking.getDataDayNumNearToDay(2, today, (err, lstBooking) => {
