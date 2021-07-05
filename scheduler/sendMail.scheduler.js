@@ -8,7 +8,7 @@ var booking = require('../api/Booking/booking.service');
 var bill = require('../api/Bill/Bill.service');
 var user = require('../api/User/user.service');
 
-const crontab = '0 9 * * *';
+const crontab = '48 9 * * *';
 
 scheduler.scheduleJob(crontab, () => { 
     var today = new Date();
