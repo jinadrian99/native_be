@@ -24,12 +24,17 @@ module.exports = {
             DBS.createData(data, (err, results) => {
                 if(err) { return res.status(500).json(err); }
                 if(result == null) { return res.status(400).json("Create failed!"); }
-                res.status(200).json("Created successfully");
+                return res.status(200).json("Created successfully");
             })
         })
     },
     update: (req, res) => {
-        return res.status(200).json("Undefined func for method!");
+        var id = req.params.id;
+        var data = req.body;
+        DBS.updateData(id, data, (err, result) => {
+            if(err) { return res.status(500).json(err); }
+            return res.status(200).json("Updated successfully");
+        })
     },
     destroy: (req, res) => {
         var id = req.params.id;
