@@ -45,6 +45,18 @@ module.exports = {
                 return cb(null, result[0]);
             }
         )
+    },    
+    getDataByIdKHD: (idKHD, cb) => {
+        pool.query(
+            `select * from DONDATPHONG where idKHD = ?`,
+            [idKHD],
+            (error, result) => {
+                if(error) {
+                    return cb(error);
+                }
+                return cb(null, result);
+            }
+        )
     },
     getDataByIdKHD: (idKHD, cb) => {
         pool.query(

@@ -18,7 +18,8 @@ const dailyRateRouter = require('./api/DailyRate/dailyRate.router');
 const userRouter = require('./api/User/user.router');
 const khdRouter = require('./api/KhachHangDat/khd.router');
 const adminRouter = require('./api/Admin/admin.router');
-const paypalRouter = require('./api/Paypal/paypal.router');
+const paypalRouter = require('./api/Payments/paypal.router');
+// const stripeRouter = require('./api/Payments/Stripe.router');
 const specialRateRouter = require('./api/SpecialRate/specialRate.router');
 const roomRouter = require('./api/Room/room.router');
 const detailBookServiceRouter = require('./api/BookServiceDetail/BSD.router');
@@ -61,6 +62,7 @@ app.use('/api/payer', payerRouter);
 
 app.use('/api/admin', adminRouter);
 app.use('/api/pay', paypalRouter);
+// app.use('/api/payments', stripeRouter);
 app.use('/api/mail', sendmailRouter);
 app.use('/api/chart', chartRouter);
 

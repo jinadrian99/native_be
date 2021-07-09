@@ -71,6 +71,22 @@ module.exports = {
             }
         )
     },
+    getDataByMaPhongNIDPTTExceptID: (maPhong, idPTT, id, cb) => {
+        pool.query(
+            `select * CHITIETPHIEUTHANHTOAN where maPhong = ? and idPTT = ? and idCTPTT != ?`,
+            [
+                maPhong,
+                idPTT,
+                id
+            ],
+            (error, result) => {
+                if(error) {
+                    return cb(error);
+                }
+                return cb(null, result[0]);
+            }
+        )
+    },
     updateData: (id, data, cb) => {
         pool.query(
             `update CHITIETPHIEUTHANHTOAN set
