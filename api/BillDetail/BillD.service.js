@@ -58,7 +58,7 @@ module.exports = {
     },
     getDataByMaPhongNIDPTT: (maPhong, idPTT, cb) => {
         pool.query(
-            `select * CHITIETPHIEUTHANHTOAN where maPhong = ? and idPTT = ?`,
+            `select * from CHITIETPHIEUTHANHTOAN where maPhong = ? and idPTT = ?`,
             [
                 maPhong,
                 idPTT
