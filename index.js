@@ -28,6 +28,7 @@ const detailBookingRouter = require('./api/BookingDetail/BookingD.router');
 const detailBillRouter = require('./api/BillDetail/BillD.router');
 const customerStayRouter = require('./api/CustomerStay/CustomerStay.router');
 const billRouter = require('./api/Bill/Bill.router');
+const rrcRouter = require('./api/RoomRentalContract/RRC.router');
 const payerRouter = require('./api/Payer/Payer.router');
 
 const sendmailRouter = require('./api/Mail/mail.router');
@@ -58,7 +59,8 @@ app.use('/api/detail-booking', detailBookingRouter);
 app.use('/api/detail-bill', detailBillRouter);
 app.use('/api/customer-stay', customerStayRouter);
 app.use('/api/bill', billRouter);
-app.use('/api/payer', payerRouter);
+app.use('/api/rrc', rrcRouter);
+// app.use('/api/payer', payerRouter);
 
 
 app.use('/api/admin', adminRouter);

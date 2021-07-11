@@ -1,6 +1,12 @@
 var Booking = require('./booking.service');
 
 module.exports = {
+    getDataWasDepositOrPaidInBill: (req, res) => {
+        Booking.getDataWasDepositOrPaidInBill(2, 3, (err, results) => {
+            if (err) { return res.status(500).json(err); }
+            return res.status(200).json(results);
+        })
+    },
     index: (req, res) => {
         Booking.getAll((err, results) => {
             if(err) { return res.status(500).json(err); }

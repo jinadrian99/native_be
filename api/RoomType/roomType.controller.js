@@ -140,8 +140,8 @@ module.exports = {
 
         var arrLP = [];
         getAll((err, lstLP) => {
-            if(err) { return res.status(500).json(err) }
-            if(lstLP.length <= 0){ return res.status(200).json("Chưa có LP"); }
+            if(err) { try { return res.status(500).json(err); } catch (error) {} }
+            if(lstLP.length <= 0){ try{ return res.status(200).json("Chưa có LP");} catch (error) {} }
             lstLP.forEach(item => {
                 var obj = {
                     idLP: item.idLP, 
@@ -156,20 +156,22 @@ module.exports = {
             //SELECT `idPTT` FROM `PHIEUTHANHTOANPHONG` WHERE ngayDen <= "2021-06-19" and ngayDi >= "2021-06-15"
             bill.findIDbyDays(dateA, dateB, 2, (err, lstPTT) => {
                 console.log("Bill: ", err, lstPTT);
-                if(err) { return res.status(500).json(err) }
+                if(err) { try { return res.status(500).json(err); } catch (error) {} }
                 //Kiểm tra xem đây có phải là nhánh KH đang ở hay ko?
                 if(lstPTT.length <= 0) { //Phiếu thanh toán phòng ko phải ở trạng thái (2)thanh toán tiền cọc
                     RRC.findIDRoombyDays(dateA, dateB, 1, (err, lstPTP) => { //Nếu ko có trạng thái thanh toán tiền cọc thì chạy dòng này
                         console.log("RRC: ", err, lstPTP);
-                        if(err) { return res.status(500).json(err) }
-                        if(lstPTP.length <= 0) { return res.status(200).json(arrLP) }
+                        if(err) { try { return res.status(500).json(err); }  catch (error) {} }
+                        if(lstPTP.length <= 0) { 
+                            try { return res.status(200).json(arrLP); } catch (error) {}
+                        }
                         if(lstPTP.length > 0) { 
                             var count2 = lstPTP.length;
                             lstPTP.forEach(item => {
                                 room.getDataByID(item.maPhong, (err, PHONG) => {
                                     console.log("room: ", err, PHONG);
                                     count2 --; //bộ đếm dùng để xét khi nào ngừng dòng for (vì asynchronous)
-                                    if(err) { return res.status(500).json(err) }
+                                    if(err) { try { return res.status(500).json(err); } catch (error) {} }
                                     if(PHONG != null){ 
                                         // console.log("PHONG_idLP", PHONG.idLP);
                                         var index = arrLP.findIndex(item => item.idLP == PHONG.idLP);// tìm index trong arrLP để trừ
@@ -182,7 +184,7 @@ module.exports = {
                                     }
                                     if(count2 == 0){ 
                                         console.log("arrLP: ", arrLP);
-                                        return res.status(200).json(arrLP);
+                                        try { return res.status(200).json(arrLP); } catch (error) {}
                                     }
                                 })
                             })
@@ -194,7 +196,7 @@ module.exports = {
                     // console.log("PTT: ", item.idPTT);
                     DBill.getDataByIDPTT(item.idPTT, (err, lstCTPTT) => {
                         console.log("DBill: ", err, lstCTPTT)
-                        if(err) { return res.status(500).json(err) }
+                        if(err) { try { return res.status(500).json(err); } catch (error) {} }
                         if(lstCTPTT.length > 0) { 
                             var count1 = lstCTPTT.length;
                             lstCTPTT.forEach(item => {
@@ -202,7 +204,7 @@ module.exports = {
                                 room.getDataByID(item.maPhong, (err, PHONG) => {
                                     console.log("room: ", err, PHONG);
                                     count1 --;
-                                    if(err) { return res.status(500).json(err) }
+                                    if(err) { try { return res.status(500).json(err); } catch (error) {} }
                                     if(PHONG != null){ 
                                         // console.log("PHONG_idLP", PHONG.idLP);
                                         var index = arrLP.findIndex(item => item.idLP == PHONG.idLP);
@@ -217,10 +219,11 @@ module.exports = {
                                     if(count1 == 0){ 
                                         RRC.findIDRoombyDays(dateA, dateB, 1, (err, lstPTP) => {
                                             console.log("RRC: ", err, lstPTP);
-                                            if(err) { return res.status(500).json(err); }
+                                            if(err) { try { return res.status(500).json(err); } catch (error) {} }
                                             if(lstPTP.length <= 0){ 
                                                 console.log("arrLP: ", arrLP);
-                                                return res.status(200).json(arrLP);
+                                                // console.log('res', res);
+                                                try { return res.status(200).json(arrLP); } catch (error) {}
                                             }
                                             if(lstPTP.length > 0) { 
                                                 var count2 = lstPTP.length;
@@ -228,7 +231,7 @@ module.exports = {
                                                     room.getDataByID(item.maPhong, (err, PHONG) => {
                                                         console.log("room: ", err, PHONG);
                                                         count2 --;
-                                                        if(err) { return res.status(500).json(err) }
+                                                        if(err) { try { return res.status(500).json(err); } catch (error) {} }
                                                         if(PHONG != null){ 
                                                             // console.log("PHONG_idLP", PHONG.idLP);
                                                             var index = arrLP.findIndex(item => item.idLP == PHONG.idLP);
@@ -241,7 +244,9 @@ module.exports = {
                                                         }
                                                         if(count2 == 0){ 
                                                             console.log("arrLP: ", arrLP);
-                                                            return res.status(200).json(arrLP);
+                                                            if(res != null){ 
+                                                                try { return res.status(200).json(arrLP); } catch (error) {}
+                                                            }
                                                         }
                                                     })
                                                 })

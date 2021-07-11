@@ -7,7 +7,7 @@ module.exports = {
             [
                 data.idPTP,
                 data.ngayDen,
-                data.NgayDi,
+                data.ngayDi,
                 data.trangThai,
                 data.maPhong,
                 data.idDDP,
@@ -75,7 +75,7 @@ module.exports = {
         pool.query(
             `update PHIEUTHUEPHONG set
                 ngayDen = ?,
-                NgayDi = ?,
+                ngayDi = ?,
                 trangThai = ?,
                 maPhong = ?,
                 idDDP = ?,
@@ -83,7 +83,7 @@ module.exports = {
             where idPTP = ?`,
             [
                 data.ngayDen,
-                data.NgayDi,
+                data.ngayDi,
                 data.trangThai,
                 data.maPhong,
                 data.idDDP,

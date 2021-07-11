@@ -23,6 +23,19 @@ module.exports = {
             return res.status(200).json('change status to deposit');
         })
     },
+    changeStatusToPaidByIdPTT: (req, res) => {
+        const idPTT = req.params.idPTT;
+        bill.changeStatus(idPTT, 3, (err, result) => {
+            if(err) { return res.status(500).json(err); }
+            return res.status(200).json('change status to deposit');
+        })
+    },
+    index: (req, res) => {
+        bill.getAll((err, result) => {
+            if(err) { return res.status(500).json(err); }
+            return res.status(200).json(result);
+        })
+    },
     show: (req, res) => {
         const id = req.params.id;
         bill.getDataByID(id, (err, result) => {
