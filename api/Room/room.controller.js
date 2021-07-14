@@ -119,8 +119,10 @@ module.exports = {
                 RCC.findIDRoombyDays(dateA, dateB, 1, (err, lstPTP) => {
                     if(err) { return res.status(500).json(err); }
                     if(lstPTP.length <= 0) { 
-                        arrRoom = arrRoom.filter(item => arrRoom.indexOf(item) < number);
-                        try { return res.status(200).json(arrRoom); } catch (error) {}
+                        if(arrRoom.length >= number ){
+                            arrRoom = arrRoom.filter(item => arrRoom.indexOf(item) < number);
+                            try { return res.status(200).json(arrRoom); } catch (error) {}
+                        } else { try { return res.status(500).json("The number of rooms is not enough!"); } catch (error) {} }
                     }
                     var count2 = lstPTP.length;
                     lstPTP.forEach(item => {
@@ -134,8 +136,10 @@ module.exports = {
                                 }
                             }
                             if(count2 == 0) { 
-                                arrRoom = arrRoom.filter(item => arrRoom.indexOf(item) < number);
-                                try { return res.status(200).json(arrRoom); } catch (error) {}
+                                if(arrRoom.length >= number ){
+                                    arrRoom = arrRoom.filter(item => arrRoom.indexOf(item) < number);
+                                    try { return res.status(200).json(arrRoom); } catch (error) {}
+                                } else { try { return res.status(500).json("The number of rooms is not enough!"); } catch (error) {} }
                             }
                         })
                     })
@@ -161,8 +165,10 @@ module.exports = {
                                     RCC.findIDRoombyDays(dateA, dateB, 1, (err, lstPTP) => {
                                         if(err) { return res.status(500).json(err); }
                                         if(lstPTP.length <= 0) { 
-                                            arrRoom = arrRoom.filter(item => arrRoom.indexOf(item) < number);
-                                            try { return res.status(200).json(arrRoom); } catch (error) {}
+                                            if(arrRoom.length >= number ){
+                                                arrRoom = arrRoom.filter(item => arrRoom.indexOf(item) < number);
+                                                try { return res.status(200).json(arrRoom); } catch (error) {}
+                                            } else { try { return res.status(500).json("The number of rooms is not enough!"); } catch (error) {} }
                                         }
                                         var count2 = lstPTP.length;
                                         lstPTP.forEach(item => {
@@ -176,8 +182,10 @@ module.exports = {
                                                     }
                                                 }
                                                 if(count2 == 0) { 
-                                                    arrRoom = arrRoom.filter(item => arrRoom.indexOf(item) < number);
-                                                    try { return res.status(200).json(arrRoom); } catch (error) {}
+                                                    if(arrRoom.length >= number ){
+                                                        arrRoom = arrRoom.filter(item => arrRoom.indexOf(item) < number);
+                                                        try { return res.status(200).json(arrRoom); } catch (error) {}
+                                                    } else { try { return res.status(500).json("The number of rooms is not enough!"); } catch (error) {} }
                                                 }
                                             })
                                         })
