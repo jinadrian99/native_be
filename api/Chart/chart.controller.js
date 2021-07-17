@@ -1,6 +1,6 @@
 const booking = require('../Booking/booking.service');
 const bookingService = require('../BookingService/bookingService.service');
-const bill = require('../Bill/bill.service');
+const bill = require('../Bill/Bill.service');
 const roomType = require('../RoomType/roomType.service');
 
 const BookingMBquantity = (quarter, year, cb) => {
