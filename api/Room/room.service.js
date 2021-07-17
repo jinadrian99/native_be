@@ -3,11 +3,10 @@ const pool = require("../../config/database");
 module.exports = {
     createData: (data, cb) => {
         pool.query(
-            `insert into PHONG VALUES(?,?,?,?)`,
+            `insert into PHONG VALUES(?,?,?)`,
             [
                 data.maPhong,
                 data.soNguoi,
-                data.trangThai,
                 data.idLP
             ],
             (error, result) => {
@@ -74,12 +73,10 @@ module.exports = {
         pool.query(
             `update PHONG set
                 soNguoi = ?,
-                trangThai = ?,
                 idLP = ?
             where maPhong = ?`,
             [
                 data.soNguoi,
-                data.trangThai,
                 data.idLP,
                 id
             ],
