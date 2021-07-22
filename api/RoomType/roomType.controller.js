@@ -13,10 +13,52 @@ var room = require('../Room/room.service');
 var bill = require('../Bill/Bill.service');
 var DBill = require('../BillDetail/BillD.service');
 var RRC = require('../RoomRentalContract/RRC.service');
+const Validator = require('fastest-validator');
+
+const valid = new Validator();
+const schema = {
+    tenLP: {
+        type: 'string', min: 7, max: 30, 
+        messages: {
+            required: "Must input name!",
+            stringMin: "Name must be at least 7 characters",
+            stringMax: "Name must be at most 12 characters!"
+        }
+    },
+    moTaCT: {
+        type: 'string', min: 50,
+        messages: {
+            required: "Must input descript!",
+            stringMin: "Name must be at least 50 characters"
+        }
+    },
+    moTaGT: {
+        type: 'string', min: 25, max: 50,
+        messages: {
+            required: "Must input name!",
+            stringMin: "Name must be at least 25 characters",
+            stringMax: "Name must be at most 50 characters!"
+        }
+    },
+    moTaTD: {
+        type: 'string', min: 50, max: 80,
+        messages: {
+            required: "Must input name!",
+            stringMin: "Name must be at least 50 characters",
+            stringMax: "Name must be at most 80 characters!"
+        }
+    }
+}
+
+const check = valid.compile(schema);
 
 module.exports = {
     createRoomType: (req, res) => {
         const data = req.body;
+        
+        var constraint = check(data);
+        if(constraint !== true) { try { return res.status(400).json(constraint);  } catch (error) {} }
+
         createData(data, (err, results) => {
             if(err) {
                 console.log(err);
@@ -50,6 +92,10 @@ module.exports = {
     updateRoomType: (req, res) => {
         const id = req.params.id;
         const data = req.body;
+
+        var constraint = check(data);
+        if(constraint !== true) { try { return res.status(400).json(constraint);  } catch (error) {} }
+
         updateData(id, data, (err, results) => {
             if(err) {
                 console.log(err);

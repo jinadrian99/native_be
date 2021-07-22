@@ -109,5 +109,38 @@ module.exports = {
                 return callBack(null, result); 
             }
         )
+    },
+    getDataByUniToInsert: (idDDP, idKHO, maPhong, callBack) => {
+        pool.query(
+            `SELECT * FROM PHIEUTHUEPHONG WHERE idDDP = ? AND idKHO = ? AND maPhong = ?`,
+            [
+                idDDP,
+                idKHO,
+                maPhong,
+            ],
+            (error, result) => {
+                if(error){
+                    return callBack(error);
+                }
+                return callBack(null, result[0]); 
+            }
+        )
+    },
+    getDataByUniToUpdate: (idDDP, idKHO, maPhong, id, callBack) => {
+        pool.query(
+            `SELECT * FROM PHIEUTHUEPHONG WHERE idDDP = ? AND idKHO = ? AND maPhong = ? AND idPTP != ?`,
+            [
+                idDDP,
+                idKHO,
+                maPhong,
+                id
+            ],
+            (error, result) => {
+                if(error){
+                    return callBack(error);
+                }
+                return callBack(null, result[0]); 
+            }
+        )
     }
 };

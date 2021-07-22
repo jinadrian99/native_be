@@ -93,9 +93,21 @@ module.exports = {
             }
         )
     },
-    getIdkhdByIdddp: (idDDP, cb) => {
+    getDataByIdddp: (idDDP, cb) => {
         pool.query(
             `SELECT * FROM PHIEUTHANHTOANPHONG WHERE idDDP = ?`,
+            [
+                idDDP
+            ],
+            (error, result) => {
+                if(error) { return cb(error); }
+                return cb(null, result[0]);
+            }
+        )
+    },
+    getDataByIdddpWithStatusUndeposit: (idDDP, cb) => {
+        pool.query(
+            `SELECT * FROM PHIEUTHANHTOANPHONG WHERE idDDP = ? AND tinhTrang = 1`,
             [
                 idDDP
             ],

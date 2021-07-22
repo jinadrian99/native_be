@@ -124,5 +124,29 @@ module.exports = {
             // console.log("numberRoomTypes: ", numberRoomTypes);
             res.status(200).json({rooms, numberRoomTypes});
         })
+    },
+    getCusStayIn7N1Nationals: (req, res) => {
+
+        // SELECT KHACHHANGO.quocGia, COUNT(KHACHHANGO.idKHO) AS soLuong
+        // FROM KHACHHANGO 
+        // GROUP BY KHACHHANGO.quocGia
+        // HAVING KHACHHANGO.quocGia = 'America' 
+        // OR KHACHHANGO.quocGia = 'England' 
+        // OR KHACHHANGO.quocGia = 'Netherlands' 
+        // OR KHACHHANGO.quocGia = 'Paris' 
+        // OR KHACHHANGO.quocGia = 'Singapore' 
+        // OR KHACHHANGO.quocGia = 'ThaiLand' 
+        // OR KHACHHANGO.quocGia = 'VietNam' 
+
+
+        // SELECT COUNT(KHACHHANGO.idKHO) AS soLuong
+        // FROM KHACHHANGO 
+        // WHERE KHACHHANGO.quocGia != 'America' 
+        // AND KHACHHANGO.quocGia != 'England' 
+        // AND KHACHHANGO.quocGia != 'Netherlands' 
+        // AND KHACHHANGO.quocGia != 'Paris' 
+        // AND KHACHHANGO.quocGia != 'Singapore' 
+        // AND KHACHHANGO.quocGia != 'ThaiLand' 
+        // AND KHACHHANGO.quocGia != 'VietNam' 
     }
 }

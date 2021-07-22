@@ -10,7 +10,7 @@ module.exports = {
     },
     getBillByIdDDP: (req, res) => {
         const idDDP = req.params.id;
-        bill.getIdkhdByIdddp(idDDP, (err, bills) => {
+        bill.getDataByIdddp(idDDP, (err, bills) => {
             if(err) { return res.status(500).json(err); }
             console.log('bill by idDDP: ', bills)
             return res.status(200).json(bills);
