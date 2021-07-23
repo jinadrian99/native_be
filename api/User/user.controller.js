@@ -1,7 +1,7 @@
 const user = require('./user.service');
 
 const { genSaltSync, hashSync, compareSync } = require('bcrypt');
-const { sign } = require('jsonwebtoken');
+const { sign, verify } = require('jsonwebtoken');
 const { JWT_SECRET } = require('../../config/jwt_secret');
 
 var khd = require('../KhachHangDat/khd.service');
@@ -233,7 +233,6 @@ module.exports = {
         const id = req.params.id;
         const data = req.body;
         if (data.isChangePass) {
-            console.log('data currentPass: ', data.currentPass);
             user.getDataByIdKHD(data.idKHD, (err, results) => {
                 if (err) {
                     console.log(err);
@@ -259,8 +258,60 @@ module.exports = {
                                 err:'Email existed!!!'
                             })
                         }
+                        if (data.oldPassword === '') {
+                            var salt = genSaltSync(10);
+                            data.password = hashSync(data.password, salt);
+                            user.updateData(id, data, (err, results) => {
+                                if(err) {
+                                    console.log(err);
+                                    return res.status(500).json(err);
+                                }
+                                if(results == null) {
+                                    return res.status(404).json('Record not found');
+                                }
+                                return res.status(200).json('Updated successfully');
+                            });
+                        }
+                        else{
+                            const result = compareSync(data.oldPassword, results[0].password);
+                            console.log('kq tra ve: ', result);
+                            if (result) {
+                                var salt = genSaltSync(10);
+                                data.password = hashSync(data.password, salt);
+                                user.updateData(id, data, (err, results) => {
+                                    if(err) {
+                                        console.log(err);
+                                        return res.status(500).json(err);
+                                    }
+                                    if(results == null) {
+                                        return res.status(404).json('Record not found');
+                                    }
+                                    return res.status(200).json('Updated successfully');
+                                });
+                            }
+                            else {
+                                return res.status(404).json('Old password does not match!');
+                            }
+                        }
+                    })
+                }
+                else {
+                    if (data.oldPassword === '') {
+                        var salt = genSaltSync(10);
+                        data.password = hashSync(data.password, salt);
+                        user.updateData(id, data, (err, results) => {
+                            if(err) {
+                                console.log(err);
+                                return res.status(500).json(err);
+                            }
+                            if(results == null) {
+                                return res.status(404).json('Record not found');
+                            }
+                            return res.status(200).json('Updated successfully');
+                        });
+                    }
+                    else{
                         const result = compareSync(data.oldPassword, results[0].password);
-                        console.log('kq tra ve: ', result);
                         if (result) {
                             var salt = genSaltSync(10);
                             data.password = hashSync(data.password, salt);
@@ -278,26 +329,6 @@ module.exports = {
                         else {
                             return res.status(404).json('Old password does not match!');
                         }
-                    })
-                }
-                else {
-                    const result = compareSync(data.oldPassword, results[0].password);
-                    if (result) {
-                        var salt = genSaltSync(10);
-                        data.password = hashSync(data.password, salt);
-                        user.updateData(id, data, (err, results) => {
-                            if(err) {
-                                console.log(err);
-                                return res.status(500).json(err);
-                            }
-                            if(results == null) {
-                                return res.status(404).json('Record not found');
-                            }
-                            return res.status(200).json('Updated successfully');
-                        });
-                    }
-                    else {
-                        return res.status(404).json('Old password does not match!');
                     }
                 }
             })
@@ -470,8 +501,8 @@ module.exports = {
                                     return res.status(500).json(err);
                                 }
                                 const salt = genSaltSync(10);
-                                data.password = hashSync(data.password, salt)
-                                data.idKHD = results[0].idKHD;; //doi lai idKHD de update KHD
+                                data.password = hashSync(data.password, salt);
+                                data.idKHD = results[0].idKHD; //doi lai idKHD de update KHD
                                 // console.log(results[0].idTK);
                                 // console.log(data);
                                 user.updateData(results[0].idTK, data, (err, result) => {
@@ -513,5 +544,29 @@ module.exports = {
                 }
             });
         }
+    },
+    resetPassword: (req, res) => {
+        const id = req.params.id;
+        // const authorizationHeader = req.headers['authorization'];
+        verify(id, JWT_SECRET, (err, resToken) => {
+            console.log(err, resToken);
+            if (err) {
+                return res.status(500).json(err);
+            }
+            const data = req.body;
+            const salt = genSaltSync(10);
+            data.password = hashSync(data.password, salt);
+            user.updatePass(resToken.idTK, data, (err, resUser) => {
+                if(err) {
+                    console.log(err);
+                    return res.status(500).json(err);
+                }
+                if(resUser == null) {
+                    return res.status(404).json('Record not found');
+                }
+                console.log(resUser);
+                return res.status(200).json('Updated successfully');
+            })
+        })
     }
 }

@@ -29,7 +29,8 @@ const detailBillRouter = require('./api/BillDetail/BillD.router');
 const customerStayRouter = require('./api/CustomerStay/CustomerStay.router');
 const billRouter = require('./api/Bill/Bill.router');
 const rrcRouter = require('./api/RoomRentalContract/RRC.router');
-const payerRouter = require('./api/Payer/Payer.router');
+const resetPassRouter = require('./api/ResetPass/resetPass.router');
+// const payerRouter = require('./api/Payer/Payer.router');
 
 const sendmailRouter = require('./api/Mail/mail.router');
 const chartRouter = require('./api/Chart/chart.router');
@@ -60,6 +61,7 @@ app.use('/api/detail-bill', detailBillRouter);
 app.use('/api/customer-stay', customerStayRouter);
 app.use('/api/bill', billRouter);
 app.use('/api/rrc', rrcRouter);
+app.use('/api/reset-pass', resetPassRouter);
 // app.use('/api/payer', payerRouter);
 
 
