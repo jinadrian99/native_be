@@ -122,5 +122,12 @@ module.exports = {
                 return callBack(null, result); 
             }
         )
+    },
+    getDataNumbersCusBy7Nationals: (callBack) => {
+        pool.query(
+            ``,
+            [],
+            (error, results) => {}
+        )
     }
 };

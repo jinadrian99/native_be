@@ -1,43 +1,18 @@
-const { 
-    createData,
-    getAll, 
-    getDataByID,
-    updateData,
-    getDataByIdDDP
-} = require('./RRC.service');
+var RRC = require('./RRC.service');
 
 module.exports = {
-    createRRC: (req, res) => {
-        const data = req.body;
-        createData(data, (err, results) => {
-            if(err) {
-                console.log(err);
-                return res.status(500).json(err);
-            }
-            return res.status(200).json(results);
-        });
+    index: (req, res) => {
+        RRC.getAll((err, result) => {
+            if(err) { return res.status(500).json(err); }
+            return res.status(200).json(result);
+        })
     },
-    getRRC: (req, res) => {
-        getAll((err, results) => {
-            if(err) {
-                console.log(err);
-                return res.status(500).json(err);
-            }
-            return res.status(200).json(results);
-        });
-    },
-    getRRCByID: (req, res) => {
+    show: (req, res) => {
         const id = req.params.id;
-        getDataByID(id, (err, results) => {
-            if(err) {
-                console.log(err);
-                return res.status(500).json(err);
-            }
-            if(results == null) {
-                return res.status(404).json('Record not found');
-            }
-            return res.status(200).json(results);
-        });
+        RRC.getDataByID(id, (err, result) => {
+            if(err) { return res.status(500).json(err); }
+            return res.status(200).json(result);
+        })
     },
     getRRCByIDDDP: (req, res) => {
         const id = req.params.id;
@@ -52,18 +27,28 @@ module.exports = {
             return res.status(200).json(results);
         });
     },
-    updateRRC: (req, res) => {
+    store: (req, res) => {
+        var data = req.body;
+        RRC.getDataByUniToInsert(data.idDDP, data.idKHO, data.maPhong, (err, result) => {
+            if(err) { try { res.status(500).json(err); } catch (error) {} }
+            if(result != null){ try { return res.status(400).json("Room rental contract is Exists!"); } catch (error) {} }
+            RRC.createData(data, (err, results) => {
+                if(err) { return res.status(500).json(err); }
+                if(results == null) { return res.status(400).json("Create failed!"); }
+                res.status(200).json(results);
+            })
+        })
+    },
+    update: (req, res) => {
         const id = req.params.id;
         const data = req.body;
-        updateData(id, data, (err, results) => {
-            if(err) {
-                console.log(err);
-                return res.status(500).json(err);
-            }
-            if(results == null) {
-                return res.status(404).json('Record not found');
-            }
-            return res.status(200).json('Updated successfully');
-        });
-    }
+        RRC.getDataByUniToUpdate(data.idDDP, data.idKHO, data.maPhong, id, (err, result) => {
+            if(err) { try { res.status(500).json(err); } catch (error) {} }
+            if(result != null){ try { return res.status(400).json("Room rental contract is Exists!"); } catch (error) {} }
+            RRC.updateData(id, data, (err, result)=>{
+                if(err) { return res.status(500).json(err); }
+                return res.status(200).json('Update successfully');
+            })
+        })
+    },
 }

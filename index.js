@@ -61,8 +61,10 @@ app.use('/api/detail-bill', detailBillRouter);
 app.use('/api/customer-stay', customerStayRouter);
 app.use('/api/bill', billRouter);
 app.use('/api/payer', payerRouter);
-app.use('/api/room-rental-contract', rrcRouter);
 app.use('/api/reset-pass', resetPassRouter);
+app.use('/api/rrc', rrcRouter);
+// app.use('/api/payer', payerRouter);
+
 
 app.use('/api/admin', adminRouter);
 app.use('/api/pay', paypalRouter);

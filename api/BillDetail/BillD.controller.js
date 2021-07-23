@@ -24,7 +24,7 @@ module.exports = {
             DBS.createData(data, (err, results) => {
                 if(err) { return res.status(500).json(err); }
                 if(results == null) { return res.status(400).json("Create failed!"); }
-                res.status(200).json("Created successfully");
+                return res.status(200).json("Created successfully");
             })
         })
     },

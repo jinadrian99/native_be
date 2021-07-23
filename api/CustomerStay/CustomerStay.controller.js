@@ -74,24 +74,24 @@ module.exports = {
         const data = req.body;
 
         var constraint = check(data);
-        if(constraint !== true) return res.status(400).json(constraint);
+        if(constraint !== true) { try { return res.status(400).json(constraint);  } catch (error) {} }
 
         customerStay.getDataByCMND(data.CMND, (err, result) => {
-            if(err) { return res.status(500).json(err); }
-            if(result != null){ return res.status(400).json("Exits this identity card!"); }
+            if(err) { try { return res.status(500).json(err);  } catch (error) {} }
+            if(result != null){ try { return res.status(400).json("Exits this identity card!"); } catch (error) {} }
         });
         customerStay.getDataByPassport(data.Passport, (err, result) => {
-            if(err) { return res.status(500).json(err); }
-            if(result != null){ return res.status(400).json("Exits this Passport!"); }
+            if(err) { try { return res.status(500).json(err);  } catch (error) {} }
+            if(result != null){ try { return res.status(400).json("Exits this Passport!");  } catch (error) {} }
         });
         customerStay.getDataBySdt(data.sdt, (err, result) => {
-            if(err) { return res.status(500).json(err); }
-            if(result != null){ return res.status(400).json("Exits this phone number!"); }
+            if(err) { try { return res.status(500).json(err);  } catch (error) {} }
+            if(result != null){ try { return res.status(400).json("Exits this phone number!");  } catch (error) {} }
         });
 
         customerStay.createData(data, (err, result) => {
-            if(err) { return res.status(500).json(err); }
-            return res.status(200).json("Created successfully");
+            if(err) { try { return res.status(500).json(err);  } catch (error) {} }
+            try { return res.status(200).json("Created successfully") } catch (error) {} ;
         });
     },
     update: (req, res) => {
@@ -99,36 +99,36 @@ module.exports = {
         const data = req.body;
 
         var constraint = check(data);
-        if(constraint !== true) return res.status(400).json(constraint);
+        if(constraint !== true) try { return res.status(400).json(constraint) } catch (error) {} ;
         
         customerStay.getDataByCMND(data.CMND, (err, result) => {
-            if(err) { return res.status(500).json(err); }
+            if(err) { try { return res.status(500).json(err);  } catch (error) {} }
             if(result != null) { 
                 if(result.idKHO != id) {
-                    return res.status(400).json("Exits this identity card!"); 
+                    try { return res.status(400).json("Exits this identity card!"); } catch (error) {}  
                 }
             }
         });
         customerStay.getDataByPassport(data.Passport, (err, result) => {
-            if(err) { return res.status(500).json(err); }
+            if(err) { try { return res.status(500).json(err);  } catch (error) {} }
             if(result != null) { 
                 if(result.idKHO != id) {
-                    return res.status(400).json("Exits this Passport!"); 
+                    try { return res.status(400).json("Exits this Passport!"); } catch (error) {}  
                 }
             }
         });
         customerStay.getDataBySdt(data.sdt, (err, result) => {
-            if(err) { return res.status(500).json(err); }
+            if(err) { try { return res.status(500).json(err);  } catch (error) {} }
             if(result != null) { 
                 if(result.idKHO != id) {
-                    return res.status(400).json("Exits this phone number!"); 
+                    try { return res.status(400).json("Exits this phone number!"); } catch (error) {}  
                 }
             }
         });
 
         customerStay.updateData(id, data, (err, result) => {
-            if(err) { return res.status(500).json(err); }
-            return res.status(200).json("Updated successfully");
+            if(err) { try { return res.status(500).json(err);  } catch (error) {} }
+            try { return res.status(200).json("Updated successfully") } catch (error) {} ;
         })
     },
     destroy: (req, res) => {

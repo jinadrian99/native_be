@@ -3,15 +3,14 @@ const pool = require("../../config/database");
 module.exports = {
     createData: (data, cb) => {
         pool.query(
-            `insert into DONDATDICHVU VALUES(?,?,?,?,?,?,?)`,
+            `insert into DONDATDICHVU VALUES(?,?,?,?,?,?)`,
             [
                 null,
                 data.ngayDat,
                 data.tongThanhTien,
                 data.trangThai,
                 data.idPTP,
-                data.idKHD,
-                data.idThe
+                data.idKHD
             ],
             (error, result) => {
                 if(error) {
@@ -67,8 +66,7 @@ module.exports = {
                 tongThanhTien = ?,
                 trangThai = ?,
                 idPTP = ?,
-                idKHD = ?,
-                idThe = ?
+                idKHD = ?
             where idDDDV = ?`,
             [
                 data.ngayDat,
@@ -76,7 +74,6 @@ module.exports = {
                 data.trangThai,
                 data.idPTP,
                 data.idKHD,
-                data.idThe,
                 id
             ],
             (error, result) => {

@@ -10,7 +10,7 @@ module.exports = {
     },
     getBillByIdDDP: (req, res) => {
         const idDDP = req.params.id;
-        bill.getIdkhdByIdddp(idDDP, (err, bills) => {
+        bill.getDataByIdddp(idDDP, (err, bills) => {
             if(err) { return res.status(500).json(err); }
             console.log('bill by idDDP: ', bills)
             return res.status(200).json(bills);
@@ -21,6 +21,19 @@ module.exports = {
         bill.changeStatus(idPTT, 2, (err, result) => {
             if(err) { return res.status(500).json(err); }
             return res.status(200).json('change status to deposit');
+        })
+    },
+    changeStatusToPaidByIdPTT: (req, res) => {
+        const idPTT = req.params.idPTT;
+        bill.changeStatus(idPTT, 3, (err, result) => {
+            if(err) { return res.status(500).json(err); }
+            return res.status(200).json('change status to deposit');
+        })
+    },
+    index: (req, res) => {
+        bill.getAll((err, result) => {
+            if(err) { return res.status(500).json(err); }
+            return res.status(200).json(result);
         })
     },
     show: (req, res) => {
