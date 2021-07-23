@@ -18,7 +18,7 @@ scheduler.scheduleJob(crontab, () => {
         if(lstBooking.length <= 0) { return; }
         // var count1 = lstBooking.length;
         lstBooking.forEach(booking => {
-            bill.getIdkhdByIdddp(booking.idDDP, (err, objBill) => {
+            bill.getDataByIdddp(booking.idDDP, (err, objBill) => {
                 if(err) { return console.log(err); }
                 if(objBill == null) { 
                     // user đến time r mà chưa tạo bill từ nút create bill trong ddp -> send mail kêu tạo bill và thanh toán

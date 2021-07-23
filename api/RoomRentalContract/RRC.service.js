@@ -7,7 +7,7 @@ module.exports = {
             [
                 data.idPTP,
                 data.ngayDen,
-                data.NgayDi,
+                data.ngayDi,
                 data.trangThai,
                 data.maPhong,
                 data.idDDP,
@@ -75,7 +75,7 @@ module.exports = {
         pool.query(
             `update PHIEUTHUEPHONG set
                 ngayDen = ?,
-                NgayDi = ?,
+                ngayDi = ?,
                 trangThai = ?,
                 maPhong = ?,
                 idDDP = ?,
@@ -83,7 +83,7 @@ module.exports = {
             where idPTP = ?`,
             [
                 data.ngayDen,
-                data.NgayDi,
+                data.ngayDi,
                 data.trangThai,
                 data.maPhong,
                 data.idDDP,
@@ -107,6 +107,39 @@ module.exports = {
                     return callBack(error);
                 }
                 return callBack(null, result); 
+            }
+        )
+    },
+    getDataByUniToInsert: (idDDP, idKHO, maPhong, callBack) => {
+        pool.query(
+            `SELECT * FROM PHIEUTHUEPHONG WHERE idDDP = ? AND idKHO = ? AND maPhong = ?`,
+            [
+                idDDP,
+                idKHO,
+                maPhong,
+            ],
+            (error, result) => {
+                if(error){
+                    return callBack(error);
+                }
+                return callBack(null, result[0]); 
+            }
+        )
+    },
+    getDataByUniToUpdate: (idDDP, idKHO, maPhong, id, callBack) => {
+        pool.query(
+            `SELECT * FROM PHIEUTHUEPHONG WHERE idDDP = ? AND idKHO = ? AND maPhong = ? AND idPTP != ?`,
+            [
+                idDDP,
+                idKHO,
+                maPhong,
+                id
+            ],
+            (error, result) => {
+                if(error){
+                    return callBack(error);
+                }
+                return callBack(null, result[0]); 
             }
         )
     }

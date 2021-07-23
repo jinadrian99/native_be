@@ -3,11 +3,13 @@ const pool = require("../../config/database");
 module.exports = {
     createData: (data, cb) => {
         pool.query(
-            `insert into KHACHHANGDAT VALUES(?,?,?)`,
+            `insert into KHACHHANGDAT VALUES(?,?,?,?,?)`,
             [
                 null,
                 data.tenKH,
-                data.sdt
+                data.sdt,
+                data.CMND,
+                data.Passport
             ],
             (error, result) => {
                 if(error) {
@@ -41,15 +43,43 @@ module.exports = {
             }
         )
     },
+    getDataByCMND: (CMND, cb) => {
+        pool.query(
+            `select * from KHACHHANGDAT where CMND = ?`,
+            [CMND],
+            (error, result) => {
+                if(error) {
+                    return cb(error);
+                }
+                return cb(null, result);
+            }
+        )
+    },
+    getDataByPassport: (Passport, cb) => {
+        pool.query(
+            `select * from KHACHHANGDAT where Passport = ?`,
+            [Passport],
+            (error, result) => {
+                if(error) {
+                    return cb(error);
+                }
+                return cb(null, result);
+            }
+        )
+    },
     updateData: (id, data, cb) => {
         pool.query(
             `update KHACHHANGDAT set
                 tenKH = ?,
-                sdt = ?
+                sdt = ?,
+                CMND = ?,
+                Passport = ?
             where idKHD = ?`,
             [
                 data.tenKH,
                 data.sdt,
+                data.CMND,
+                data.Passport,
                 id
             ],
             (error, result) => {

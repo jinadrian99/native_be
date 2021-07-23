@@ -3,7 +3,7 @@ const pool = require("../../config/database");
 module.exports = {
     createData: (data, cb) => {
         pool.query(
-            `insert into PHIEUTHANHTOANPHONG VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
+            `insert into PHIEUTHANHTOANPHONG VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)`,
             [
                 null,
                 data.ngayThanhToan,
@@ -14,7 +14,6 @@ module.exports = {
                 data.tienConLai,
                 data.phanTramGiam,
                 data.idKM,
-                data.idThe,
                 data.idKHD,
                 data.idDDP,
                 data.ngayDen,
@@ -94,9 +93,21 @@ module.exports = {
             }
         )
     },
-    getIdkhdByIdddp: (idDDP, cb) => {
+    getDataByIdddp: (idDDP, cb) => {
         pool.query(
             `SELECT * FROM PHIEUTHANHTOANPHONG WHERE idDDP = ?`,
+            [
+                idDDP
+            ],
+            (error, result) => {
+                if(error) { return cb(error); }
+                return cb(null, result[0]);
+            }
+        )
+    },
+    getDataByIdddpWithStatusUndeposit: (idDDP, cb) => {
+        pool.query(
+            `SELECT * FROM PHIEUTHANHTOANPHONG WHERE idDDP = ? AND tinhTrang = 1`,
             [
                 idDDP
             ],
@@ -117,7 +128,6 @@ module.exports = {
                 tienConLai = ?,
                 phanTramGiam = ?,
                 idKM = ?,
-                idThe = ?,
                 idKHD = ?,
                 idDDP = ?,
                 ngayDen = ?,
@@ -133,7 +143,6 @@ module.exports = {
                 data.tienConLai,
                 data.phanTramGiam,
                 data.idKM,
-                data.idThe,
                 data.idKHD,
                 data.idDDP,
                 data.ngayDen,
@@ -158,6 +167,21 @@ module.exports = {
                     return callBack(error);
                 }
                 return callBack(null, result); 
+            }
+        )
+    },
+    getTotalMoneyBillByMonth: (month, year, cb) => {
+        pool.query(
+            `SELECT SUM(tienPhaiTra) AS tienPhaiTra FROM PHIEUTHANHTOANPHONG WHERE MONTH(ngayThanhToan) = ? and YEAR(ngayThanhToan) = ?`,
+            [
+                month,
+                year
+            ],
+            (error, result)=>{
+                if(error) {
+                    return cb(error);
+                }
+                return cb(null, result[0]);
             }
         )
     }

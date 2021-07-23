@@ -19,6 +19,13 @@ const schema = {
 const check = valid.compile(schema);
 
 module.exports = {
+    getDataByIdBookingWithBill: (req, res) => {
+        var idDDP = req.params.id;
+        room.getDataByIdBookingWithBill(idDDP, (err, results) => {
+            if (err) { return res.status(500).json(err); }
+            return res.status(200).json(results);
+        })
+    },
     index: (req, res) => {
         room.getAll((err, result) => {
             if(err) { return res.status(500).json(err); }
@@ -26,7 +33,7 @@ module.exports = {
         })
     },
     show: (req, res) => {
-        id = req.params.id;
+        var id = req.params.id;
         room.getDataByID(id, (err, result) => {
             if(err) { return res.status(500).json(err); }
             if(result == null) { return res.status(400).json('Record not exists!'); }
@@ -98,8 +105,8 @@ module.exports = {
         var arrRoom = [];
         room.getDataByIDLP(idRT_need, (err, lstRoom) => {
             // console.log(lstRoom);
-            if(err) { return res.status(500).json(err); }
-            if(lstRoom.length <= 0) { return res.status(404).json('Chưa có phòng'); }
+            if(err) { try { return res.status(500).json(err); } catch (error) {} }
+            if(lstRoom.length <= 0) { try { return res.status(404).json('Chưa có phòng'); } catch (error) {} }
             lstRoom.forEach(room => {
                 arrRoom.push(room.maPhong);
             });
@@ -107,19 +114,21 @@ module.exports = {
 
         bill.findIDbyDays(dateA, dateB, 2, (err, lstPTT) => {
             // console.log(lstPTT);
-            if(err) { return res.status(500).json(err); }
+            if(err) { try { return res.status(500).json(err); } catch (error) {} }
             if(lstPTT.length <= 0) { 
                 RCC.findIDRoombyDays(dateA, dateB, 1, (err, lstPTP) => {
                     if(err) { return res.status(500).json(err); }
                     if(lstPTP.length <= 0) { 
-                        arrRoom = arrRoom.filter(item => arrRoom.indexOf(item) < number);
-                        return res.status(200).json(arrRoom); 
+                        if(arrRoom.length >= number ){
+                            arrRoom = arrRoom.filter(item => arrRoom.indexOf(item) < number);
+                            try { return res.status(200).json(arrRoom); } catch (error) {}
+                        } else { try { return res.status(500).json("The number of rooms is not enough!"); } catch (error) {} }
                     }
                     var count2 = lstPTP.length;
                     lstPTP.forEach(item => {
                         room.getDataByID(item.maPhong, (err, PHONG) => {
                             count2--;
-                            if(err) { return res.status(500).json(err); }
+                            if(err) { try { return res.status(500).json(err); } catch (error) {} }
                             if(PHONG != null) { 
                                 console.log(PHONG);
                                 if(PHONG.idLP == idRT_need){
@@ -127,8 +136,10 @@ module.exports = {
                                 }
                             }
                             if(count2 == 0) { 
-                                arrRoom = arrRoom.filter(item => arrRoom.indexOf(item) < number);
-                                return res.status(200).json(arrRoom); 
+                                if(arrRoom.length >= number ){
+                                    arrRoom = arrRoom.filter(item => arrRoom.indexOf(item) < number);
+                                    try { return res.status(200).json(arrRoom); } catch (error) {}
+                                } else { try { return res.status(500).json("The number of rooms is not enough!"); } catch (error) {} }
                             }
                         })
                     })
@@ -136,13 +147,13 @@ module.exports = {
             }
             lstPTT.forEach(item => {
                 BillD.getDataByIDPTT(item.idPTT,(err, lstCTPTT) => {
-                    if(err) { return res.status(500).json(err); }
+                    if(err) { try { return res.status(500).json(err); } catch (error) {} }
                     if(lstCTPTT.length > 0) {
                         var count1 = lstCTPTT.length;
                         lstCTPTT.forEach(item => {
                             room.getDataByID(item.maPhong, (err, PHONG) => {
                                 count1 --;
-                                if(err) { return res.status(500).json(err); }
+                                if(err) { try { return res.status(500).json(err); } catch (error) {} }
                                 if(PHONG != null){ 
                                     if(PHONG.idLP == idRT_need){
                                         // console.log(PHONG);
@@ -154,14 +165,16 @@ module.exports = {
                                     RCC.findIDRoombyDays(dateA, dateB, 1, (err, lstPTP) => {
                                         if(err) { return res.status(500).json(err); }
                                         if(lstPTP.length <= 0) { 
-                                            arrRoom = arrRoom.filter(item => arrRoom.indexOf(item) < number);
-                                            return res.status(200).json(arrRoom); 
+                                            if(arrRoom.length >= number ){
+                                                arrRoom = arrRoom.filter(item => arrRoom.indexOf(item) < number);
+                                                try { return res.status(200).json(arrRoom); } catch (error) {}
+                                            } else { try { return res.status(500).json("The number of rooms is not enough!"); } catch (error) {} }
                                         }
                                         var count2 = lstPTP.length;
                                         lstPTP.forEach(item => {
                                             room.getDataByID(item.maPhong, (err, PHONG) => {
                                                 count2--;
-                                                if(err) { return res.status(500).json(err); }
+                                                if(err) { try { return res.status(500).json(err); } catch (error) {} }
                                                 if(PHONG != null) { 
                                                     // console.log(PHONG);
                                                     if(PHONG.idLP == idRT_need){
@@ -169,8 +182,10 @@ module.exports = {
                                                     }
                                                 }
                                                 if(count2 == 0) { 
-                                                    arrRoom = arrRoom.filter(item => arrRoom.indexOf(item) < number);
-                                                    return res.status(200).json(arrRoom); 
+                                                    if(arrRoom.length >= number ){
+                                                        arrRoom = arrRoom.filter(item => arrRoom.indexOf(item) < number);
+                                                        try { return res.status(200).json(arrRoom); } catch (error) {}
+                                                    } else { try { return res.status(500).json("The number of rooms is not enough!"); } catch (error) {} }
                                                 }
                                             })
                                         })
