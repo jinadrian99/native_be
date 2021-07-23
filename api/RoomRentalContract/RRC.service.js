@@ -57,6 +57,18 @@ module.exports = {
             }
         )
     },
+    getDataByIdDDP: (idDDP, cb) => {
+        pool.query(
+            `select * from PHIEUTHUEPHONG where idDDP = ?`,
+            [idDDP],
+            (error, result) => {
+                if(error) {
+                    return cb(error);
+                }
+                return cb(null, result);
+            }
+        )
+    },
     findIDRoombyDays: (dateA, dateB, trangThai, cb) => {
         pool.query(
             `SELECT maPhong FROM PHIEUTHUEPHONG WHERE ngayDi >= ? and ngayDen <= ? and trangThai = ?`,

@@ -11,6 +11,7 @@ router.put('/update_cus_acc/:id', user.updateUserCus);
 router.delete('/:id', user.deleteUser);
 router.post('/login', user.login);
 router.post('/register', user.register);
+router.patch('/reset-password/:id', user.resetPassword);
 
 
 module.exports = router;

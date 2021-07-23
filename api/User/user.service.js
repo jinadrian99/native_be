@@ -119,6 +119,23 @@ module.exports = {
             }
         )
     },
+    updatePass: (id, data, cb) => {
+        pool.query(
+            `update TAIKHOAN set
+                password = ?
+            where idTK = ?`,
+            [
+                data.password,
+                id
+            ],
+            (error, result) => {
+                if(error) {
+                    return cb(error);
+                }
+                return cb(null, result.insertId);
+            }
+        )
+    },
     deleteData: (id, callBack) => {
         pool.query(
             `delete from TAIKHOAN where idAdmin = ?`,
