@@ -11,5 +11,6 @@ router.get('/', BillController.index);
 router.get('/:id', BillController.show);
 router.post('/', BillController.store);
 router.put('/:id', BillController.update);
+router.delete('/:id', BillController.destroy);
 
 module.exports = router;

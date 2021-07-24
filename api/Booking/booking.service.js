@@ -117,7 +117,7 @@ module.exports = {
                 ngayDatPhong = ?,
                 tongThanhTien = ?,
                 trangThaiDat = ?,
-                idKHD = ?,
+                idKHD = ?
             where idDDP = ?`,
             [
                 data.ngayDen,
