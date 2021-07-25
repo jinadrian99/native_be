@@ -11,12 +11,13 @@ module.exports = {
         const id = req.params.id;
         RRC.getDataByID(id, (err, result) => {
             if(err) { return res.status(500).json(err); }
+            if(results == null) {return res.status(404).json('Record not found');}
             return res.status(200).json(result);
         })
-    },
+    },    
     getRRCByIDDDP: (req, res) => {
         const id = req.params.id;
-        getDataByIdDDP(id, (err, results) => {
+        RRC.getDataByIdDDP(id, (err, results) => {
             if(err) {
                 console.log(err);
                 return res.status(500).json(err);
