@@ -59,4 +59,11 @@ module.exports = {
             return res.status(200).json('Update successfully');
         })
     },
+    destroy: (req, res) => {
+        const id = req.params.id;
+        bill.deleteData(id, (err, result)=>{
+            if(err) { return res.status(500).json(err); }
+            return res.status(200).json('Update successfully');
+        })
+    }
 }
