@@ -3,7 +3,7 @@ const pool = require('../../config/database');
 module.exports = {
     createData: (data, callBack) => {
         pool.query(
-            `insert into LOAIPHONG VALUES(?,?,?,?,?,?,?,?,?,?,?)`,
+            `insert into LOAIPHONG VALUES(?,?,?,?,?,?,?,?,?,?)`,
             [
                 null,
                 data.tenLP,

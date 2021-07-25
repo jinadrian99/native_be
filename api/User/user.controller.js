@@ -5,6 +5,7 @@ const { sign, verify } = require('jsonwebtoken');
 const { JWT_SECRET } = require('../../config/jwt_secret');
 
 var khd = require('../KhachHangDat/khd.service');
+var admin = require('../Admin/admin.service');
 
 // const Validator = require('fastest-validator');
 // const valid = new Validator();
@@ -52,17 +53,42 @@ module.exports = {
         const data = req.body;
         // var constraint = check(data);
         // if(constraint !== true) return res.status(400).json(constraint);
-        if (data.loaiTaiKhoan !== 1) {
-            const salt = genSaltSync(10);
-            data.password = hashSync(data.password, salt);
-        }
-        user.createData(data, (err, results) => {
+        user.getUserByEmail(data.email, (err, resUser) => {
             if (err) {
                 console.log(err);
                 return res.status(500).json(err);
             }
-            return res.status(200).json(results);
-        });
+            if (resUser.length > 0) {
+                if (data.loaiTaiKhoan === 3) {
+                    admin.deleteData(data.idAdmin, (err, resAdmin) => {
+                        if (err) {
+                            return res.status(500).json(err);
+                        }
+                        return res.status(400).json({
+                            err:'Email existed!!!'
+                        });
+                    })
+                } 
+                else {
+                    return res.status(400).json({
+                        err:'Email existed!!!'
+                    })
+                }
+            }
+            if (resUser.length == 0) {
+                if (data.loaiTaiKhoan !== 1) {
+                    const salt = genSaltSync(10);
+                    data.password = hashSync(data.password, salt);
+                }
+                user.createData(data, (err, results) => {
+                    if (err) {
+                        console.log(err);
+                        return res.status(500).json(err);
+                    }
+                    return res.status(200).json(results);
+                });
+            }
+        })
     },
     getUsers: (req, res) => {
         user.getAll((err, results) => {
@@ -401,7 +427,7 @@ module.exports = {
             return res.status(200).json('Deleted successfully');
         })
     },
-    login: (req, res) => {
+    loginUser: (req, res) => {
         const data = req.body;
         // var constraint = check(data);
         // if(constraint !== true) return res.status(400).json(constraint);
@@ -415,18 +441,66 @@ module.exports = {
                     err:'Invalid email or password'
                 })
             }
-            const result = compareSync(data.password, results[0].password);
-            console.log('hi:', result);
-            console.log('results:', results);
-            if (result) {
-                results.password = undefined;
-                const jsontoken = sign({ result: results }, JWT_SECRET, {
-                    expiresIn: "30s"
-                });
-                res.setHeader("Authorization", jsontoken);
-                return res.status(200).json({
-                    results
-                });
+            if (results[0].loaiTaiKhoan !== 3) {
+                const result = compareSync(data.password, results[0].password);
+                console.log('hi:', result);
+                console.log('results:', results);
+                if (result) {
+                    results.password = undefined;
+                    const jsontoken = sign({ result: results }, JWT_SECRET, {
+                        expiresIn: "30s"
+                    });
+                    res.setHeader("Authorization", jsontoken);
+                    return res.status(200).json({
+                        results
+                    });
+                }
+                else {
+                    return res.status(400).json({
+                        err:'Invalid email or password'
+                    })
+                }
+            }
+            else {
+                return res.status(400).json({
+                    err:'Invalid email or password'
+                })
+            }
+        });
+    },
+    loginAdmin: (req, res) => {
+        const data = req.body;
+        // var constraint = check(data);
+        // if(constraint !== true) return res.status(400).json(constraint);
+        user.getUserByEmail(data.email, (err, results) => {
+            if (err) {
+                console.log(err);
+                return res.status(500).json(err);
+            }
+            if (results.length == 0) {
+                return res.status(400).json({
+                    err:'Invalid email or password'
+                })
+            }
+            if (results[0].loaiTaiKhoan === 3) {
+                const result = compareSync(data.password, results[0].password);
+                console.log('hi:', result);
+                console.log('results:', results);
+                if (result) {
+                    results.password = undefined;
+                    const jsontoken = sign({ result: results }, JWT_SECRET, {
+                        expiresIn: "30s"
+                    });
+                    res.setHeader("Authorization", jsontoken);
+                    return res.status(200).json({
+                        results
+                    });
+                }
+                else {
+                    return res.status(400).json({
+                        err:'Invalid email or password'
+                    })
+                }
             }
             else {
                 return res.status(400).json({
@@ -450,7 +524,7 @@ module.exports = {
                             console.log(err);
                             return res.status(500).json(err);
                         }
-                        return res.status(200).json(results);
+                        return res.status(400).json({ err:'Email existed!!!' });
                     });
                 }
                 if (recUser.length > 0) {
@@ -482,7 +556,7 @@ module.exports = {
                             console.log(err);
                             return res.status(500).json(err);
                         }
-                        return res.status(200).json(results);
+                        return res.status(400).json({ err:'Email existed!!!' });
                     });
                 }
                 if (results.length > 0) {
@@ -525,7 +599,7 @@ module.exports = {
                                 console.log(err);
                                 return res.status(500).json(err);
                             }
-                            return res.status(200).json(result);
+                            return res.status(400).json({ err:'Email existed!!!' });
                         });
                     }
                 }
