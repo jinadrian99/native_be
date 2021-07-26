@@ -1,4 +1,5 @@
 var bill = require('./Bill.service');
+var RRC = require('../RoomRentalContract/RRC.service');
 
 module.exports = {
     getBillsByIDKHD: (req, res) => {
@@ -64,6 +65,72 @@ module.exports = {
         bill.deleteData(id, (err, result)=>{
             if(err) { return res.status(500).json(err); }
             return res.status(200).json('Update successfully');
+        })
+    },
+    cusCancel: (req, res) => {
+        const idBill = req.params.id;
+        bill.getDataByID(idBill, (err, objBill) => {
+            if(err) { try { return res.status(500).json(err); } catch (error) {} }
+            if(objBill == null) {try { return res.status(400).json('Bill is undefined'); } catch (error) {} }
+            else {
+                if(objBill.tinhTrang == 1) {
+                    bill.changeStatus(objBill.idPTT, 4, (err, result) => {
+                        if(err) { try { return res.status(500).json(err); } catch (error) {} }
+                        try { return res.status(200).json("Was changed to cancel"); } catch (error) {}
+                    })
+                } else if (objBill.tinhTrang == 2) {
+                    const idBooking = objBill.idDDP;
+                    bill.getRRCByIdDDPInBill(idBooking, (err, lstRRC) => {
+                        if(err) { try { return res.status(500).json(err); } catch (error) {} }
+                        if(lstRRC.length == 0) { 
+                            bill.changeStatus(objBill.idPTT, 4, (err, result) => {
+                                if(err) { try { return res.status(500).json(err); } catch (error) {} }
+                                try { return res.status(200).json("Was changed to cancel"); } catch (error) {}
+                            })
+                        } else { 
+                            try { return res.status(200).json("Dear customer, you should go to hotel to cancel!"); } catch (error) {}
+                        }
+                    })
+                } else { 
+                    try { return res.status(200).json("Can't change to cancel"); } catch (error) {}
+                }
+            }
+        })
+    },
+    adminCancel: (req, res) => {
+        const idBill = req.params.id;
+        bill.getDataByID(idBill, (err, objBill) => {
+            if(err) { try { return res.status(500).json(err); } catch (error) {} }
+            if(objBill == null) {try { return res.status(400).json('Bill is undefined'); } catch (error) {} }
+            else {
+                if(objBill.tinhTrang == 1) {
+                    bill.changeStatus(objBill.idPTT, 4, (err, result) => {
+                        if(err) { try { return res.status(500).json(err); } catch (error) {} }
+                        try { return res.status(200).json("Was changed to cancel"); } catch (error) {}
+                    })
+                } else if (objBill.tinhTrang == 2) {
+                    const idBooking = objBill.idDDP;
+                    bill.getRRCByIdDDPInBill(idBooking, (err, lstRRC) => {
+                        if(err) { try { return res.status(500).json(err); } catch (error) {} }
+                        if(lstRRC.length == 0) { 
+                            bill.changeStatus(objBill.idPTT, 4, (err, result) => {
+                                if(err) { try { return res.status(500).json(err); } catch (error) {} }
+                                try { return res.status(200).json("Was changed to cancel"); } catch (error) {}
+                            })
+                        } else { 
+                            RRC.updateStatusByIDDDP(idBooking, 3, (err, result) => {
+                                if(err) { try { return res.status(500).json(err); } catch (error) {} }
+                                bill.changeStatus(objBill.idPTT, 4, (err, result) => {
+                                    if(err) { try { return res.status(500).json(err); } catch (error) {} }
+                                    try { return res.status(200).json("Was changed to cancel"); } catch (error) {}
+                                })
+                            })
+                        }
+                    })
+                } else { 
+                    try { return res.status(200).json("Can't change to cancel but customer can leave!"); } catch (error) {}
+                }
+            }
         })
     }
 }

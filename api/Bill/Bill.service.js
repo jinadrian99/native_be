@@ -64,6 +64,23 @@ module.exports = {
             }
         )
     },
+    getRRCByIdDDPInBill: (idDDP, cb) => {
+        pool.query(
+            `
+                SELECT PHIEUTHANHTOANPHONG.idPTT, PHIEUTHUEPHONG.idPTP, DONDATPHONG.idDDP
+                FROM PHIEUTHANHTOANPHONG LEFT JOIN DONDATPHONG ON PHIEUTHANHTOANPHONG.idDDP = DONDATPHONG.idDDP 
+                LEFT JOIN PHIEUTHUEPHONG ON DONDATPHONG.idDDP = PHIEUTHUEPHONG.idDDP 
+                WHERE PHIEUTHUEPHONG.idDDP = ?
+            `,
+            [
+                idDDP
+            ],
+            (error, results) => {
+                if (error) { return cb(error); }
+                return cb(null, results);
+            }
+        )
+    },
     changeStatus: (idPTT, status, cb) => {
         pool.query(
             `update PHIEUTHANHTOANPHONG set tinhTrang = ? where idPTT = ?`,
