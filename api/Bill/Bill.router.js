@@ -7,6 +7,8 @@ router.get('/change-status-to-deposit-by-id-bill/:idPTT', BillController.changeS
 router.get('/change-status-to-paid-by-id-bill/:idPTT', BillController.changeStatusToPaidByIdPTT);
 
 router.get('/get-bill-by-idDDP/:id', BillController.getBillByIdDDP);
+router.get('/cus-cancel/:id', BillController.cusCancel);
+router.get('/admin-cancel/:id', BillController.adminCancel);
 router.get('/', BillController.index);
 router.get('/:id', BillController.show);
 router.post('/', BillController.store);
