@@ -122,6 +122,23 @@ module.exports = {
             }
         )
     },
+    updateStatusByIDDDP: (idDDP, status, cb) => {
+        pool.query(
+            `update PHIEUTHUEPHONG set
+                trangThai = ?
+            where idDDP = ?`,
+            [
+                status,
+                idDDP
+            ],
+            (error, result) => {
+                if(error) {
+                    return cb(error);
+                }
+                return cb(null, result);
+            }
+        )
+    },
     deleteData: (id, callBack) => {
         pool.query(
             `delete from PHIEUTHUEPHONG where idPTP = ?`,
