@@ -76,7 +76,7 @@ module.exports = {
                 if(objBill.tinhTrang == 1) {
                     bill.changeStatus(objBill.idPTT, 4, (err, result) => {
                         if(err) { try { return res.status(500).json(err); } catch (error) {} }
-                        try { return res.status(200).json("Was changed to cancel"); } catch (error) {}
+                        try { return res.status(200).json("Bill has changed to cancel status"); } catch (error) {}
                     })
                 } else if (objBill.tinhTrang == 2) {
                     const idBooking = objBill.idDDP;
@@ -85,14 +85,14 @@ module.exports = {
                         if(lstRRC.length == 0) { 
                             bill.changeStatus(objBill.idPTT, 4, (err, result) => {
                                 if(err) { try { return res.status(500).json(err); } catch (error) {} }
-                                try { return res.status(200).json("Was changed to cancel"); } catch (error) {}
+                                try { return res.status(200).json("Bill has changed to cancel status"); } catch (error) {}
                             })
                         } else { 
                             try { return res.status(200).json("Dear customer, you should go to hotel to cancel!"); } catch (error) {}
                         }
                     })
                 } else { 
-                    try { return res.status(200).json("Can't change to cancel"); } catch (error) {}
+                    try { return res.status(200).json("Can't change to cancel status"); } catch (error) {}
                 }
             }
         })
@@ -106,7 +106,7 @@ module.exports = {
                 if(objBill.tinhTrang == 1) {
                     bill.changeStatus(objBill.idPTT, 4, (err, result) => {
                         if(err) { try { return res.status(500).json(err); } catch (error) {} }
-                        try { return res.status(200).json("Was changed to cancel"); } catch (error) {}
+                        try { return res.status(200).json({ flag: true, message: "Bill has changed to cancel status" }); } catch (error) {}
                     })
                 } else if (objBill.tinhTrang == 2) {
                     const idBooking = objBill.idDDP;
@@ -115,20 +115,20 @@ module.exports = {
                         if(lstRRC.length == 0) { 
                             bill.changeStatus(objBill.idPTT, 4, (err, result) => {
                                 if(err) { try { return res.status(500).json(err); } catch (error) {} }
-                                try { return res.status(200).json("Was changed to cancel"); } catch (error) {}
+                                try { return res.status(200).json({ flag: false, message: "Bill has changed to cancel status, please check and refund 50% of deposit money for customer." }); } catch (error) {}
                             })
                         } else { 
                             RRC.updateStatusByIDDDP(idBooking, 3, (err, result) => {
                                 if(err) { try { return res.status(500).json(err); } catch (error) {} }
                                 bill.changeStatus(objBill.idPTT, 4, (err, result) => {
                                     if(err) { try { return res.status(500).json(err); } catch (error) {} }
-                                    try { return res.status(200).json("Was changed to cancel"); } catch (error) {}
+                                    try { return res.status(200).json({ flag: true, message: "Bill has changed to cancel status" }); } catch (error) {}
                                 })
                             })
                         }
                     })
                 } else { 
-                    try { return res.status(200).json("Can't change to cancel but customer can leave!"); } catch (error) {}
+                    try { return res.status(200).json({ flag: true, message: "Can't change to cancel status but customer can leave!"}); } catch (error) {}
                 }
             }
         })
