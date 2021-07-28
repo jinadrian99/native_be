@@ -3,10 +3,11 @@ const pool = require("../../config/database");
 module.exports = {
     createData: (data, cb) => {
         pool.query(
-            `insert into PHONG VALUES(?,?,?)`,
+            `insert into PHONG VALUES(?,?,?,?)`,
             [
                 data.maPhong,
                 data.soNguoi,
+                data.trangThai,
                 data.idLP
             ],
             (error, result) => {
@@ -31,9 +32,12 @@ module.exports = {
     },
     getDataByIdBookingWithBill: (idDDP, cb) => {
         pool.query(
-            `SELECT PHONG.maPhong, PHONG.soNguoi, PHONG.idLP, CHITIETPHIEUTHANHTOAN.idCTPTT, PHIEUTHANHTOANPHONG.idPTT 
-            FROM PHONG RIGHT JOIN CHITIETPHIEUTHANHTOAN ON PHONG.maPhong = CHITIETPHIEUTHANHTOAN.maPhong RIGHT JOIN PHIEUTHANHTOANPHONG ON CHITIETPHIEUTHANHTOAN.idPTT = PHIEUTHANHTOANPHONG.idPTT 
-            WHERE PHIEUTHANHTOANPHONG.idDDP = ?`,
+            `
+                SELECT PHONG.maPhong, PHONG.soNguoi, PHONG.idLP, CHITIETPHIEUTHANHTOAN.idCTPTT, PHIEUTHANHTOANPHONG.idPTT 
+                FROM PHONG RIGHT JOIN CHITIETPHIEUTHANHTOAN ON PHONG.maPhong = CHITIETPHIEUTHANHTOAN.maPhong 
+                RIGHT JOIN PHIEUTHANHTOANPHONG ON CHITIETPHIEUTHANHTOAN.idPTT = PHIEUTHANHTOANPHONG.idPTT 
+                WHERE PHIEUTHANHTOANPHONG.idDDP = ?
+            `,
             [
                 idDDP
             ],
@@ -69,15 +73,44 @@ module.exports = {
             }
         )
     },
+    getDataByIDLPNotBusy: (idLP, cb) => {
+        pool.query(
+            `SELECT * FROM PHONG WHERE idLP = ? AND trangThai = 2`,
+            [idLP],
+            (error, result) => {
+                if(error) {
+                    return cb(error);
+                }
+                return cb(null, result);
+            }
+        )
+    },
     updateData: (id, data, cb) => {
         pool.query(
             `update PHONG set
                 soNguoi = ?,
+                trangThai = ?,
                 idLP = ?
             where maPhong = ?`,
             [
                 data.soNguoi,
+                data.trangThai,
                 data.idLP,
+                id
+            ],
+            (error, result) => {
+                if(error) {
+                    return cb(error);
+                }
+                return cb(null, result.insertId);
+            }
+        )
+    },
+    updateSoNguoiByIdLP: (id, soNguoi, cb) => {
+        pool.query(
+            `UPDATE PHONG SET soNguoi = ? WHERE idLP = ? `,
+            [
+                soNguoi,
                 id
             ],
             (error, result) => {

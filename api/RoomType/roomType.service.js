@@ -3,7 +3,7 @@ const pool = require('../../config/database');
 module.exports = {
     createData: (data, callBack) => {
         pool.query(
-            `insert into LOAIPHONG VALUES(?,?,?,?,?,?,?,?,?,?)`,
+            `insert into LOAIPHONG VALUES(?,?,?,?,?,?,?,?,?,?,?)`,
             [
                 null,
                 data.tenLP,
@@ -15,6 +15,7 @@ module.exports = {
                 data.giuong,
                 data.phongTam,
                 data.soLuong,
+                data.soLuongHT,
             ],
             (error, results) => {
                 if(error){
@@ -84,7 +85,8 @@ module.exports = {
                 soNguoi = ?,
                 giuong = ?,
                 phongTam = ?,
-                soLuong = ?
+                soLuong = ?,
+                soLuongHT = ?
             where idLP = ?`,
             [
                 data.tenLP,
@@ -96,6 +98,7 @@ module.exports = {
                 data.giuong,
                 data.phongTam,
                 data.soLuong,
+                data.soLuongHT,
                 id
             ],
             (error, results) => {
@@ -130,7 +133,7 @@ module.exports = {
     updateSLHienTai: (id, increase, callBack) => {
         if(increase){ 
             pool.query(
-                `UPDATE LOAIPHONG SET slHienTai = slHienTai + 1 WHERE idLP = ?`,
+                `UPDATE LOAIPHONG SET soLuongHT = soLuongHT + 1 WHERE idLP = ?`,
                 [id],
                 (error, results) => {
                     if(error){ return callBack(error) }
@@ -139,7 +142,7 @@ module.exports = {
             )
         } else {
             pool.query(
-                `UPDATE LOAIPHONG SET slHienTai = slHienTai - 1 WHERE idLP = ?`,
+                `UPDATE LOAIPHONG SET soLuongHT = soLuongHT - 1 WHERE idLP = ?`,
                 [id],
                 (error, results) => {
                     if(error){ return callBack(error) }

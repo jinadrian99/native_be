@@ -55,7 +55,10 @@ module.exports = {
                 if(err) { return res.status(500).json(err); }
                 roomType.updateSoLuong(data.idLP, true, (err, result) => {
                     if(err) { return res.status(500).json(err);}
-                    return res.status(200).json("Created successfully");
+                    roomType.updateSLHienTai(data.idLP, true, (err, result) => {
+                        if(err) { return res.status(500).json(err);}
+                        return res.status(200).json("Created successfully");
+                    })
                 })
             });
         });
@@ -70,16 +73,37 @@ module.exports = {
         room.getDataByID(id, (err, result) => {
             if(err) { return res.status(500).json(err); }
             if(result == null) { return res.status(400).json(`This room doesn't exists to update!`); }
-            roomType.updateSoLuong(result.idLP, false, (err, result) => {
-                if(err) { return res.status(500).json(err);}
-                room.updateData(id, data, (err, result) => {
-                    if(err) { return res.status(500).json(err); }
-                    roomType.updateSoLuong(data.idLP, true, (err, result) => {
+            if(result.trangThai == 1){
+                if(data.trangThai != result.trangThai) {
+                    roomType.updateSLHienTai(data.idLP, true, (err, result) => {
+                        if(err) { return res.status(500).json(err);}
+                        room.updateData(id, data, (err, result) => {
+                            if(err) { return res.status(500).json(err); }
+                            return res.status(200).json("Updated successfully");
+                        }) 
+                    })
+                } else { 
+                    room.updateData(id, data, (err, result) => {
                         if(err) { return res.status(500).json(err); }
                         return res.status(200).json("Updated successfully");
+                    }) 
+                }
+            } else { 
+                if(data.trangThai != result.trangThai) {
+                    roomType.updateSLHienTai(data.idLP, false, (err, result) => {
+                        if(err) { return res.status(500).json(err);}
+                        room.updateData(id, data, (err, result) => {
+                            if(err) { return res.status(500).json(err); }
+                            return res.status(200).json("Updated successfully");
+                        }) 
                     })
-                }) 
-            })
+                } else { 
+                    room.updateData(id, data, (err, result) => {
+                        if(err) { return res.status(500).json(err); }
+                        return res.status(200).json("Updated successfully");
+                    }) 
+                }
+            }
         })
     },
     destroy: (req, res) => {
@@ -89,10 +113,14 @@ module.exports = {
             if(result == null) { return res.status(400).json('Record not exists to delete!'); }
             roomType.updateSoLuong(result.idLP, false, (err, result) => {
                 if(err) { return res.status(500).json(err);}
-                room.deleteData(id, (err, result) => {
-                    if(err) { return res.status(500).json(err); }
-                    return res.status(200).json("Delete successfully");
+                roomType.updateSLHienTai(data.idLP, false, (err, result) => {
+                    if(err) { return res.status(500).json(err);}
+                    room.deleteData(id, (err, result) => {
+                        if(err) { return res.status(500).json(err); }
+                        return res.status(200).json("Delete successfully");
+                    })
                 })
+                
             })            
         })
     },
@@ -103,7 +131,7 @@ module.exports = {
         const number = req.body.soLuong;
 
         var arrRoom = [];
-        room.getDataByIDLP(idRT_need, (err, lstRoom) => {
+        room.getDataByIDLPNotBusy(idRT_need, (err, lstRoom) => {
             // console.log(lstRoom);
             if(err) { try { return res.status(500).json(err); } catch (error) {} }
             if(lstRoom.length <= 0) { try { return res.status(404).json('Chưa có phòng'); } catch (error) {} }
