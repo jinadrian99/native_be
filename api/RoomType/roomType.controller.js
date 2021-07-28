@@ -28,24 +28,24 @@ const schema = {
     moTaCT: {
         type: 'string', min: 50,
         messages: {
-            required: "Must input descript!",
-            stringMin: "Name must be at least 50 characters"
+            required: "Must input description!",
+            stringMin: "Description must be at least 50 characters"
         }
     },
     moTaGT: {
         type: 'string', min: 25, max: 50,
         messages: {
             required: "Must input name!",
-            stringMin: "Name must be at least 25 characters",
-            stringMax: "Name must be at most 50 characters!"
+            stringMin: "Description intro must be at least 25 characters",
+            stringMax: "Description intro must be at most 50 characters!"
         }
     },
     moTaTD: {
         type: 'string', min: 50, max: 80,
         messages: {
             required: "Must input name!",
-            stringMin: "Name must be at least 50 characters",
-            stringMax: "Name must be at most 80 characters!"
+            stringMin: "Description header must be at least 50 characters",
+            stringMax: "Description header must be at most 80 characters!"
         }
     }
 }
@@ -104,7 +104,9 @@ module.exports = {
             if(results == null) {
                 return res.status(404).json('Record not found');
             }
-            return res.status(200).json('Updated successfully');
+            room.updateSoNguoiByIdLP(id, data.soNguoi, (err, result) => {
+                return res.status(200).json('Updated successfully');
+            })
         });
     },
     deleteRoomType: (req, res) => {
@@ -193,7 +195,7 @@ module.exports = {
                     idLP: item.idLP, 
                     tenLP: item.tenLP,
                     hangPhong: item.hangPhong,
-                    soLuong: item.soLuong
+                    soLuong: item.soLuongHT
                 };
                 arrLP.push(obj); // lấy dsLP ra để trừ
             });

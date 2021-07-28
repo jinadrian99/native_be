@@ -8,11 +8,11 @@ module.exports = {
                 null,
                 data.ngayThanhToan,
                 data.tinhTrang,
-                data.tongThanhTien,
-                data.tienPhaiTra,
+                data.tongTienPhong,
                 data.tienCoc,
-                data.tienConLai,
+                data.phiPhatSinh,
                 data.phanTramGiam,
+                data.tongTienConLai,
                 data.idKM,
                 data.idKHD,
                 data.idDDP,
@@ -139,11 +139,11 @@ module.exports = {
             `update PHIEUTHANHTOANPHONG set
                 ngayThanhToan = ?,
                 tinhTrang = ?,
-                tongThanhTien = ?,
-                tienPhaiTra = ?,
+                tongTienPhong = ?,
                 tienCoc = ?,
-                tienConLai = ?,
+                phiPhatSinh = ?,
                 phanTramGiam = ?,
+                tongTienConLai = ?,
                 idKM = ?,
                 idKHD = ?,
                 idDDP = ?,
@@ -154,11 +154,11 @@ module.exports = {
             [
                 data.ngayThanhToan,
                 data.tinhTrang,
-                data.tongThanhTien,
-                data.tienPhaiTra,
+                data.tongTienPhong,
                 data.tienCoc,
-                data.tienConLai,
+                data.phiPhatSinh,
                 data.phanTramGiam,
+                data.tongTienConLai,
                 data.idKM,
                 data.idKHD,
                 data.idDDP,
@@ -189,7 +189,7 @@ module.exports = {
     },
     getTotalMoneyBillByMonth: (month, year, cb) => {
         pool.query(
-            `SELECT SUM(tienPhaiTra) AS tienPhaiTra FROM PHIEUTHANHTOANPHONG WHERE MONTH(ngayThanhToan) = ? and YEAR(ngayThanhToan) = ?`,
+            `SELECT SUM(tongTienConLai + tienCoc) AS tienPhaiTra FROM PHIEUTHANHTOANPHONG WHERE MONTH(ngayThanhToan) = ? and YEAR(ngayThanhToan) = ?`,
             [
                 month,
                 year
