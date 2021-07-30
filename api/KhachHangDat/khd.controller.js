@@ -98,6 +98,13 @@ const checkNewPass = valid.compile(schemaNewPass);
             return res.status(200).json(results);
         });
     },
+    getKHDWithStatusRRCIsUsing: (req, res) => {
+        var statusRRC = 2; // 2: complete deposit -> using (1: complete paid -> kh chuẩn bị về)
+        khd.getDataWithStatusRRC(statusRRC, (err, results) => {
+            if(err) { try { return res.status(500).json(err); } catch (error) {} }
+            try { return res.status(200).json(results); } catch (error) {}
+        })
+    },
     updateKHD: (req, res) => {
         const id = req.params.id;
         const data = req.body;

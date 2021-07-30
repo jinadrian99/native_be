@@ -3,6 +3,7 @@ const router = express.Router();
 
 const customerStayController = require('./CustomerStay.controller');
 
+router.post('/import-excel', customerStayController.importExcel);
 router.get('/', customerStayController.index);
 router.get('/:id', customerStayController.show);
 router.post('/', customerStayController.store);

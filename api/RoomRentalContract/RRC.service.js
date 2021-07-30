@@ -69,6 +69,47 @@ module.exports = {
             }
         )
     },
+    getDataByIdKHDWithStatusRRC: (idKHD, statusRRC, cb) => {
+        pool.query(
+            `
+                SELECT PHIEUTHUEPHONG.*
+                FROM PHIEUTHUEPHONG LEFT JOIN DONDATPHONG ON DONDATPHONG.idDDP = PHIEUTHUEPHONG.idDDP
+                WHERE DONDATPHONG.idKHD = ? AND PHIEUTHUEPHONG.trangThai = ?
+                GROUP BY PHIEUTHUEPHONG.idPTP
+            `,
+            [
+                idKHD,
+                statusRRC
+            ],
+            (error, result) => {
+                if(error) {
+                    return cb(error);
+                }
+                return cb(null, result);
+            }
+        )
+    },    
+    getDataByIdKHDIdDDPWithStatusRRC: (idKHD, idDDP, statusRRC, cb) => {
+        pool.query(
+            `
+                SELECT PHIEUTHUEPHONG.*
+                FROM PHIEUTHUEPHONG LEFT JOIN DONDATPHONG ON DONDATPHONG.idDDP = PHIEUTHUEPHONG.idDDP
+                WHERE DONDATPHONG.idKHD = ? AND DONDATPHONG.idDDP = ? AND PHIEUTHUEPHONG.trangThai = ?
+                GROUP BY PHIEUTHUEPHONG.idPTP
+            `,
+            [
+                idKHD,
+                idDDP,
+                statusRRC
+            ],
+            (error, result) => {
+                if(error) {
+                    return cb(error);
+                }
+                return cb(null, result);
+            }
+        )
+    },
     findIDRoombyDays: (dateA, dateB, trangThai, cb) => {
         pool.query(
             `SELECT maPhong FROM PHIEUTHUEPHONG WHERE ngayDi >= ? and ngayDen <= ? and trangThai = ?`,

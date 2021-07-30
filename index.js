@@ -1,9 +1,17 @@
 // Khai báo tỗng
 const express = require('express');
+const fileUpload = require('express-fileupload');
 const app = express();
 const cors = require('cors');
 require('dotenv').config();
 const bodyParser = require('body-parser');
+
+app.use(cors());
+app.use(express.json());
+// Send Data: Client <=> Server
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
+app.use(fileUpload());
 
 //
 require('./scheduler');
@@ -23,11 +31,12 @@ const paypalRouter = require('./api/Payments/paypal.router');
 const specialRateRouter = require('./api/SpecialRate/specialRate.router');
 const roomRouter = require('./api/Room/room.router');
 const detailBookServiceRouter = require('./api/BookServiceDetail/BSD.router');
+const bookingServiceRouter = require('./api/BookingService/bookingService.router');
 const bookingRouter = require('./api/Booking/booking.router');
 const detailBookingRouter = require('./api/BookingDetail/BookingD.router');
 const detailBillRouter = require('./api/BillDetail/BillD.router');
 const customerStayRouter = require('./api/CustomerStay/CustomerStay.router');
-const saleOffRouter = require('./api/SaleOff/SaveOff.router');
+const saleOffRouter = require('./api/SaleOff/SaleOff.router');
 const billRouter = require('./api/Bill/Bill.router');
 const rrcRouter = require('./api/RoomRentalContract/RRC.router');
 const resetPassRouter = require('./api/ResetPass/resetPass.router');
@@ -36,11 +45,6 @@ const resetPassRouter = require('./api/ResetPass/resetPass.router');
 const sendmailRouter = require('./api/Mail/mail.router');
 const chartRouter = require('./api/Chart/chart.router');
 
-app.use(cors());
-app.use(express.json());
-// Send Data: Client <=> Server
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
 
 app.get('/', (req, res) => res.sendFile(__dirname + "/index.html"));
 
@@ -56,6 +60,7 @@ app.use('/api/user', userRouter);
 app.use('/api/khd', khdRouter);
 app.use('/api/room', roomRouter);
 app.use('/api/detail-book-service', detailBookServiceRouter);
+app.use('/api/booking-service', bookingServiceRouter);
 app.use('/api/booking', bookingRouter);
 app.use('/api/detail-booking', detailBookingRouter);
 app.use('/api/detail-bill', detailBillRouter);

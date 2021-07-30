@@ -41,3 +41,7 @@ template:
 "nodemon": Run server liên tục,<br/>
 "express": "^4.17.1",<br/>
 "mysql": "^2.18.1",<br/>
+
+# other
+lấy toàn bộ code của P không lấy của tỉ: git merge <nhánh muốn gộp> -s recursive -X theirs
+một cái là lấy của tỉ không lấy của P: git merge <nhánh muốn gộp> -s ours
