@@ -55,6 +55,27 @@ module.exports = {
             }
         )
     },
+    getDataWithStatusRRC: (statusRRC, cb) => {
+        pool.query(
+            `
+                SELECT KHACHHANGDAT.*
+                FROM KHACHHANGDAT LEFT JOIN DONDATPHONG ON KHACHHANGDAT.idKHD = DONDATPHONG.idKHD 
+                LEFT JOIN PHIEUTHUEPHONG ON DONDATPHONG.idDDP = PHIEUTHUEPHONG.idDDP
+                WHERE PHIEUTHUEPHONG.trangThai = ?
+                GROUP BY KHACHHANGDAT.idKHD
+            `,
+            [
+                statusRRC
+            ],
+            (error, results) => {
+                if(error) {
+                    return cb(error);
+                }
+                return cb(null, results);
+            }
+            
+        )
+    },
     getDataByPassport: (Passport, cb) => {
         pool.query(
             `select * from KHACHHANGDAT where Passport = ?`,

@@ -44,6 +44,18 @@ module.exports = {
             }
         )
     },
+    getDataByIdkhd: (idKHD, cb) => {
+        pool.query(
+            `select * from DONDATDICHVU where idKHD = ?`,
+            [idKHD],
+            (error, results) => {
+                if(error) {
+                    return cb(error);
+                }
+                return cb(null, results);
+            }
+        )
+    },
     getTotalMoneyBookingServiceByQuarterly: (quarter, year, cb) => {
         pool.query(
             ` SELECT SUM(tongThanhTien) AS tongThanhTien FROM DONDATDICHVU WHERE QUARTER(ngayDat) = ? and YEAR(ngayDat) = ?`,
@@ -74,6 +86,23 @@ module.exports = {
                 data.trangThai,
                 data.idPTP,
                 data.idKHD,
+                id
+            ],
+            (error, result) => {
+                if(error) {
+                    return cb(error);
+                }
+                return cb(null, result.insertId);
+            }
+        )
+    },
+    updateStatusDataByID: (id, status, cb) => {
+        pool.query(
+            `update DONDATDICHVU set
+                trangThai = ?
+            where idDDDV = ?`,
+            [
+                status,
                 id
             ],
             (error, result) => {

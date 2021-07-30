@@ -9,10 +9,10 @@ module.exports = {
     },
     show: (req, res) => {
         const id = req.params.id;
-        RRC.getDataByID(id, (err, result) => {
+        RRC.getDataByID(id, (err, results) => {
             if(err) { return res.status(500).json(err); }
             if(results == null) {return res.status(404).json('Record not found');}
-            return res.status(200).json(result);
+            return res.status(200).json(results);
         })
     },    
     getRRCByIDDDP: (req, res) => {
@@ -27,6 +27,23 @@ module.exports = {
             }
             return res.status(200).json(results);
         });
+    },
+    getRRCByIdKHDWithStatusRRCIsUsing: (req, res) => {
+        const idKHD = req.params.id;
+        const statusRRC = 2; // 2: complete deposit -> using (1: complete paid -> kh chuẩn bị về)
+        RRC.getDataByIdKHDWithStatusRRC(idKHD, statusRRC, (err, results) => {
+            if(err) { try { return res.status(500).json(err); } catch (error) {} }
+            try { return res.status(200).json(results); } catch (error) {}
+        })
+    },
+    getRRCByIdKHDIdDDPWithStatusRRCIsUsing: (req, res) => {
+        const idKHD = req.body.idKHD;
+        const idDDP = req.body.idDDP;
+        const statusRRC = 2; // 2: complete deposit -> using (1: complete paid -> kh chuẩn bị về)
+        RRC.getDataByIdKHDIdDDPWithStatusRRC(idKHD, idDDP, statusRRC, (err, results) => {
+            if(err) { try { return res.status(500).json(err); } catch (error) {} }
+            try { return res.status(200).json(results); } catch (error) {}
+        })
     },
     store: (req, res) => {
         var data = req.body;

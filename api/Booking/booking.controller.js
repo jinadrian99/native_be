@@ -37,6 +37,15 @@ module.exports = {
             res.status(200).json(results);
         })
     },
+    getDDPByIdKHDWithStatusRRCIsUsing: (req, res) => {
+        var idKHD = req.params.id;
+        var statusRRC = 2; // 2: complete deposit -> using (1: complete paid -> kh chuẩn bị về)
+
+        Booking.getDataByIdKHDWithStatusRRC(idKHD, statusRRC, (err, results) => {
+            if(err) { try { return res.status(500).json(err); } catch (error) {} }
+            try { return res.status(200).json(results); } catch (error) {}
+        })
+    },
     update: (req, res) => {
         const id = req.params.id;
         const data = req.body;
