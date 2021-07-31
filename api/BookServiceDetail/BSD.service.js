@@ -44,11 +44,25 @@ module.exports = {
             }
         )
     },
-    getDataByIDddpNIDDV: (idDDV, idDV, cb) => {
+    getDataByIdDDDV: (idDDDV, cb) => {
         pool.query(
-            `select CHITIETDATDICHVU where idDDV = ? and idDV = ?`,
+            `select * FROM CHITIETDATDICHVU where idDDDV = ?`,
             [
-                idDDV,
+                idDDDV
+            ],
+            (error, results) => {
+                if(error) {
+                    return cb(error);
+                }
+                return cb(null, results);
+            }
+        )
+    },
+    getDataByIdDDDVIdDV: (idDDDV, idDV, cb) => {
+        pool.query(
+            `select * FROM CHITIETDATDICHVU where idDDDV = ? and idDV = ?`,
+            [
+                idDDDV,
                 idDV
             ],
             (error, result) => {
@@ -65,14 +79,14 @@ module.exports = {
                 donGia = ?,
                 hinhThuc = ?,
                 soLuong = ?,
-                idDDV = ?,
+                idDDDV = ?,
                 idDV = ?
             where idCTDDV = ?`,
             [
                 data.donGia,
                 data.hinhThuc,
                 data.soLuong,
-                data.idDDV,
+                data.idDDDV,
                 data.idDV,
                 id
             ],

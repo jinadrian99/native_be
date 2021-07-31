@@ -108,6 +108,24 @@ module.exports = {
             }
         )
     },
+    getDataByIdKHDWithStatusRRC: (idKHD, statusRRC, cb) => {
+        pool.query(
+            `
+                SELECT DONDATPHONG.*
+                FROM DONDATPHONG LEFT JOIN PHIEUTHUEPHONG ON DONDATPHONG.idDDP = PHIEUTHUEPHONG.idDDP
+                WHERE DONDATPHONG.idKHD = ? AND PHIEUTHUEPHONG.trangThai = ?
+                GROUP BY DONDATPHONG.idDDP
+            `,
+            [
+                idKHD, 
+                statusRRC
+            ],
+            (error, results)=>{
+                if(error){ return cb(error); }
+                return cb(null, results);
+            }
+        )
+    },
     updateData: (id, data, cb) => {
         pool.query(
             `update DONDATPHONG set

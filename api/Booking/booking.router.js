@@ -3,6 +3,7 @@ const router = express.Router();
 const BookingController = require('./booking.controller');
 
 router.get('/was-deposit-or-paid-in-bill', BookingController.getDataWasDepositOrPaidInBill);
+router.get('/get-ddp-by-idkhd-with-rrc-is-using/:id', BookingController.getDDPByIdKHDWithStatusRRCIsUsing);
 
 router.get('/', BookingController.index);
 router.get('/:id', BookingController.show);
