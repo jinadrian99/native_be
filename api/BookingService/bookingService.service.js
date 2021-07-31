@@ -58,7 +58,7 @@ module.exports = {
     },
     getTotalMoneyBookingServiceByQuarterly: (quarter, year, cb) => {
         pool.query(
-            ` SELECT SUM(tongThanhTien) AS tongThanhTien FROM DONDATDICHVU WHERE QUARTER(ngayDat) = ? and YEAR(ngayDat) = ?`,
+            `SELECT SUM(tongThanhTien) AS tongThanhTien FROM DONDATDICHVU WHERE QUARTER(ngayDat) = ? and YEAR(ngayDat) = ?`,
             [
                 quarter,
                 year
