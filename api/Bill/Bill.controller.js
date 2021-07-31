@@ -60,6 +60,18 @@ module.exports = {
             return res.status(200).json('Update successfully');
         })
     },
+    updateBill: (req, res) => {
+        const id = req.params.id;
+        const data = req.body;
+        bill.getDataByID(id, (err, resGet) => {
+            if(err) { return res.status(500).json(err); }
+            if(resGet == null) { return res.status(400).json("Record not exists!")}
+            bill.updateMoneyInBill(id, data, (err, result)=>{
+                if(err) { return res.status(500).json(err); }
+                return res.status(200).json('Update successfully');
+            })
+        })
+    },
     destroy: (req, res) => {
         const id = req.params.id;
         bill.deleteData(id, (err, result)=>{

@@ -175,6 +175,33 @@ module.exports = {
             }
         )
     },
+    updateMoneyInBill: (id, data, cb) => {
+        pool.query(
+            `update PHIEUTHANHTOANPHONG set
+                tongTienPhong = ?,
+                tienCoc = ?,
+                phiPhatSinh = ?,
+                phanTramGiam = ?,
+                tongTienConLai = ?,
+                idKM = ?
+            where idPTT = ?`,
+            [
+                data.tongTienPhong,
+                data.tienCoc,
+                data.phiPhatSinh,
+                data.phanTramGiam,
+                data.tongTienConLai,
+                data.idKM,
+                id
+            ],
+            (error, result) => {
+                if(error) {
+                    return cb(error);
+                }
+                return cb(null, result.insertId);
+            }
+        )
+    },
     deleteData: (id, callBack) => {
         pool.query(
             `delete from PHIEUTHANHTOANPHONG where idPTT = ?`,
