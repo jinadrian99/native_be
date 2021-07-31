@@ -27,10 +27,12 @@ const bookingRouter = require('./api/Booking/booking.router');
 const detailBookingRouter = require('./api/BookingDetail/BookingD.router');
 const detailBillRouter = require('./api/BillDetail/BillD.router');
 const customerStayRouter = require('./api/CustomerStay/CustomerStay.router');
-const saleOffRouter = require('./api/SaleOff/SaveOff.router');
+const saleOffRouter = require('./api/SaleOff/SaleOff.router');
 const billRouter = require('./api/Bill/Bill.router');
 const rrcRouter = require('./api/RoomRentalContract/RRC.router');
 const resetPassRouter = require('./api/ResetPass/resetPass.router');
+const extraFeeRouter = require('./api/ExtraFee/extraFee.router');
+const surchargePriceRouter = require('./api/SurchargePrice/surchargePrice.router');
 // const payerRouter = require('./api/Payer/Payer.router');
 
 const sendmailRouter = require('./api/Mail/mail.router');
@@ -64,6 +66,8 @@ app.use('/api/sale-off', saleOffRouter);
 app.use('/api/bill', billRouter);
 app.use('/api/rrc', rrcRouter);
 app.use('/api/reset-pass', resetPassRouter);
+app.use('/api/extra-fee', extraFeeRouter);
+app.use('/api/surcharge-price', surchargePriceRouter);
 // app.use('/api/payer', payerRouter);
 
 
