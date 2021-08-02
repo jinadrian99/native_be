@@ -3,11 +3,12 @@ const pool = require("../../config/database");
 module.exports = {
     createData: (data, cb) => {
         pool.query(
-            `insert into GIAPHUTHU VALUES(?,?,?)`,
+            `insert into GIAPHUTHU VALUES(?,?,?,?)`,
             [
                 null,
                 data.tenPT,
-                data.giaPT
+                data.giaPT,
+                data.loaiGPT
             ],
             (error, result) => {
                 if(error) {
@@ -45,11 +46,13 @@ module.exports = {
         pool.query(
             `update GIAPHUTHU set
                 tenPT = ?,
-                giaPT = ?
+                giaPT = ?,
+                loaiGPT = ?
             where idGPT = ?`,
             [
                 data.tenPT,
                 data.giaPT,
+                data.loaiGPT,
                 id
             ],
             (error, result) => {

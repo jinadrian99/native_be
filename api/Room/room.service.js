@@ -49,6 +49,25 @@ module.exports = {
             }
         )
     },
+    getDataByIdBillWithBill: (idPTT, cb) => {
+        pool.query(
+            `
+                SELECT PHONG.maPhong, PHONG.soNguoi, PHONG.idLP, CHITIETPHIEUTHANHTOAN.idCTPTT, PHIEUTHANHTOANPHONG.idPTT 
+                FROM PHONG RIGHT JOIN CHITIETPHIEUTHANHTOAN ON PHONG.maPhong = CHITIETPHIEUTHANHTOAN.maPhong 
+                RIGHT JOIN PHIEUTHANHTOANPHONG ON CHITIETPHIEUTHANHTOAN.idPTT = PHIEUTHANHTOANPHONG.idPTT 
+                WHERE PHIEUTHANHTOANPHONG.idPTT = ?
+            `,
+            [
+                idPTT
+            ],
+            (error, results) => {
+                if(error) {
+                    return cb(error);
+                }
+                return cb(null, results);
+            }
+        )
+    },
     getDataByID: (id, cb) => {
         pool.query(
             `select * from PHONG where maPhong = ?`,

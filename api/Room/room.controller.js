@@ -26,6 +26,13 @@ module.exports = {
             return res.status(200).json(results);
         })
     },
+    getDataByIdBillWithBill: (req, res) => {
+        var idPTT = req.params.id;
+        room.getDataByIdBillWithBill(idPTT, (err, results) => {
+            if (err) { return res.status(500).json(err); }
+            return res.status(200).json(results);
+        })
+    },
     index: (req, res) => {
         room.getAll((err, result) => {
             if(err) { return res.status(500).json(err); }
