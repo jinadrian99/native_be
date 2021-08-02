@@ -1,6 +1,9 @@
+var fs = require('fs');
 var customerStay = require('./CustomerStay.service');
 var RRC = require('../RoomRentalContract/RRC.service');
 const Validator = require('fastest-validator');
+
+var xlsx = require('xlsx');
 
 const valid = new Validator();
 const schema = {
@@ -27,14 +30,6 @@ const schema = {
             required: "Must input Passport!",
             string: "Passport is string!",
             length: "Passport must be at 8 characters!"
-        }
-    },
-    sdt: {
-        type: 'string', length: 10,
-        messages: {
-            required: "Must input the phone number!",
-            string: "Phone number is string!",
-            length: "Phone number must be at 10 characters!"
         }
     },
     sdt: {
@@ -93,6 +88,44 @@ module.exports = {
             if(err) { try { return res.status(500).json(err);  } catch (error) {} }
             try { return res.status(200).json("Created successfully") } catch (error) {} ;
         });
+    },
+    importExcel: (req, res) => {
+        if(req.files === null){ try{ return res.status(400).json("File not found"); } catch (error) {} }
+        var file = req.files.fileCusStay;
+        // console.log(file);
+        var filePath = __dirname + "/uploads/" + file.name;
+
+        file.mv(filePath, err => {
+            if(err){ try{ return res.status(500).json(err); } catch (error) {} }
+            var wb = xlsx.readFile(filePath, {cellDates: true});
+            var ws = wb.Sheets[wb.SheetNames[0]];
+            
+            var dataExcel = xlsx.utils.sheet_to_json(ws);
+
+            var data = dataExcel.map(record => {
+                var kho = {};
+                kho.idKHO = null;
+                kho.CMND = record.Identity;
+                kho.Passport = record.Passport;
+                kho.sdt = record.Phone;
+                kho.quocGia = record.National;
+                kho.title = record.title || 'Mr';
+                kho.tenKH = record.Name;
+                kho.ngaySinh = record.Birthday
+
+                return kho;
+            })
+
+            data.map(item => {
+                customerStay.createData(item, (err, result) => {
+                    if(err) { try { return res.status(500).json(err);  } catch (error) {} }
+                });   
+            })
+
+            fs.unlinkSync(filePath);
+            try { return res.status(200).json("Created successfully") } catch (error) {} ;
+        });
+
     },
     update: (req, res) => {
         const id = req.params.id;

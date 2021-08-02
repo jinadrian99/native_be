@@ -1,4 +1,5 @@
 var SP = require('./surchargePrice.service');
+var EF = require('../ExtraFee/extraFee.service');
 
 module.exports = {
     index: (req, res) => {
@@ -36,10 +37,17 @@ module.exports = {
         SP.getDataByID(id, (err, result) => {
             if(err) { return res.status(500).json(err); }
             if(result == null) { return res.status(400).json("Record not exists!")}
-
-            SP.deleteData(id, (err, result) => {
+            EF.getDataByIDGPT(id, (err, resGPT) =>{
                 if(err) { return res.status(500).json(err); }
-                return res.status(200).json("Deleted successfully")
+                if (resGPT.length == 0) {
+                    SP.deleteData(id, (err, result) => {
+                        if(err) { return res.status(500).json(err); }
+                        return res.status(200).json("Deleted successfully")
+                    })
+                }
+                if (resGPT.length > 0) {
+                    return res.status(400).json("Cannot delete surcharge price (FK)!");
+                }
             })
         })
     },
