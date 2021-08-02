@@ -3,14 +3,13 @@ const pool = require("../../config/database");
 module.exports = {
     createData: (data, cb) => {
         pool.query(
-            `insert into DONDATDICHVU VALUES(?,?,?,?,?,?)`,
+            `insert into PHUTHU VALUES(?,?,?,?,?)`,
             [
                 null,
-                data.ngayDat,
-                data.tongThanhTien,
-                data.trangThai,
-                data.idPTP,
-                data.idKHD
+                data.soLuong,
+                data.donGia,
+                data.idGPT,
+                data.idPTT
             ],
             (error, result) => {
                 if(error) {
@@ -22,7 +21,7 @@ module.exports = {
     },
     getAll: (cb) => {
         pool.query(
-            `select * from DONDATDICHVU`,
+            `select * from PHUTHU`,
             [],
             (error, result) => {
                 if(error) {
@@ -34,7 +33,7 @@ module.exports = {
     },
     getDataByID: (id, cb) => {
         pool.query(
-            `select * from DONDATDICHVU where idDDDV = ?`,
+            `select * from PHUTHU where idPT = ?`,
             [id],
             (error, result) => {
                 if(error) {
@@ -44,78 +43,61 @@ module.exports = {
             }
         )
     },
-    getDataByIdkhd: (idKHD, cb) => {
+    getDataByIDPTT: (idPTT, cb) => {
         pool.query(
-            `select * from DONDATDICHVU where idKHD = ?`,
-            [idKHD],
-            (error, results) => {
+            `select * FROM PHUTHU where idPTT = ?`,
+            [
+                idPTT
+            ],
+            (error, result) => {
                 if(error) {
                     return cb(error);
                 }
-                return cb(null, results);
+                return cb(null, result);
             }
         )
     },
-    getTotalMoneyBookingServiceByQuarterly: (quarter, year, cb) => {
+    getDataByIDPTTnIDGPT: (idGPT, idPTT, cb) => {
         pool.query(
-            `SELECT SUM(tongThanhTien) AS tongThanhTien FROM DONDATDICHVU WHERE QUARTER(ngayDat) = ? and YEAR(ngayDat) = ?`,
+            `select * FROM PHUTHU where idGPT = ? and idPTT = ?`,
             [
-                quarter,
-                year
+                idGPT,
+                idPTT
             ],
-            (error, result)=>{
+            (error, result) => {
                 if(error) {
                     return cb(error);
                 }
-                return cb(null, result[0]);
+                return cb(null, result);
             }
         )
     },
     updateData: (id, data, cb) => {
         pool.query(
-            `update DONDATDICHVU set
-                ngayDat = ?,
-                tongThanhTien = ?,
-                trangThai = ?,
-                idPTP = ?,
-                idKHD = ?
-            where idDDDV = ?`,
+            `update PHUTHU set
+                soLuong = ?,
+                donGia = ?,
+                idGPT = ?,
+                idPTT = ?
+            where idPT = ?`,
             [
-                data.ngayDat,
-                data.tongThanhTien,
-                data.trangThai,
-                data.idPTP,
-                data.idKHD,
+                data.soLuong,
+                data.donGia,
+                data.idGPT,
+                data.idPTT,
                 id
             ],
             (error, result) => {
                 if(error) {
                     return cb(error);
                 }
-                return cb(null, result.insertId);
-            }
-        )
-    },
-    updateStatusDataByID: (id, status, cb) => {
-        pool.query(
-            `update DONDATDICHVU set
-                trangThai = ?
-            where idDDDV = ?`,
-            [
-                status,
-                id
-            ],
-            (error, result) => {
-                if(error) {
-                    return cb(error);
-                }
-                return cb(null, result.insertId);
+                return cb(null, result);
             }
         )
     },
     deleteData: (id, callBack) => {
         pool.query(
-            `delete from DONDATDICHVU where idDDDV = ?`,
+            `delete from PHUTHU where idPT = ?`,
             [id],
             (error, result) => {
                 if(error){
