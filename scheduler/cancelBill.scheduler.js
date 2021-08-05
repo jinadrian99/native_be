@@ -5,8 +5,8 @@ const crontab = "30 14 * * *";
 var billController = require('../api/Bill/Bill.service');
 
 scheduler.scheduleJob(crontab, () => {
-    var cancelBill = 5;
-    var cancelBooking = 3; 
+    var cancelBill = 4;
+    var cancelBooking = 1; 
     var statusUnpaid = 1;
     var statusDeposit = 2;
 
