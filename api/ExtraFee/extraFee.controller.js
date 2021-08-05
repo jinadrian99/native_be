@@ -17,7 +17,7 @@ module.exports = {
     },
     store: (req, res) => {
         var data = req.body;
-        EF.getDataByIDPTTnIDGPT(data.idGPT, data.idPTT, (err, resGet) => {
+        EF.getDataByIDPTTnIDGPT(data.idGPT, data.idPTT, data.ghiChu, (err, resGet) => {
             if(err) { return res.status(500).json(err); }
             if(resGet.length == 0) { 
                 EF.createData(data, (err, results) => {
@@ -38,9 +38,13 @@ module.exports = {
         EF.getDataByID(id, (err, result) => {
             if(err) { return res.status(500).json(err); }
             if(result == null) { return res.status(400).json("Record not exists!")}
-            EF.updateData(id, data, (err, result) => {
-                if(err) { return res.status(500).json(err); }
-                return res.status(200).json("Updated successfully");
+            EF.getDataByIdPTTnIdGPTnGhiChuPreventIdPT(data.idPTT, data.idGPT, data.ghiChu, id, (err, result) => {
+                if(err) { try { return res.status(500).json(err) } catch (error) {} }
+                if(result.length > 0) { try { return res.status(400).json("Item exists!") } catch (error) {} }
+                EF.updateData(id, data, (err, result) => {
+                    if(err) { return res.status(500).json(err); }
+                    return res.status(200).json("Updated successfully");
+                })
             })
         })
     },

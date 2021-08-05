@@ -57,6 +57,13 @@ module.exports = {
             return res.status(200).json(result);
         })
     },
+    getCustomerStayByDateSave: (req, res) => {
+        var date = req.body.date;
+        customerStay.getDataByNgayTao(date, (err, result) => {
+            if(err) { return res.status(500).json(err); }
+            return res.status(200).json(result);
+        })
+    },
     show: (req, res) => {
         id = req.params.id;
         customerStay.getDataByID(id, (err, result) => {
@@ -71,23 +78,32 @@ module.exports = {
         var constraint = check(data);
         if(constraint !== true) { try { return res.status(400).json(constraint);  } catch (error) {} }
 
-        customerStay.getDataByCMND(data.CMND, (err, result) => {
+        customerStay.getDataByCMNDnPassportnSdt(data.CMND, data.Passport, data.sdt, (err, result) => {
             if(err) { try { return res.status(500).json(err);  } catch (error) {} }
-            if(result != null){ try { return res.status(400).json("Exits this identity card!"); } catch (error) {} }
-        });
-        customerStay.getDataByPassport(data.Passport, (err, result) => {
-            if(err) { try { return res.status(500).json(err);  } catch (error) {} }
-            if(result != null){ try { return res.status(400).json("Exits this Passport!");  } catch (error) {} }
-        });
-        customerStay.getDataBySdt(data.sdt, (err, result) => {
-            if(err) { try { return res.status(500).json(err);  } catch (error) {} }
-            if(result != null){ try { return res.status(400).json("Exits this phone number!");  } catch (error) {} }
-        });
-
-        customerStay.createData(data, (err, result) => {
-            if(err) { try { return res.status(500).json(err);  } catch (error) {} }
-            try { return res.status(200).json("Created successfully") } catch (error) {} ;
-        });
+            if(result != null) { 
+                customerStay.updateData(result.idKHO, data, (err, result) => {
+                    if(err) { try { return res.status(500).json(err);  } catch (error) {} }
+                    try { return res.status(200).json("Created successfully") } catch (error) {}
+                });
+            } else { 
+                customerStay.getDataByCMND(data.CMND, (err, result) => {
+                    if(err) { try { return res.status(500).json(err);  } catch (error) {} }
+                    if(result != null){ try { return res.status(400).json("Exits this identity card!"); } catch (error) {} }
+                });
+                customerStay.getDataByPassport(data.Passport, (err, result) => {
+                    if(err) { try { return res.status(500).json(err);  } catch (error) {} }
+                    if(result != null){ try { return res.status(400).json("Exits this Passport!");  } catch (error) {} }
+                });
+                customerStay.getDataBySdt(data.sdt, (err, result) => {
+                    if(err) { try { return res.status(500).json(err);  } catch (error) {} }
+                    if(result != null){ try { return res.status(400).json("Exits this phone number!");  } catch (error) {} }
+                });
+                customerStay.createData(data, (err, result) => {
+                    if(err) { try { return res.status(500).json(err);  } catch (error) {} }
+                    try { return res.status(200).json("Created successfully") } catch (error) {}
+                });
+            }
+        })
     },
     importExcel: (req, res) => {
         if(req.files === null){ try{ return res.status(400).json("File not found"); } catch (error) {} }
@@ -111,15 +127,25 @@ module.exports = {
                 kho.quocGia = record.National;
                 kho.title = record.title || 'Mr';
                 kho.tenKH = record.Name;
-                kho.ngaySinh = record.Birthday
+                kho.ngaySinh = record.Birthday;
+                kho.ngayTao = new Date();
 
                 return kho;
             })
 
             data.map(item => {
-                customerStay.createData(item, (err, result) => {
+                customerStay.getDataByCMNDnPassportnSdt(item.CMND, item.Passport, item.sdt, (err, result) => {
                     if(err) { try { return res.status(500).json(err);  } catch (error) {} }
-                });   
+                    if(result != null) { 
+                        customerStay.updateData(result.idKHO, item, (err, result) => {
+                            if(err) { try { return res.status(500).json(err);  } catch (error) {} }
+                        });
+                    } else { 
+                        customerStay.createData(item, (err, result) => {
+                            if(err) { try { return res.status(500).json(err);  } catch (error) {} }
+                        });
+                    }
+                }) 
             })
 
             fs.unlinkSync(filePath);

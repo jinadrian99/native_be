@@ -228,5 +228,58 @@ module.exports = {
                 return cb(null, result[0]);
             }
         )
-    }
+    }, 
+
+    //For: Scheduler
+    schedulerChangeStatusForUnPaidByDateArriveAndStatus: (statusNewBill, statusNewBooking, statusOldBill, date, callBack) => {
+        // SELECT PHIEUTHANHTOANPHONG.idPTT, DONDATPHONG.idDDP
+        // FROM PHIEUTHANHTOANPHONG LEFT JOIN DONDATPHONG ON DONDATPHONG.idDDP = PHIEUTHANHTOANPHONG.idDDP 
+        // WHERE PHIEUTHANHTOANPHONG.tinhTrang = 1  AND PHIEUTHANHTOANPHONG.ngayDen <= "2021-7-11"
+        pool.query(
+            `
+                UPDATE PHIEUTHANHTOANPHONG LEFT JOIN DONDATPHONG ON DONDATPHONG.idDDP = PHIEUTHANHTOANPHONG.idDDP 
+                SET PHIEUTHANHTOANPHONG.tinhTrang = ?, DONDATPHONG.trangThaiDat = ?
+                WHERE PHIEUTHANHTOANPHONG.tinhTrang = ?  AND PHIEUTHANHTOANPHONG.ngayDen <= ?
+            `,
+            [
+                statusNewBill,
+                statusNewBooking,
+                statusOldBill,
+                date
+            ],
+            (error, result) => {
+                if(error){
+                    return callBack(error);
+                }
+                return callBack(null, result.affectedRows); 
+            }
+        )
+    },
+    //For: Scheduler
+    schedulerChangeStatusForDepositNonRRCByDateArriveAndStatus: (statusNewBill, statusNewBooking, statusOldBill, date, callBack) => {
+        // SELECT PHIEUTHANHTOANPHONG.idPTT, DONDATPHONG.idDDP
+        // FROM PHIEUTHANHTOANPHONG LEFT JOIN DONDATPHONG ON DONDATPHONG.idDDP = PHIEUTHANHTOANPHONG.idDDP 
+        // LEFT JOIN PHIEUTHUEPHONG ON DONDATPHONG.idDDP = PHIEUTHUEPHONG.idDDP
+        // WHERE PHIEUTHANHTOANPHONG.tinhTrang = 2 AND PHIEUTHUEPHONG.idDDP IS NULL AND PHIEUTHANHTOANPHONG.ngayDen <= "2021-7-11"
+        pool.query(
+            `
+                UPDATE PHIEUTHANHTOANPHONG LEFT JOIN DONDATPHONG ON DONDATPHONG.idDDP = PHIEUTHANHTOANPHONG.idDDP 
+                LEFT JOIN PHIEUTHUEPHONG ON DONDATPHONG.idDDP = PHIEUTHUEPHONG.idDDP
+                SET PHIEUTHANHTOANPHONG.tinhTrang = ?, DONDATPHONG.trangThaiDat = ?
+                WHERE PHIEUTHANHTOANPHONG.tinhTrang = ? AND PHIEUTHUEPHONG.idDDP IS NULL AND PHIEUTHANHTOANPHONG.ngayDen <= ?
+            `,
+            [
+                statusNewBill,
+                statusNewBooking,
+                statusOldBill,
+                date
+            ],
+            (error, result) => {
+                if(error){
+                    return callBack(error);
+                }
+                return callBack(null, result.affectedRows); 
+            }
+        )
+    },
 };
