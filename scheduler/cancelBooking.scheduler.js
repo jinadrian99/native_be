@@ -5,7 +5,7 @@ const crontab = "30 14 * * *";
 var bookingController = require('../api/Booking/booking.service');
 
 scheduler.scheduleJob(crontab, () => {
-    var cancelBooking = 3; 
+    var cancelBooking = 1; 
     var statusProgress = 0;
 
     var duration = 2;
