@@ -34,10 +34,40 @@ module.exports = {
             }
         )
     },
+    getDataByNgayTao: (date, cb) => {
+        pool.query(
+            `select * from KHACHHANGO WHERE ngayTao = ?`,
+            [
+                date
+            ],
+            (error, result) => {
+                if(error) {
+                    return cb(error);
+                }
+                return cb(null, result);
+            }
+        )
+    },
     getDataByID: (id, cb) => {
         pool.query(
             `select * from KHACHHANGO where idKHO = ?`,
             [id],
+            (error, result) => {
+                if(error) {
+                    return cb(error);
+                }
+                return cb(null, result[0]);
+            }
+        )
+    },
+    getDataByCMNDnPassportnSdt: (cmnd, passport, sdt, cb) => {
+        pool.query(
+            `select * from KHACHHANGO where CMND = ? AND Passport = ? AND sdt = ?`,
+            [
+                cmnd,
+                passport,
+                sdt
+            ],
             (error, result) => {
                 if(error) {
                     return cb(error);
@@ -91,7 +121,8 @@ module.exports = {
                 quocGia = ?,
                 title = ?,
                 tenKH = ?,
-                ngaySinh = ?
+                ngaySinh = ?,
+                ngayTao = ? 
             where idKHO = ?`,
             [
                 data.CMND,
@@ -101,6 +132,7 @@ module.exports = {
                 data.title,
                 data.tenKH,
                 data.ngaySinh,
+                data.ngayTao,
                 id
             ],
             (error, result) => {

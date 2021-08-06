@@ -3,13 +3,14 @@ const pool = require("../../config/database");
 module.exports = {
     createData: (data, cb) => {
         pool.query(
-            `insert into PHUTHU VALUES(?,?,?,?,?)`,
+            `insert into PHUTHU VALUES(?,?,?,?,?,?)`,
             [
                 null,
                 data.soLuong,
                 data.donGia,
                 data.idGPT,
-                data.idPTT
+                data.idPTT,
+                data.ghiChu
             ],
             (error, result) => {
                 if(error) {
@@ -57,12 +58,44 @@ module.exports = {
             }
         )
     },
-    getDataByIDPTTnIDGPT: (idGPT, idPTT, cb) => {
+    getDataByIDGPT: (idGPT, cb) => {
         pool.query(
-            `select * FROM PHUTHU where idGPT = ? and idPTT = ?`,
+            `select * FROM PHUTHU where idGPT = ?`,
+            [
+                idGPT
+            ],
+            (error, result) => {
+                if(error) {
+                    return cb(error);
+                }
+                return cb(null, result);
+            }
+        )
+    },
+    getDataByIDPTTnIDGPT: (idGPT, idPTT, ghiChu, cb) => {
+        pool.query(
+            `select * FROM PHUTHU where idGPT = ? and idPTT = ? and ghiChu = ?`,
             [
                 idGPT,
-                idPTT
+                idPTT,
+                ghiChu
+            ],
+            (error, result) => {
+                if(error) {
+                    return cb(error);
+                }
+                return cb(null, result);
+            }
+        )
+    },
+    getDataByIdPTTnIdGPTnGhiChuPreventIdPT: (idPTT, idGPT, ghiChu, idPT, cb) => {
+        pool.query(
+            `select * FROM PHUTHU where idGPT = ? and idPTT = ? and ghiChu = ? and idPT != ?`,
+            [
+                idPTT,
+                idGPT,
+                ghiChu,
+                idPT
             ],
             (error, result) => {
                 if(error) {
@@ -78,13 +111,15 @@ module.exports = {
                 soLuong = ?,
                 donGia = ?,
                 idGPT = ?,
-                idPTT = ?
+                idPTT = ?,
+                ghiChu = ?
             where idPT = ?`,
             [
                 data.soLuong,
                 data.donGia,
                 data.idGPT,
                 data.idPTT,
+                data.ghiChu,
                 id
             ],
             (error, result) => {
