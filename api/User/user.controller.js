@@ -125,6 +125,19 @@ module.exports = {
             return res.status(200).json(results);
         });
     },
+    getUserByEmail: (req, res) => {
+        const data = req.body;
+        user.getUserByEmail(data.email, (err, resUser) => {
+            if(err) {
+                return res.status(500).json(err);
+            }
+            if(resUser == null) {
+                return res.status(404).json('Record not found');
+            }
+            console.log("aa: ", resUser);
+            return res.status(200).json(resUser);
+        });
+    },
     updateUserAdmin: (req, res) => {
         const id = req.params.id;
         const data = req.body;

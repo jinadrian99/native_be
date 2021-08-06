@@ -72,12 +72,30 @@ module.exports = {
             }
         )
     },
-    getDataByIDPTTnIDGPT: (idGPT, idPTT, cb) => {
+    getDataByIDPTTnIDGPT: (idGPT, idPTT, ghiChu, cb) => {
         pool.query(
-            `select * FROM PHUTHU where idGPT = ? and idPTT = ?`,
+            `select * FROM PHUTHU where idGPT = ? and idPTT = ? and ghiChu = ?`,
             [
                 idGPT,
-                idPTT
+                idPTT,
+                ghiChu
+            ],
+            (error, result) => {
+                if(error) {
+                    return cb(error);
+                }
+                return cb(null, result);
+            }
+        )
+    },
+    getDataByIdPTTnIdGPTnGhiChuPreventIdGPT: (idPTT, idGPT, ghiChu, idPT, cb) => {
+        pool.query(
+            `select * FROM PHUTHU where idGPT = ? and idPTT = ? and ghiChu = ? and idPT != ?`,
+            [
+                idPTT,
+                idGPT,
+                ghiChu,
+                idPT
             ],
             (error, result) => {
                 if(error) {

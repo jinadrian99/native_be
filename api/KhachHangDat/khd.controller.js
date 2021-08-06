@@ -1,4 +1,5 @@
 const khd = require('./khd.service');
+const user = require('../User/user.service');
 
  // var user = require('../User/user.service');
  const Validator = require('fastest-validator');
@@ -103,6 +104,33 @@ const checkNewPass = valid.compile(schemaNewPass);
         khd.getDataWithStatusRRC(statusRRC, (err, results) => {
             if(err) { try { return res.status(500).json(err); } catch (error) {} }
             try { return res.status(200).json(results); } catch (error) {}
+        })
+    },
+    getKHDByEmail: (req, res) => {
+        const data = req.body;
+        user.getUserByEmail(data.email, (err, resUser) => {
+            if(err) {
+                return res.status(500).json(err);
+            }
+            if(resUser.length == 0) {
+                return res.status(404).json('Record not found');
+            }
+            if(resUser.length > 0) {
+                if (resUser[0].loaiTaiKhoan !== 3) {
+                    khd.getDataByID(resUser[0].idKHD, (err, resKHD) => {
+                        if(err) {
+                            return res.status(500).json(err);
+                        }
+                        if(resKHD == null) {
+                            return res.status(404).json('Record not found');
+                        }
+                        return res.status(200).json(resKHD);
+                    })
+                }
+                else {
+                    return res.status(404).json('Record not found');
+                }
+            }
         })
     },
     updateKHD: (req, res) => {
