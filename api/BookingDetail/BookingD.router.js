@@ -3,7 +3,7 @@ const router = express.Router();
 
 const BookingDController = require('./BookingD.controller');
 
-router.get('/get-booking-detail-by-idDDP/:idDDP', BookingDController.getBooingDetailsByIDDDP);
+router.get('/get-booking-detail-by-idDDP/:idDDP', BookingDController.getBookingDetailsByIDDDP);
 
 router.get('/', BookingDController.index);
 router.get('/:id', BookingDController.show);

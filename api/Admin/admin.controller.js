@@ -11,10 +11,10 @@ const schema = {
         }
     },
     displayName: { 
-        type: 'string', min: 6,
+        type: 'string', min: 2,
         messages: {
             required: "Fill out username field!",
-            stringMin: "Username at least 6 characters!"
+            stringMin: "Username at least 2 characters!"
         }
     },
     tenAdmin: { 

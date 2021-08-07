@@ -38,7 +38,7 @@ module.exports = {
             if(err) { return res.status(500).json(err); }
             if(result == null) { return res.status(400).json("Record not exists!")}
             EF.getDataByIDGPT(id, (err, resGPT) =>{
-            if(err) { return res.status(500).json(err); }
+                if(err) { return res.status(500).json(err); }
                 if (resGPT.length == 0) {
                     SP.deleteData(id, (err, result) => {
                         if(err) { return res.status(500).json(err); }

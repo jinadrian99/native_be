@@ -11,6 +11,7 @@ router.put('/update_admin_acc/:id', user.updateUserAdmin);
 router.put('/update_cus_acc/:id', user.updateUserCus);
 router.get('/', user.getUsers);
 router.get('/:id', user.getUserByID);
+router.post('/get-user-by-email', user.getUserByEmail);
 router.post('/', user.createUser); 
 router.delete('/:id', user.deleteUser);
 

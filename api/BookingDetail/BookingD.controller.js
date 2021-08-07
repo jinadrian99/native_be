@@ -24,6 +24,7 @@ module.exports = {
             DBS.createData(data, (err, results) => {
                 if(err) { return res.status(500).json(err); }
                 if(results == null) { return res.status(400).json("Create failed!"); }
+                // res.status(200).json(results);
                 res.status(200).json("Created successfully");
             })
         })
@@ -43,7 +44,7 @@ module.exports = {
             })
         })
     },
-    getBooingDetailsByIDDDP: (req, res) => {
+    getBookingDetailsByIDDDP: (req, res) => {
         var idDDP = req.params.idDDP;
         DBS.getDataByIDDDP(idDDP, (err, data) => {
             if(err) { return res.status(500).json(err); }
