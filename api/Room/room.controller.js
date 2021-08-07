@@ -131,6 +131,95 @@ module.exports = {
             })            
         })
     },
+    getRoomsByDatesIdlp: (req, res) => {
+        const dateA = req.body.dateA;
+        const dateB = req.body.dateB;
+        const idRT_need = req.body.idLP;
+
+        var arrRoom = [];
+        room.getDataByIDLPNotBusy(idRT_need, (err, lstRoom) => {
+            // console.log(lstRoom);
+            if(err) { try { return res.status(500).json(err); } catch (error) {} }
+            if(lstRoom.length <= 0) { try { return res.status(404).json('Chưa có phòng'); } catch (error) {} }
+            lstRoom.forEach(room => {
+                arrRoom.push(room);
+            });
+        })
+
+        bill.findIDbyDays(dateA, dateB, 2, (err, lstPTT) => {
+            // console.log(lstPTT);
+            if(err) { try { return res.status(500).json(err); } catch (error) {} }
+            if(lstPTT.length <= 0) { 
+                RCC.findIDRoombyDays(dateA, dateB, 1, (err, lstPTP) => {
+                    if(err) { return res.status(500).json(err); }
+                    if(lstPTP.length <= 0) { 
+                        try { return res.status(200).json(arrRoom); } catch (error) {}
+                    }
+                    var count2 = lstPTP.length;
+                    lstPTP.forEach(item => {
+                        room.getDataByID(item.maPhong, (err, PHONG) => {
+                            count2--;
+                            if(err) { try { return res.status(500).json(err); } catch (error) {} }
+                            if(PHONG != null) { 
+                                console.log(PHONG);
+                                if(PHONG.idLP == idRT_need){
+                                    arrRoom = arrRoom.filter(item => item.maPhong != PHONG.maPhong);
+                                }
+                            }
+                            if(count2 == 0) { 
+                                try { return res.status(200).json(arrRoom); } catch (error) {}
+                            }
+                        })
+                    })
+                })
+            }
+            lstPTT.forEach(item => {
+                BillD.getDataByIDPTT(item.idPTT,(err, lstCTPTT) => {
+                    if(err) { try { return res.status(500).json(err); } catch (error) {} }
+                    if(lstCTPTT.length > 0) {
+                        var count1 = lstCTPTT.length;
+                        lstCTPTT.forEach(item => {
+                            room.getDataByID(item.maPhong, (err, PHONG) => {
+                                count1 --;
+                                if(err) { try { return res.status(500).json(err); } catch (error) {} }
+                                if(PHONG != null){ 
+                                    if(PHONG.idLP == idRT_need){
+                                        // console.log(PHONG);
+                                        // console.log(arrRoom);
+                                        arrRoom = arrRoom.filter(item => item.maPhong != PHONG.maPhong);
+                                    }
+                                }
+                                if(count1 == 0){ 
+                                    RCC.findIDRoombyDays(dateA, dateB, 1, (err, lstPTP) => {
+                                        if(err) { return res.status(500).json(err); }
+                                        if(lstPTP.length <= 0) { 
+                                            try { return res.status(200).json(arrRoom); } catch (error) {}
+                                        }
+                                        var count2 = lstPTP.length;
+                                        lstPTP.forEach(item => {
+                                            room.getDataByID(item.maPhong, (err, PHONG) => {
+                                                count2--;
+                                                if(err) { try { return res.status(500).json(err); } catch (error) {} }
+                                                if(PHONG != null) { 
+                                                    // console.log(PHONG);
+                                                    if(PHONG.idLP == idRT_need){
+                                                        arrRoom = arrRoom.filter(item => item.maPhong != PHONG.maPhong);
+                                                    }
+                                                }
+                                                if(count2 == 0) { 
+                                                    try { return res.status(200).json(arrRoom); } catch (error) {}
+                                                }
+                                            })
+                                        })
+                                    })
+                                }
+                            })
+                        })
+                    }
+                });
+            });
+        });
+    },
     getRoomsByDatesIdlpNumber: (req, res) => {
         const dateA = req.body.dateA;
         const dateB = req.body.dateB;
