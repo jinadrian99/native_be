@@ -38,7 +38,7 @@ module.exports = {
         EF.getDataByID(id, (err, result) => {
             if(err) { return res.status(500).json(err); }
             if(result == null) { return res.status(400).json("Record not exists!")}
-            EF.getDataByIdPTTnIdGPTnGhiChuPreventIdGPT(data.idPTT, data.idGPT, data.ghiChu, id, (err, result) => {
+            EF.getDataByIdPTTnIdGPTnGhiChuPreventIdPT(data.idPTT, data.idGPT, data.ghiChu, id, (err, result) => {
                 if(err) { try { return res.status(500).json(err) } catch (error) {} }
                 if(result.length > 0) { try { return res.status(400).json("Item exists!") } catch (error) {} }
                 EF.updateData(id, data, (err, result) => {

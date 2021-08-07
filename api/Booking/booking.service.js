@@ -178,5 +178,30 @@ module.exports = {
                 return callBack(null, result); 
             }
         )
-    }
+    },
+    
+    //For: Scheduler
+    schedulerChangeStatusByDateArriveAndStatus: (statusNew, statusOld, date, callBack) => {
+        // SELECT DONDATPHONG.idDDP, PHIEUTHANHTOANPHONG.idDDP
+        // FROM DONDATPHONG LEFT JOIN PHIEUTHANHTOANPHONG ON DONDATPHONG.idDDP = PHIEUTHANHTOANPHONG.idDDP 
+        // WHERE DONDATPHONG.trangThaiDat = 0 AND PHIEUTHANHTOANPHONG.idDDP IS NULL AND DONDATPHONG.ngayDen <= "2021-7-11"
+        pool.query(
+            `
+                UPDATE DONDATPHONG LEFT JOIN PHIEUTHANHTOANPHONG ON DONDATPHONG.idDDP = PHIEUTHANHTOANPHONG.idDDP 
+                SET DONDATPHONG.trangThaiDat = ?
+                WHERE DONDATPHONG.trangThaiDat = ? AND PHIEUTHANHTOANPHONG.idDDP IS NULL AND DONDATPHONG.ngayDen <= ?
+            `,
+            [
+                statusNew,
+                statusOld,
+                date
+            ],
+            (error, result) => {
+                if(error){
+                    return callBack(error);
+                }
+                return callBack(null, result.affectedRows); 
+            }
+        )
+    },
 };

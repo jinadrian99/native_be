@@ -88,7 +88,7 @@ module.exports = {
             }
         )
     },
-    getDataByIdPTTnIdGPTnGhiChuPreventIdGPT: (idPTT, idGPT, ghiChu, idPT, cb) => {
+    getDataByIdPTTnIdGPTnGhiChuPreventIdPT: (idPTT, idGPT, ghiChu, idPT, cb) => {
         pool.query(
             `select * FROM PHUTHU where idGPT = ? and idPTT = ? and ghiChu = ? and idPT != ?`,
             [
