@@ -5,19 +5,19 @@ const roomType = require('../RoomType/roomType.service');
 
 const BookingMBquantity = (quarter, year, cb) => {
     booking.getTotalMoneyBookingByQuarterly(quarter, year, (err, money) => {
-        if(err) { return res.status(500).json(err) }
+        if(err) { return console.log(err) }
         return cb(money.tongThanhTien == null ? 0 : money.tongThanhTien);        
     })
 }
 const BookingServiceMBquantity = (quarter, year, cb) => {
     bookingService.getTotalMoneyBookingServiceByQuarterly(quarter, year, (err, money) => {
-        if(err) { return res.status(500).json(err) }
+        if(err) { return console.log(err) }
         return cb(money.tongThanhTien == null ? 0 : money.tongThanhTien);        
     })
 }
 const BillMBmonth = (month, year, cb) => {
     bill.getTotalMoneyBillByMonth(month, year, (err, money) => {
-        if(err) { return res.status(500).json(err) }
+        if(err) { return console.log(err) }
         return cb(money.tienPhaiTra == null ? 0 : money.tienPhaiTra);        
     })
 }

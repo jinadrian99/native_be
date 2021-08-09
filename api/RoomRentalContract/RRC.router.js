@@ -10,7 +10,6 @@ router.post('/get-rrc-by-idkhd-idddp-with-status-rrc-is-using', RRCController.ge
 
 router.get('/', RRCController.index);
 router.get('/:id', RRCController.show);
-router.get('/get-by-idDDP/:id', RRCController.getRRCByIDDDP);
 router.post('/', RRCController.store);
 router.put('/:id', RRCController.update);
 

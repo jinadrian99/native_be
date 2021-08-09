@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const BookingController = require('./booking.controller');
 
-router.get('/was-deposit-or-paid-in-bill', BookingController.getDataWasDepositOrPaidInBill);
+router.get('/was-deposit-in-bill', BookingController.getDataWasDepositInBill);
 router.get('/get-ddp-by-idkhd-with-rrc-is-using/:id', BookingController.getDDPByIdKHDWithStatusRRCIsUsing);
 
 router.get('/', BookingController.index);

@@ -34,14 +34,13 @@ module.exports = {
             }
         )
     },
-    getDataWasDepositOrPaidInBill: (tinhTrangPTT1, tinhTrangPTT2 , cb) => {
+    getDataWasDepositInBill: (tinhTrangPTT1 , cb) => {
         pool.query(
             `SELECT DONDATPHONG.idDDP, PHIEUTHANHTOANPHONG.idPTT, PHIEUTHANHTOANPHONG.tinhTrang, DONDATPHONG.ngayDen, DONDATPHONG.ngayDi 
             FROM DONDATPHONG RIGHT JOIN PHIEUTHANHTOANPHONG ON DONDATPHONG.idDDP = PHIEUTHANHTOANPHONG.idDDP 
-            WHERE PHIEUTHANHTOANPHONG.tinhTrang = ? OR  PHIEUTHANHTOANPHONG.tinhTrang = ?`,
+            WHERE PHIEUTHANHTOANPHONG.tinhTrang = ?`,
             [
                 tinhTrangPTT1,
-                tinhTrangPTT2
             ],
             (error, results) => {
                 if(error) { return cb(error); }
