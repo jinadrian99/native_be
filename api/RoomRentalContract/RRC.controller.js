@@ -69,10 +69,10 @@ module.exports = {
             })
         })
     },
-    updateStatusPaidByIDDDP: (req, res) => {
+    updateStatusWentByIDDDP: (req, res) => {
         const idDDP = req.params.id;
-        const statusPaid = 1;
-        RRC.updateStatusByIDDDP(idDDP, statusPaid, (err, result) => {
+        const statusWent = 3;
+        RRC.updateStatusByIDDDP(idDDP, statusWent, (err, result) => {
             if(err) { return res.status(500).json(err); }
             return res.status(200).json('Update successfully');
         })

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const PayerC = require("./Payer.controller");
 
+// THETHANHTOAN ko còn sd
 router.get('/', PayerC.index);
 router.get('/:id', PayerC.show);
 router.post('/', PayerC.store);

@@ -2,6 +2,8 @@ const express = require('express');
 const paypal = require('paypal-rest-sdk');
 const router = express.Router();
 
+//ko còn sd 
+
 paypal.configure({
     'mode': 'sandbox', //sandbox or live
     'client_id': 'AZ_heeHWMVUAG_uzXr-dmPI1N0uF7ZdON-TM8wpDt_WfiFK--SQOhfC2WOb_o-nCUc4KSvWRBY7w_DVs',

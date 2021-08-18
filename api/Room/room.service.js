@@ -31,6 +31,8 @@ module.exports = {
         )
     },
     getDataByIdBookingWithBill: (idDDP, cb) => {
+        // lấy các phòng có trong chi tiết ptt của ptt theo cái idDDP
+        // phiếu tt sẽ làm gốc
         pool.query(
             `
                 SELECT PHONG.maPhong, PHONG.soNguoi, PHONG.idLP, CHITIETPHIEUTHANHTOAN.idCTPTT, PHIEUTHANHTOANPHONG.idPTT 
@@ -50,6 +52,8 @@ module.exports = {
         )
     },
     getDataByIdBillWithBill: (idPTT, cb) => {
+        // lấy các phòng có trong chi tiết ptt của ptt theo cái idPTT
+        // phiếu tt sẽ làm gốc
         pool.query(
             `
                 SELECT PHONG.maPhong, PHONG.soNguoi, PHONG.idLP, CHITIETPHIEUTHANHTOAN.idCTPTT, PHIEUTHANHTOANPHONG.idPTT 
