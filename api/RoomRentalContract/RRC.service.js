@@ -70,6 +70,7 @@ module.exports = {
         )
     },
     getDataByIdKHDWithStatusRRC: (idKHD, statusRRC, cb) => {
+        // lấy các PTP theo KHD và trạng thái của PTP ntn
         pool.query(
             `
                 SELECT PHIEUTHUEPHONG.*
@@ -90,6 +91,7 @@ module.exports = {
         )
     },    
     getDataByIdKHDIdDDPWithStatusRRC: (idKHD, idDDP, statusRRC, cb) => {
+        // lấy các PTP theo DDP và KHD và trạng thái của PTP ntn
         pool.query(
             `
                 SELECT PHIEUTHUEPHONG.*

@@ -65,6 +65,9 @@ module.exports = {
         )
     },
     getRRCByIdDDPInBill: (idDDP, cb) => {
+        //PTT - DDP - PTP
+        //lấy rrc, ddp, ptt từ idDDP
+        //ptt làm gốc
         pool.query(
             `
                 SELECT PHIEUTHANHTOANPHONG.idPTT, PHIEUTHUEPHONG.idPTP, DONDATPHONG.idDDP
@@ -232,6 +235,11 @@ module.exports = {
 
     //For: Scheduler
     schedulerChangeStatusForUnPaidByDateArriveAndStatus: (statusNewBill, statusNewBooking, statusOldBill, date, callBack) => {
+        // PTT - DDP: 
+        // đổi trạng thái sang hủy cho PTT và DDP khi ptt đc tạo mà ko trả tiền
+        // khi ngày đến đã vào quá khứ n ngày (ngày đến <= ngày xét),
+        // lấy ptt làm gốc
+
         // SELECT PHIEUTHANHTOANPHONG.idPTT, DONDATPHONG.idDDP
         // FROM PHIEUTHANHTOANPHONG LEFT JOIN DONDATPHONG ON DONDATPHONG.idDDP = PHIEUTHANHTOANPHONG.idDDP 
         // WHERE PHIEUTHANHTOANPHONG.tinhTrang = 1  AND PHIEUTHANHTOANPHONG.ngayDen <= "2021-7-11"
@@ -257,6 +265,11 @@ module.exports = {
     },
     //For: Scheduler
     schedulerChangeStatusForDepositNonRRCByDateArriveAndStatus: (statusNewBill, statusNewBooking, statusOldBill, date, callBack) => {
+        // PTT - DDP - PTP: 
+        // đổi trạng thái sang hủy cho PTT và DDP khi có ptt đã trả tiền cọc mà ko vào Hotel ở (tạo PTP)
+        // khi ngày đến đã vào quá khứ n ngày (ngày đến <= ngày xét),
+        // lấy ptt làm gốc
+
         // SELECT PHIEUTHANHTOANPHONG.idPTT, DONDATPHONG.idDDP
         // FROM PHIEUTHANHTOANPHONG LEFT JOIN DONDATPHONG ON DONDATPHONG.idDDP = PHIEUTHANHTOANPHONG.idDDP 
         // LEFT JOIN PHIEUTHUEPHONG ON DONDATPHONG.idDDP = PHIEUTHUEPHONG.idDDP

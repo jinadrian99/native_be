@@ -1,6 +1,6 @@
 var bill = require('./Bill.service');
 var RRC = require('../RoomRentalContract/RRC.service');
-var booking = require('../Booking/Booking.service');
+var booking = require('../Booking/booking.service');
 
 module.exports = {
     getBillsByIDKHD: (req, res) => {
