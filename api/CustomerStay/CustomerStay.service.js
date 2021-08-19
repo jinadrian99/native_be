@@ -3,7 +3,7 @@ const pool = require("../../config/database");
 module.exports = {
     createData: (data, cb) => {
         pool.query(
-            `insert into KHACHHANGO VALUES(?,?,?,?,?,?,?,?)`,
+            `insert into KHACHHANGO VALUES(?,?,?,?,?,?,?,?,?)`,
             [
                 null,
                 data.CMND,
@@ -12,7 +12,8 @@ module.exports = {
                 data.quocGia,
                 data.title,
                 data.tenKH,
-                data.ngaySinh      
+                data.ngaySinh,
+                data.ngayTao   
             ],
             (error, result) => {
                 if(error) {

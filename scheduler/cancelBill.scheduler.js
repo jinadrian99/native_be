@@ -10,7 +10,7 @@ scheduler.scheduleJob(crontab, () => {
     var statusUnpaid = 1;
     var statusDeposit = 2;
 
-    var duration = 3;
+    var duration = 3; // sau 3 ngay cua ngay den
     var someDateAgo = new Date(new Date().getTime() - (duration * 24 * 60 * 60 * 1000));
     someDateAgo = someDateAgo.getFullYear() + "-" + (someDateAgo.getMonth() + 1) + "-" + someDateAgo.getDate();
     console.log(someDateAgo);

@@ -634,6 +634,7 @@ module.exports = {
     },
     resetPassword: (req, res) => {
         const id = req.params.id;
+        console.log('token: ', id);
         // const authorizationHeader = req.headers['authorization'];
         verify(id, JWT_SECRET, (err, resToken) => {
             console.log(err, resToken);

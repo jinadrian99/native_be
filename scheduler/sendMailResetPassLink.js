@@ -25,7 +25,7 @@ function sendMailResetPassLink(email, token) {
                         To reset your password, please click the button below.
                     </p>
                     <p>
-                        <a href="https://nativecity.tk/reset-password/${token}">
+                        <a href="http://localhost:3000/reset-password/${token}">
                             <button style="width: 100px; height: 30px; background-color: white; color: crimson; border: 1px solid crimson">
                                 GO NOW!
                             </button>  
@@ -47,3 +47,5 @@ function sendMailResetPassLink(email, token) {
 }
 
 module.exports = sendMailResetPassLink;
+
+//<a href="https://nativecity.tk/reset-password/${token}">
