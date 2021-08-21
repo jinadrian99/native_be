@@ -148,6 +148,10 @@ module.exports = {
                 arrRate.forEach(item => {
                     var day = new Date(item.ngayBatDau);
                     var diffDay = (today.getTime() - day.getTime())/(1000*60*60*24);
+                    console.log('today: ', today);
+                    console.log('day: ', day);
+                    console.log('diffDay: ', diffDay);
+                    console.log('diffDayMin: ', diffDayMin);
 
                     if(diffDay >= 0 && diffDayMin == null){
                         recordRate = item;
@@ -158,6 +162,8 @@ module.exports = {
                         recordRate = item;
                         diffDayMin = diffDay;
                     }
+                    console.log('recordRate: ', recordRate);
+                    console.log('diffDayMin: ', diffDayMin);
                 });
 
                 //có đc recordRate ta sẽ len lõi vào tận trong Special Rate để xem có ngày nào là hn ko?
@@ -197,7 +203,7 @@ module.exports = {
                     hangPhong: item.hangPhong,
                     soLuong: item.soLuongHT
                 };
-                arrLP.push(obj); // lấy dsLP ra để trừ
+                arrLP.push(obj); // lấy dsLP ra để trừ (lọc ra các phòng có thẻ sử dụng)
             });
             // console.log(arrLP);
 
@@ -207,11 +213,11 @@ module.exports = {
                 if(err) { try { return res.status(500).json(err); } catch (error) {} }
                 //Kiểm tra xem đây có phải là nhánh KH đang ở hay ko?
                 if(lstPTT.length <= 0) { //Phiếu thanh toán phòng ko phải ở trạng thái (2)thanh toán tiền cọc
-                    RRC.findIDRoombyDays(dateA, dateB, 1, (err, lstPTP) => { //Nếu ko có trạng thái thanh toán tiền cọc thì chạy dòng này
+                    RRC.findIDRoombyDays(dateA, dateB, 1, (err, lstPTP) => { //Nếu ko có trạng thái thanh toán tiền cọc thì kiểm tra tiếp xem phiếu thuê phòng từ dateA-dateB có ở trạng thái 1(hoàn tất thanh toán)
                         console.log("RRC: ", err, lstPTP);
                         if(err) { try { return res.status(500).json(err); }  catch (error) {} }
                         if(lstPTP.length <= 0) { 
-                            try { return res.status(200).json(arrLP); } catch (error) {}
+                            try { return res.status(200).json(arrLP); } catch (error) {} //Ko có data thì trả về arrLP[...]
                         }
                         if(lstPTP.length > 0) { 
                             var count2 = lstPTP.length;
@@ -222,7 +228,7 @@ module.exports = {
                                     if(err) { try { return res.status(500).json(err); } catch (error) {} }
                                     if(PHONG != null){ 
                                         // console.log("PHONG_idLP", PHONG.idLP);
-                                        var index = arrLP.findIndex(item => item.idLP == PHONG.idLP);// tìm index trong arrLP để trừ
+                                        var index = arrLP.findIndex(item => item.idLP == PHONG.idLP);// tìm index trong arrLP để trừ (lọc ra maPhong trùng để trừ số lượng của LP đó)
                                         arrLP[index]={
                                             idLP: arrLP[index].idLP,
                                             tenLP: arrLP[index].tenLP,
@@ -239,10 +245,10 @@ module.exports = {
                         }
                     })
                 }
-                //Nhánh KH thanh toán tiền cọc
+                //Phiếu thanh toán phòng có trạng thái 2 (KH thanh toán tiền cọc)
                 lstPTT.forEach(item => { //Nếu có trạng thái (2)thanh toán tiền cọc thì chạy dòng này
                     // console.log("PTT: ", item.idPTT);
-                    DBill.getDataByIDPTT(item.idPTT, (err, lstCTPTT) => {
+                    DBill.getDataByIDPTT(item.idPTT, (err, lstCTPTT) => { //Tồn tại kh thanh toán tiền cọc tại PTT, kiểm tra tại CTPTT lấy theo idPTT để lọc ra maPhong -> trừ bớt sl LP
                         console.log("DBill: ", err, lstCTPTT)
                         if(err) { try { return res.status(500).json(err); } catch (error) {} }
                         if(lstCTPTT.length > 0) { 
@@ -255,7 +261,7 @@ module.exports = {
                                     if(err) { try { return res.status(500).json(err); } catch (error) {} }
                                     if(PHONG != null){ 
                                         // console.log("PHONG_idLP", PHONG.idLP);
-                                        var index = arrLP.findIndex(item => item.idLP == PHONG.idLP);
+                                        var index = arrLP.findIndex(item => item.idLP == PHONG.idLP);// tìm index trong arrLP để trừ (lọc ra maPhong trùng để trừ số lượng của LP đó)
                                         arrLP[index]={
                                             idLP: arrLP[index].idLP,
                                             tenLP: arrLP[index].tenLP,
@@ -264,7 +270,7 @@ module.exports = {
                                         }
                                     }
                                     // console.log(arrLP, count);
-                                    if(count1 == 0){ 
+                                    if(count1 == 0){ //Kiểm tra tiếp xem phiếu thuê phòng từ dateA-dateB có ở trạng thái 1(hoàn tất thanh toán) -> để trừ bớt sl LP hiển thị cho kh xem
                                         RRC.findIDRoombyDays(dateA, dateB, 1, (err, lstPTP) => {
                                             console.log("RRC: ", err, lstPTP);
                                             if(err) { try { return res.status(500).json(err); } catch (error) {} }
@@ -282,7 +288,7 @@ module.exports = {
                                                         if(err) { try { return res.status(500).json(err); } catch (error) {} }
                                                         if(PHONG != null){ 
                                                             // console.log("PHONG_idLP", PHONG.idLP);
-                                                            var index = arrLP.findIndex(item => item.idLP == PHONG.idLP);
+                                                            var index = arrLP.findIndex(item => item.idLP == PHONG.idLP);// tìm index trong arrLP để trừ (lọc ra maPhong trùng để trừ số lượng của LP đó)
                                                             arrLP[index]={
                                                                 idLP: arrLP[index].idLP,
                                                                 tenLP: arrLP[index].tenLP,
