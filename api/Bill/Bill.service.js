@@ -30,7 +30,7 @@ module.exports = {
     },
     getAll: (cb) => {
         pool.query(
-            `select * from PHIEUTHANHTOANPHONG`,
+            `select * from PHIEUTHANHTOANPHONG ORDER BY idPTT DESC`,
             [],
             (error, result) => {
                 if(error) {
@@ -54,7 +54,7 @@ module.exports = {
     },
     getDataByIDKHD: (idKHD, cb) => {
         pool.query(
-            `select * from PHIEUTHANHTOANPHONG where idKHD = ?`,
+            `select * from PHIEUTHANHTOANPHONG where idKHD = ? ORDER BY idPTT DESC`,
             [idKHD],
             (error, result) => {
                 if(error) {

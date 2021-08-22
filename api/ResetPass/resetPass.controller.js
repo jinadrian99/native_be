@@ -26,7 +26,7 @@ module.exports = {
                         }
                         console.log('request: ', request);
                         const token = sign(request, JWT_SECRET, { 
-                            expiresIn: '120s',
+                            expiresIn: '60s',
                         });
                         resetPass.createData(request, (err, results) => {
                             if (err) {

@@ -24,7 +24,7 @@ module.exports = {
     },
     getAll: (cb) => {
         pool.query(
-            `select * from DONDATPHONG`,
+            `select * from DONDATPHONG ORDER BY idDDP DESC`,
             [],
             (error, result) => {
                 if(error) {
@@ -62,19 +62,7 @@ module.exports = {
     },    
     getDataByIdKHD: (idKHD, cb) => {
         pool.query(
-            `select * from DONDATPHONG where idKHD = ?`,
-            [idKHD],
-            (error, result) => {
-                if(error) {
-                    return cb(error);
-                }
-                return cb(null, result);
-            }
-        )
-    },
-    getDataByIdKHD: (idKHD, cb) => {
-        pool.query(
-            `select * from DONDATPHONG where idKHD = ?`,
+            `select * from DONDATPHONG where idKHD = ? ORDER BY idDDP DESC`,
             [idKHD],
             (error, result) => {
                 if(error) {

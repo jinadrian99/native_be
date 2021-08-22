@@ -2,6 +2,7 @@ const booking = require('../Booking/booking.service');
 const bookingService = require('../BookingService/bookingService.service');
 const bill = require('../Bill/Bill.service');
 const roomType = require('../RoomType/roomType.service');
+const customerStay = require('../CustomerStay/CustomerStay.service');
 
 const BookingMBquantity = (quarter, year, cb) => {
     booking.getTotalMoneyBookingByQuarterly(quarter, year, (err, money) => {
@@ -126,27 +127,17 @@ module.exports = {
         })
     },
     getCusStayIn7N1Nationals: (req, res) => {
-
-        // SELECT KHACHHANGO.quocGia, COUNT(KHACHHANGO.idKHO) AS soLuong
-        // FROM KHACHHANGO 
-        // GROUP BY KHACHHANGO.quocGia
-        // HAVING KHACHHANGO.quocGia = 'America' 
-        // OR KHACHHANGO.quocGia = 'England' 
-        // OR KHACHHANGO.quocGia = 'Netherlands' 
-        // OR KHACHHANGO.quocGia = 'Paris' 
-        // OR KHACHHANGO.quocGia = 'Singapore' 
-        // OR KHACHHANGO.quocGia = 'ThaiLand' 
-        // OR KHACHHANGO.quocGia = 'VietNam' 
-
-
-        // SELECT COUNT(KHACHHANGO.idKHO) AS soLuong
-        // FROM KHACHHANGO 
-        // WHERE KHACHHANGO.quocGia != 'America' 
-        // AND KHACHHANGO.quocGia != 'England' 
-        // AND KHACHHANGO.quocGia != 'Netherlands' 
-        // AND KHACHHANGO.quocGia != 'Paris' 
-        // AND KHACHHANGO.quocGia != 'Singapore' 
-        // AND KHACHHANGO.quocGia != 'ThaiLand' 
-        // AND KHACHHANGO.quocGia != 'VietNam' 
+        var nationals = [];
+        var numberCusStay = [];
+        customerStay.getDataNumbersCusBy7Nationals((err, results) => {
+            if(err) { try { return res.status(500).json(err); } catch (error) {} }
+            if(results.length > 0) {
+                results.map(item => {
+                    nationals.push(item.national);
+                    numberCusStay.push(item.numberCusStay);
+                })
+            }
+            try { return res.status(200).json({nationals, numberCusStay}); } catch (error) {} 
+        })
     }
 }

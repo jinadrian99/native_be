@@ -23,7 +23,7 @@ module.exports = {
     },
     getAll: (cb) => {
         pool.query(
-            `select * from PHIEUTHUEPHONG`,
+            `select * from PHIEUTHUEPHONG ORDER BY idPTP DESC`,
             [],
             (error, result) => {
                 if(error) {
@@ -47,7 +47,7 @@ module.exports = {
     },
     getDataByIdDDP: (idDDP, cb) => {
         pool.query(
-            `select * from PHIEUTHUEPHONG where idDDP = ?`,
+            `select * from PHIEUTHUEPHONG where idDDP = ? ORDER BY idPTP DESC`,
             [idDDP],
             (error, result) => {
                 if(error) {

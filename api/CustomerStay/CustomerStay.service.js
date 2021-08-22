@@ -158,9 +158,40 @@ module.exports = {
     },
     getDataNumbersCusBy7Nationals: (callBack) => {
         pool.query(
-            ``,
+            `
+                SELECT 
+                CASE 
+                    WHEN quocGia = "America" THEN "America"
+                    WHEN quocGia = "Paris" THEN "Paris"
+                    WHEN quocGia = "Netherlands" THEN "Netherlands"
+                    WHEN quocGia = "England" THEN "England"
+                    WHEN quocGia = "Singapore" THEN "Singapore"
+                    WHEN quocGia = "VietNam" THEN "VietNam"
+                    WHEN quocGia = "ThaiLand" THEN "ThaiLand"
+                    ELSE "Other"
+                END AS national,
+                COUNT(
+                CASE 
+                    WHEN quocGia = "America" THEN "America"
+                    WHEN quocGia = "Paris" THEN "Paris"
+                    WHEN quocGia = "Netherlands" THEN "Netherlands"
+                    WHEN quocGia = "England" THEN "England"
+                    WHEN quocGia = "Singapore" THEN "Singapore"
+                    WHEN quocGia = "VietNam" THEN "VietNam"
+                    WHEN quocGia = "ThaiLand" THEN "ThaiLand"
+                    ELSE "Other"
+                END
+                ) AS numberCusStay
+                FROM KHACHHANGO
+                GROUP BY national
+            `,
             [],
-            (error, results) => {}
+            (error, results) => {
+                if(error){
+                    return callBack(error);
+                }
+                return callBack(null, results); 
+            }
         )
     }
 };
