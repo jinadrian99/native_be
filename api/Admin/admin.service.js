@@ -71,5 +71,33 @@ module.exports = {
                 return callBack(null, result); 
             }
         )
+    },
+    getDataNumberOfAdminAccount: (callBack) => {
+        pool.query(
+            `
+                SELECT 
+                CASE 
+                    WHEN phanQuyen = 1 THEN "IT Admin"
+                    WHEN phanQuyen = 2 THEN "Manager"
+                    ELSE "Receptionist"
+                END AS adminAccount,
+                COUNT(
+                CASE 
+                    WHEN phanQuyen = 1 THEN "IT Admin"
+                    WHEN phanQuyen = 2 THEN "Manager"
+                    ELSE "Receptionist"
+                END
+                ) AS numberAdminAcc
+                FROM ADMIN
+                GROUP BY adminAccount
+            `,
+            [],
+            (error, results) => {
+                if(error){
+                    return callBack(error);
+                }
+                return callBack(null, results); 
+            }
+        )
     }
 };

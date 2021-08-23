@@ -147,5 +147,33 @@ module.exports = {
                 return callBack(null, result); 
             }
         )
+    },
+    getDataNumberOfNativeHotelAccount: (callBack) => {
+        pool.query(
+            `
+                SELECT 
+                CASE 
+                    WHEN loaiTaiKhoan = 1 THEN "Social account"
+                    WHEN loaiTaiKhoan = 2 THEN "Local customer account"
+                    ELSE "Local admin account"
+                END AS typeOfAccount,
+                COUNT(
+                CASE 
+                    WHEN loaiTaiKhoan = 1 THEN "Social account"
+                    WHEN loaiTaiKhoan = 2 THEN "Local customer account"
+                    ELSE "Local admin account"
+                END
+                ) AS numberTypeOfAcc
+                FROM TAIKHOAN
+                GROUP BY typeOfAccount
+            `,
+            [],
+            (error, results) => {
+                if(error){
+                    return callBack(error);
+                }
+                return callBack(null, results); 
+            }
+        )
     }
 };
