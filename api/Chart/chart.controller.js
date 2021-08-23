@@ -3,6 +3,8 @@ const bookingService = require('../BookingService/bookingService.service');
 const bill = require('../Bill/Bill.service');
 const roomType = require('../RoomType/roomType.service');
 const customerStay = require('../CustomerStay/CustomerStay.service');
+const admin = require('../Admin/admin.service');
+const user = require('../User/user.service');
 
 const BookingMBquantity = (quarter, year, cb) => {
     booking.getTotalMoneyBookingByQuarterly(quarter, year, (err, money) => {
@@ -138,6 +140,34 @@ module.exports = {
                 })
             }
             try { return res.status(200).json({nationals, numberCusStay}); } catch (error) {} 
+        })
+    },
+    getNumberOfAdminAccount: (req, res) => {
+        var adminAccounts = [];
+        var numberAdminAcc = [];
+        admin.getDataNumberOfAdminAccount((err, results) => {
+            if(err) { try { return res.status(500).json(err); } catch (error) {} }
+            if(results.length > 0) {
+                results.map(item => {
+                    adminAccounts.push(item.adminAccount);
+                    numberAdminAcc.push(item.numberAdminAcc);
+                })
+            }
+            try { return res.status(200).json({adminAccounts, numberAdminAcc}); } catch (error) {} 
+        })
+    },
+    getNumberOfNativeHotelAccount: (req, res) => {
+        var typeOfAccounts = [];
+        var numberTypeOfAcc = [];
+        user.getDataNumberOfNativeHotelAccount((err, results) => {
+            if(err) { try { return res.status(500).json(err); } catch (error) {} }
+            if(results.length > 0) {
+                results.map(item => {
+                    typeOfAccounts.push(item.typeOfAccount);
+                    numberTypeOfAcc.push(item.numberTypeOfAcc);
+                })
+            }
+            try { return res.status(200).json({typeOfAccounts, numberTypeOfAcc}); } catch (error) {} 
         })
     }
 }
