@@ -150,7 +150,7 @@ module.exports = {
             // console.log(lstPTT);
             if(err) { try { return res.status(500).json(err); } catch (error) {} }
             if(lstPTT.length <= 0) { 
-                RCC.findIDRoombyDays(dateA, dateB, 1, (err, lstPTP) => {
+                RCC.findIDRoombyDays(dateA, dateB, 2, (err, lstPTP) => {
                     if(err) { return res.status(500).json(err); }
                     if(lstPTP.length <= 0) { 
                         try { return res.status(200).json(arrRoom); } catch (error) {}
@@ -190,7 +190,7 @@ module.exports = {
                                     }
                                 }
                                 if(count1 == 0){ 
-                                    RCC.findIDRoombyDays(dateA, dateB, 1, (err, lstPTP) => {
+                                    RCC.findIDRoombyDays(dateA, dateB, 2, (err, lstPTP) => {
                                         if(err) { return res.status(500).json(err); }
                                         if(lstPTP.length <= 0) { 
                                             try { return res.status(200).json(arrRoom); } catch (error) {}
@@ -237,10 +237,10 @@ module.exports = {
         })
 
         bill.findIDbyDays(dateA, dateB, 1, (err, lstPTT) => { //Tìm kiếm trong hóa đơn Bill có dateA - dateB và trạng thái 1 (thanh toán tiền cọc, mà chưa ở)
-            // console.log(lstPTT);
+            console.log(lstPTT);
             if(err) { try { return res.status(500).json(err); } catch (error) {} }
             if(lstPTT.length <= 0) { //Trường hợp ko có dateA - dateB và trạng thái 2 (thanh toán tiền cọc)
-                RCC.findIDRoombyDays(dateA, dateB, 1, (err, lstPTP) => { // Tiếp tục tìm kiếm trong phiếu thuê phòng RRC xem có dateA - dateB và trạng thái 1 (hoàn tất thanh toán)
+                RCC.findIDRoombyDays(dateA, dateB, 2, (err, lstPTP) => { // Tiếp tục tìm kiếm trong phiếu thuê phòng RRC xem có dateA - dateB và trạng thái 1 (hoàn tất thanh toán)
                     if(err) { return res.status(500).json(err); }
                     if(lstPTP.length <= 0) { //Trường hợp RRC ko có data dateA - dateB và trạng thái 1 (hoàn tất thanh toán)
                         if(arrRoom.length >= number ){ //Kiểm tra xem arrRoom có đáp ứng đủ số lượng phòng cần hay ko
@@ -290,7 +290,7 @@ module.exports = {
                                     }
                                 }
                                 if(count1 == 0){ //Kiểm tra tiếp xem phiếu thuê phòng từ dateA-dateB có ở trạng thái 1(hoàn tất thanh toán) -> loại bỏ bớt trong arrRoom những item là maPhong đó
-                                    RCC.findIDRoombyDays(dateA, dateB, 1, (err, lstPTP) => {
+                                    RCC.findIDRoombyDays(dateA, dateB, 2, (err, lstPTP) => {
                                         if(err) { return res.status(500).json(err); }
                                         if(lstPTP.length <= 0) { 
                                             if(arrRoom.length >= number ){
