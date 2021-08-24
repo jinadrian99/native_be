@@ -20,7 +20,7 @@ module.exports = {
     },
     changeStatusToDepositByIdPTT: (req, res) => {
         const idPTT = req.params.idPTT;
-        bill.changeStatus(idPTT, 2, (err, result) => {
+        bill.changeStatus(idPTT, 1, (err, result) => {
             if(err) { return res.status(500).json(err); }
             return res.status(200).json('change status to deposit');
         })

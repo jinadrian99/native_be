@@ -1,4 +1,5 @@
 var RRC = require('./RRC.service');
+var bill = require('../Bill/Bill.service');
 
 module.exports = {
     index: (req, res) => {
@@ -47,13 +48,16 @@ module.exports = {
     },
     store: (req, res) => {
         var data = req.body;
-        RRC.getDataByUniToInsert(data.idDDP, data.idKHO, data.maPhong, (err, result) => {
-            if(err) { try { res.status(500).json(err); } catch (error) {} }
-            if(result != null){ try { return res.status(400).json("Room rental contract is Exists!"); } catch (error) {} }
-            RRC.createData(data, (err, results) => {
-                if(err) { return res.status(500).json(err); }
-                if(results == null) { return res.status(400).json("Create failed!"); }
-                res.status(200).json(results);
+        bill.changeStatusByIdddp(data.idDDP, 2, (err, result) => {
+            if(err) { return res.status(500).json(err); }
+            RRC.getDataByUniToInsert(data.idDDP, data.idKHO, data.maPhong, (err, result) => {
+                if(err) { try { res.status(500).json(err); } catch (error) {} }
+                if(result != null){ try { return res.status(400).json("Room rental contract is Exists!"); } catch (error) {} }
+                RRC.createData(data, (err, results) => {
+                    if(err) { return res.status(500).json(err); }
+                    if(results == null) { return res.status(400).json("Create failed!"); }
+                    res.status(200).json(results);
+                })
             })
         })
     },

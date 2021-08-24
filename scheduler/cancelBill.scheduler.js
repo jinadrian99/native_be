@@ -7,8 +7,8 @@ var billController = require('../api/Bill/Bill.service');
 scheduler.scheduleJob(crontab, () => {
     var cancelBill = 4;
     var cancelBooking = 1; 
-    var statusUnpaid = 1;
-    var statusDeposit = 2;
+    var statusUnpaid = 0;
+    var statusDeposit = 1;
 
     var duration = 3; // sau 3 ngay cua ngay den
     var someDateAgo = new Date(new Date().getTime() - (duration * 24 * 60 * 60 * 1000));

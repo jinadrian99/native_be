@@ -99,6 +99,21 @@ module.exports = {
             }
         )
     },
+    changeStatusByIdddp: (idDDP, status, cb) => {
+        pool.query(
+            `update PHIEUTHANHTOANPHONG set tinhTrang = ? where idDDP = ?`,
+            [
+                status,
+                idDDP
+            ],
+            (error, result) => {
+                if(error) {
+                    return cb(error);
+                }
+                return cb(null, result.insertId);
+            }
+        )
+    },
     findIDbyDays: (dateA, dateB, tinhTrang, cb) => {
         pool.query(
             `SELECT idPTT FROM PHIEUTHANHTOANPHONG WHERE ngayDi >= ? and ngayDen <= ? and tinhTrang = ?`,

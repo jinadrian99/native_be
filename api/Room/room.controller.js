@@ -146,7 +146,7 @@ module.exports = {
             });
         })
 
-        bill.findIDbyDays(dateA, dateB, 2, (err, lstPTT) => {
+        bill.findIDbyDays(dateA, dateB, 1, (err, lstPTT) => {
             // console.log(lstPTT);
             if(err) { try { return res.status(500).json(err); } catch (error) {} }
             if(lstPTT.length <= 0) { 
@@ -174,7 +174,7 @@ module.exports = {
                 })
             }
             lstPTT.forEach(item => {
-                BillD.getDataByIDPTT(item.idPTT,(err, lstCTPTT) => {
+                BillD.getDataByIDPTT(item.idPTT, (err, lstCTPTT) => {
                     if(err) { try { return res.status(500).json(err); } catch (error) {} }
                     if(lstCTPTT.length > 0) {
                         var count1 = lstCTPTT.length;
@@ -236,7 +236,7 @@ module.exports = {
             });
         })
 
-        bill.findIDbyDays(dateA, dateB, 2, (err, lstPTT) => { //Tìm kiếm trong hóa đơn Bill có dateA - dateB và trạng thái 2 (thanh toán tiền cọc)
+        bill.findIDbyDays(dateA, dateB, 1, (err, lstPTT) => { //Tìm kiếm trong hóa đơn Bill có dateA - dateB và trạng thái 1 (thanh toán tiền cọc, mà chưa ở)
             // console.log(lstPTT);
             if(err) { try { return res.status(500).json(err); } catch (error) {} }
             if(lstPTT.length <= 0) { //Trường hợp ko có dateA - dateB và trạng thái 2 (thanh toán tiền cọc)

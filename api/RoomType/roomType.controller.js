@@ -208,7 +208,7 @@ module.exports = {
             // console.log(arrLP);
 
             //SELECT `idPTT` FROM `PHIEUTHANHTOANPHONG` WHERE ngayDen <= "2021-06-19" and ngayDi >= "2021-06-15"
-            bill.findIDbyDays(dateA, dateB, 2, (err, lstPTT) => {
+            bill.findIDbyDays(dateA, dateB, 1, (err, lstPTT) => { // 
                 console.log("Bill: ", err, lstPTT);
                 if(err) { try { return res.status(500).json(err); } catch (error) {} }
                 //Kiểm tra xem đây có phải là nhánh KH đang ở hay ko?

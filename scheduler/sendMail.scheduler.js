@@ -10,9 +10,16 @@ var user = require('../api/User/user.service');
 
 const crontab = '48 9 * * *';
 
+//Demo: 
+// const crontab = '* * * * *';
+// SELECT * 
+// FROM DONDATPHONG 
+// WHERE YEAR(ngayDen) = 2021 and MONTH(ngayDen) = 8 and 25 - DAY(ngayDen) >= 0 and 25 - DAY(ngayDen) <= 2
+// Booking láy booking 40, 42, 43, 44, 54 -> đổi 42: tìnhTrang: 2->1 (để tạo booking mà ko giữ chân phòng), khd: 5->130 (để send mail cho qht321)
+
 scheduler.scheduleJob(crontab, () => { 
     var today = new Date();
-    booking.getDataDayNumNearToDay(2, today, (err, lstBooking) => {
+    booking.getDataDayNumNearToDay(2, today, (err, lstBooking) => { //lấy các booking còn 2 ngày là đến ở trong tháng này năm này
         if(err) { return console.log(err); }
         // console.log(lstBooking);
         if(lstBooking.length <= 0) { return; }
@@ -55,7 +62,7 @@ scheduler.scheduleJob(crontab, () => {
                         }
                     })
                 }
-                else if(objBill.tinhTrang == 1){
+                else if(objBill.tinhTrang == 0){
                     // user nhấn nút tạo bill từ ddp r mà chưa thanh toán -> send mail nữa
                     // console.log('idKHD: ', objBill);
                     user.getEmailByIdkhd(objBill.idKHD, (err, objUser) => {
