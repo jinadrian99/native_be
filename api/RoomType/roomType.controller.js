@@ -213,7 +213,7 @@ module.exports = {
                 if(err) { try { return res.status(500).json(err); } catch (error) {} }
                 //Kiểm tra xem đây có phải là nhánh KH đang ở hay ko?
                 if(lstPTT.length <= 0) { //Phiếu thanh toán phòng ko phải ở trạng thái (2)thanh toán tiền cọc
-                    RRC.findIDRoombyDays(dateA, dateB, 1, (err, lstPTP) => { //Nếu ko có trạng thái thanh toán tiền cọc thì kiểm tra tiếp xem phiếu thuê phòng từ dateA-dateB có ở trạng thái 1(hoàn tất thanh toán)
+                    RRC.findIDRoombyDays(dateA, dateB, 2, (err, lstPTP) => { //lấy đang ở: 1: checkout, 2: trả và ở, 3: về 100%
                         console.log("RRC: ", err, lstPTP);
                         if(err) { try { return res.status(500).json(err); }  catch (error) {} }
                         if(lstPTP.length <= 0) { 
@@ -271,7 +271,7 @@ module.exports = {
                                     }
                                     // console.log(arrLP, count);
                                     if(count1 == 0){ //Kiểm tra tiếp xem phiếu thuê phòng từ dateA-dateB có ở trạng thái 1(hoàn tất thanh toán) -> để trừ bớt sl LP hiển thị cho kh xem
-                                        RRC.findIDRoombyDays(dateA, dateB, 1, (err, lstPTP) => {
+                                        RRC.findIDRoombyDays(dateA, dateB, 2, (err, lstPTP) => {
                                             console.log("RRC: ", err, lstPTP);
                                             if(err) { try { return res.status(500).json(err); } catch (error) {} }
                                             if(lstPTP.length <= 0){ 

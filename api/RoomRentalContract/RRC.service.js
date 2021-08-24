@@ -114,7 +114,7 @@ module.exports = {
     },
     findIDRoombyDays: (dateA, dateB, trangThai, cb) => {
         pool.query(
-            `SELECT maPhong FROM PHIEUTHUEPHONG WHERE ngayDi >= ? and ngayDen <= ? and trangThai = ?`,
+            `SELECT maPhong FROM PHIEUTHUEPHONG WHERE ngayDi >= ? and ngayDen <= ? and trangThai = ? GROUP BY maPhong`,
             [
                 dateA,
                 dateB,
