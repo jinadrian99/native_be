@@ -191,6 +191,7 @@ module.exports = {
     searchRoomTypeByDays: (req, res) => {
         const dateA = req.body.dateA;
         const dateB = req.body.dateB;
+        var deletedRoom = [];
 
         var arrLP = [];
         getAll((err, lstLP) => {
@@ -227,14 +228,18 @@ module.exports = {
                                     count2 --; //bộ đếm dùng để xét khi nào ngừng dòng for (vì asynchronous)
                                     if(err) { try { return res.status(500).json(err); } catch (error) {} }
                                     if(PHONG != null){ 
-                                        // console.log("PHONG_idLP", PHONG.idLP);
-                                        var index = arrLP.findIndex(item => item.idLP == PHONG.idLP);// tìm index trong arrLP để trừ (lọc ra maPhong trùng để trừ số lượng của LP đó)
-                                        arrLP[index]={
-                                            idLP: arrLP[index].idLP,
-                                            tenLP: arrLP[index].tenLP,
-                                            hangPhong: arrLP[index].hangPhong,
-                                            soLuong: arrLP[index].soLuong - 1
+                                        if(!deletedRoom.includes(PHONG.maPhong)){ 
+                                            // console.log("PHONG_idLP", PHONG.idLP);
+                                            var index = arrLP.findIndex(item => item.idLP == PHONG.idLP);// tìm index trong arrLP để trừ (lọc ra maPhong trùng để trừ số lượng của LP đó)
+                                            arrLP[index]={
+                                                idLP: arrLP[index].idLP,
+                                                tenLP: arrLP[index].tenLP,
+                                                hangPhong: arrLP[index].hangPhong,
+                                                soLuong: arrLP[index].soLuong - 1
+                                            }
+                                            deletedRoom.push(PHONG.maPhong);
                                         }
+                                        
                                     }
                                     if(count2 == 0){ 
                                         console.log("arrLP: ", arrLP);
@@ -260,13 +265,16 @@ module.exports = {
                                     count1 --;
                                     if(err) { try { return res.status(500).json(err); } catch (error) {} }
                                     if(PHONG != null){ 
-                                        // console.log("PHONG_idLP", PHONG.idLP);
-                                        var index = arrLP.findIndex(item => item.idLP == PHONG.idLP);// tìm index trong arrLP để trừ (lọc ra maPhong trùng để trừ số lượng của LP đó)
-                                        arrLP[index]={
-                                            idLP: arrLP[index].idLP,
-                                            tenLP: arrLP[index].tenLP,
-                                            hangPhong: arrLP[index].hangPhong,
-                                            soLuong: arrLP[index].soLuong - 1
+                                        if(!deletedRoom.includes(PHONG.maPhong)){ 
+                                            // console.log("PHONG_idLP", PHONG.idLP);
+                                            var index = arrLP.findIndex(item => item.idLP == PHONG.idLP);// tìm index trong arrLP để trừ (lọc ra maPhong trùng để trừ số lượng của LP đó)
+                                            arrLP[index]={
+                                                idLP: arrLP[index].idLP,
+                                                tenLP: arrLP[index].tenLP,
+                                                hangPhong: arrLP[index].hangPhong,
+                                                soLuong: arrLP[index].soLuong - 1
+                                            }
+                                            deletedRoom.push(PHONG.maPhong);
                                         }
                                     }
                                     // console.log(arrLP, count);
@@ -287,13 +295,16 @@ module.exports = {
                                                         count2 --;
                                                         if(err) { try { return res.status(500).json(err); } catch (error) {} }
                                                         if(PHONG != null){ 
-                                                            // console.log("PHONG_idLP", PHONG.idLP);
-                                                            var index = arrLP.findIndex(item => item.idLP == PHONG.idLP);// tìm index trong arrLP để trừ (lọc ra maPhong trùng để trừ số lượng của LP đó)
-                                                            arrLP[index]={
-                                                                idLP: arrLP[index].idLP,
-                                                                tenLP: arrLP[index].tenLP,
-                                                                hangPhong: arrLP[index].hangPhong,
-                                                                soLuong: arrLP[index].soLuong - 1
+                                                            if(!deletedRoom.includes(PHONG.maPhong)){ 
+                                                                // console.log("PHONG_idLP", PHONG.idLP);
+                                                                var index = arrLP.findIndex(item => item.idLP == PHONG.idLP);// tìm index trong arrLP để trừ (lọc ra maPhong trùng để trừ số lượng của LP đó)
+                                                                arrLP[index]={
+                                                                    idLP: arrLP[index].idLP,
+                                                                    tenLP: arrLP[index].tenLP,
+                                                                    hangPhong: arrLP[index].hangPhong,
+                                                                    soLuong: arrLP[index].soLuong - 1
+                                                                }
+                                                                deletedRoom.push(PHONG.maPhong);
                                                             }
                                                         }
                                                         if(count2 == 0){ 
